@@ -1,0 +1,53 @@
+/*
+    Paleta de cores:
+
+#000 background
+#333233
+#fee600
+#ffff00
+#ffff56
+#ffff81
+
+Fontes: 
+    Constantia
+    Georgia
+
+*/
+
+*{
+    box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
+    margin: 0;
+    padding: 0;
+  }
+
+body{
+    background-color: #000;
+    color: #fff;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid blue;
+}
+
+.headerLogo{
+    border: 2px solid red;
+}
+
+.headerLogo a{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.headerLogo a img{
+    width: 250px;
+}
+.headerLogo a h1{
+    color: #ffff00;
+}
