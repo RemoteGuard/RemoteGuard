@@ -11,33 +11,56 @@
     <header>
         <div class="headerLogo">
             <a href="index.html">
-                <img src="img/svg/aguia3.svg" alt="">  
+                <img src="img/svg/aguia2.svg" alt="">  
                 <h1>Remote Guard</h1>  
             </a>
         </div>
         <ul class="headerBar">
             <li>
-                <a href="#">Home</a>
+                <a href="index.html" class="pagAtual">Home</a>
             </li>
             <li>
                 <a href="#">Sobre nós</a>
             </li>
             <li>
-                <a href="#">Cadastro</a>
+                <a href="#">Demonstração</a>
             </li>
-            <li>
-                <a href="#">Login</a>
+            <li class="areaCliente">
+                <div class="botaoAreaCliente" onclick="abrirMenu()">
+                    <a >Área do cliente</a>
+                </div>
+                <div id="divLinksLogin" class="linksLogin">
+                    <div>
+                        <a href="#">Login Gerente</a>    
+                    </div>
+                    <div>
+                        <a href="#">Login Analista</a>
+                    </div>
+                    <div class="ultimoLink">
+                        <a href="#">Cadastro</a>
+                    </div>
+                </div> 
             </li>
         
         </ul>
         
     </header>
-    <img src="img/svg/aguia1.svg" alt="">
-    <img src="img/svg/aguia2.svg" alt="">
-    <img src="img/svg/aguia3.svg" alt="">
-    <img src="img/svg/aguia4.svg" alt="">
+
 
     <footer></footer>
 
 </body>
 </html>
+<script>
+    var contadorHeaderMenu = 0;
+    function abrirMenu(){
+        if((contadorHeaderMenu % 2) == 0){
+            divLinksLogin.style.display = "flex";
+            contadorHeaderMenu ++;
+        }else{
+            divLinksLogin.style.display = "none";
+            contadorHeaderMenu ++;
+        }
+        
+    }
+</script>

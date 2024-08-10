@@ -28,26 +28,113 @@ header{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 2px solid blue;
+    border-bottom: 2px solid #ffff00;
+    height: 20vh;
+    width: 100vw;
+    background-color: #0f0f0f;
 }
 
 .headerLogo{
-    border: 2px solid red;
+
 }
 
 .headerLogo a{
     
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-decoration: none;
     color: white;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 110%;
 }
 
 .headerLogo a img{
-    width: 250px;
+    width: 90px;
 }
 .headerLogo a h1{
     color: #ffff00;
+    font-size: 28px;
+    margin-left: 5%;
+}
+
+header ul{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    width: 60%;
+    justify-content: space-around;
+}
+
+header ul li{
+    list-style-type: none;
+}
+header ul li a{
+
+    text-decoration: none;
+    color: #fff;
+    font-size: 19px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header ul li a:hover{
+    color: #ffff81;
+    text-decoration: underline;    
+
+}
+
+.pagAtual{
+    color: #ffff00;
+    text-decoration: underline;
+}
+
+.areaCliente{
+    transition: transform 0.2s;
+    background-color: #333233;
+    border-radius: 10px;
+    width: 27%;
+    height: 30%;
+    align-items: center;
+    cursor: pointer;
+}
+.botaoAreaCliente{
+    display: flex;
+    margin-top: 9px;
+    justify-content: center;
+    align-items: center;
+}
+
+.areaCliente:hover{
+    text-decoration: none;
+    transform: scale(110%, 110%);
+}
+
+.linksLogin{
+    margin-top: 6%;
+    display: none;
+    flex-direction: column;
+    height: auto;
+}
+
+.linksLogin div{
+    display: flex;
+    border: 2px solid #333233;
+    width: 100%;
+    height: 5vh;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    background-color: #0f0f0f;
+}
+
+.linksLogin div:hover{
+    transform: scale(110%, 110%);
+    
+}
+
+.ultimoLink{
+    border-radius: 0 0 10px 10px;
 }
