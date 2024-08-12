@@ -25,8 +25,8 @@
             <li>
                 <a href="#">Demonstração</a>
             </li>
-            <li class="areaCliente">
-                <div class="botaoAreaCliente" onclick="abrirMenu()">
+            <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
+                <div class="botaoAreaCliente">
                     <a >Área do cliente</a>
                 </div>
                 <div id="divLinksLogin" class="linksLogin">
@@ -52,15 +52,25 @@
 </body>
 </html>
 <script>
-    var contadorHeaderMenu = 0;
-    function abrirMenu(){
-        if((contadorHeaderMenu % 2) == 0){
-            divLinksLogin.style.display = "flex";
-            contadorHeaderMenu ++;
-        }else{
-            divLinksLogin.style.display = "none";
-            contadorHeaderMenu ++;
-        }
+    // var contadorHeaderMenu = 0;
+    // function abrirMenu(){
+    //     if((contadorHeaderMenu % 2) == 0){
+    //         divLinksLogin.style.display = "flex";
+    //         contadorHeaderMenu ++;
+    //     }else{
+    //         divLinksLogin.style.display = "none";
+    //         contadorHeaderMenu ++;
+    //     }
         
+    // }
+
+    // Atribuição de variável para controle de menu Área de candidato
+    let menu = document.querySelector('#divLinksLogin');
+
+    function showMain(){
+        menu.style.display = 'flex';
+    }
+    function hiddeMain(){
+        menu.style.display = 'none';
     }
 </script>
