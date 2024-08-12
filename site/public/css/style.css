@@ -93,7 +93,9 @@ header ul li a:hover{
 .areaCliente{
     transition: transform 0.2s;
     background-color: #333233;
-    border-radius: 10px;
+    /* border-radius: 10px; */
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     width: 27%;
     height: 30%;
     align-items: center;
@@ -112,7 +114,7 @@ header ul li a:hover{
 }
 
 .linksLogin{
-    margin-top: 6%;
+    /* margin-top: 6%; */
     display: none;
     flex-direction: column;
     height: auto;
