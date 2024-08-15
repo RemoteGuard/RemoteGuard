@@ -34,9 +34,7 @@ header{
     background-color: #0f0f0f;
 }
 
-.headerLogo{
 
-}
 
 .headerLogo a{
     
@@ -92,8 +90,8 @@ header ul li a:hover{
 
 .areaCliente{
     transition: transform 0.2s;
-    background-color: #333233;
-    /* border-radius: 10px; */
+    background-color: #ffff00;
+    border-radius: 10px; 
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     width: 27%;
@@ -107,6 +105,9 @@ header ul li a:hover{
     justify-content: center;
     align-items: center;
 }
+.botaoAreaCliente a {
+    color: black;
+}
 
 .areaCliente:hover{
     text-decoration: none;
@@ -114,7 +115,7 @@ header ul li a:hover{
 }
 
 .linksLogin{
-    /* margin-top: 6%; */
+    margin-top: 6%; 
     display: none;
     flex-direction: column;
     height: auto;
