@@ -67,5 +67,16 @@ CREATE TABLE controleFluxo(
     CONSTRAINT fkNotebookControleFluxo foreign key (fkNotebook) references notebook(idNotebook)
 );
 
+CREATE TABLE dados(
+    idDados INT not null,
+    processador decimal(5,2),
+    armazenamento decimal(5,2),
+    RAM decimal(5,2),
+    dataHora datetime,
+    fkNotebook int,
+    constraint pkDados primary key (idDados, fkNotebook),
+    constraint fkNotebookDados foreign key (fkNotebook) references notebook(idNotebook)
+);
+
 -- TROCAR CEP NA MODELAGEM PARA CHAR RESUMIR NOMES DAS FK
 -- COLOCAR DUAS ULTIMAS TABELAS COM NOT NULL
