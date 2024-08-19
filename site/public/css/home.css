@@ -14,7 +14,33 @@ Fontes:
 
 */
 
-
 .sessaoLema{
-    background-image: url(../img/site/fundoIndex/note.jpg);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    background-image: url(../img/site/fundoIndex/note_ajuste.jpg);
+    background-size: cover;
+    width: 100vw;
+    height: 80vh;
+}
+
+/* Aplicando responsividade dos títulos em computador desktop */
+@media (min-width: 1024px){
+    .frases span{
+        font-size: 40px;
+    }
+    .frasePrincipal span{
+        font-size: 60px;
+    }
+}
+
+/* Aplicando responsividade dos títulos para celular */
+@media (max-width: 600px){
+    .frases span{
+        font-size: 20px;
+    }
+    .frasePrincipal span{
+        font-size: 30px;
+    }
 }
