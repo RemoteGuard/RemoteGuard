@@ -1,0 +1,220 @@
+/*
+    Paleta de cores:
+
+#000 background
+#333233
+#fee600
+#ffff00
+#ffff56
+#ffff81
+
+Fontes: 
+    Constantia
+    Georgia
+
+*/
+
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./fontes/LeagueSpartan/LeagueSpartan-VariableFont_wght.ttf')
+    format('truetype');
+}
+
+*{
+    box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
+    margin: 0;
+    padding: 0;
+  }
+
+body{
+    background-color: #000;
+    color: #fff;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #ffff00;
+    height: 20vh;
+    width: 100vw;
+    background-color: #0f0f0f;
+}
+
+.headerLogo a{    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 110%;
+}
+
+.headerLogo a img{
+    width: 90px;
+}
+.headerLogo a h1{
+    color: #ffff00;
+    font-size: 28px;
+    margin-left: 5%;
+}
+
+header ul{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    width: 60%;
+    justify-content: space-around;
+}
+
+header ul li{
+    list-style-type: none;
+}
+header ul li a{
+
+    text-decoration: none;
+    color: #fff;
+    font-size: 19px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header ul li a:hover{
+    color: #ffff81;
+    text-decoration: underline;    
+
+}
+
+.pagAtual{
+    color: #ffff00;
+    text-decoration: underline;
+}
+
+.areaCliente{
+    transition: transform 0.2s;
+    background-color: #ffff00;
+    border-radius: 10px; 
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 27%;
+    height: 30%;
+    align-items: center;
+    cursor: pointer;
+}
+.botaoAreaCliente{
+    display: flex;
+    margin-top: 9px;
+    justify-content: center;
+    align-items: center;
+}
+.botaoAreaCliente a {
+    color: black;
+}
+.botaoAreaCliente a:hover{
+    color: black;
+}
+.areaCliente:hover{
+    text-decoration: none;
+    transform: scale(110%, 110%);
+}
+
+.linksLogin{
+    margin-top: 6%; 
+    display: none;
+    flex-direction: column;
+    height: auto;
+}
+
+.linksLogin div{
+    display: flex;
+    border: 2px solid #333233;
+    width: 100%;
+    height: 5vh;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    background-color: #0f0f0f;
+}
+
+.linksLogin div:hover{
+    transform: scale(110%, 110%);
+    
+}
+
+.ultimoLink{
+    border-radius: 0 0 10px 10px;
+}
+
+.hovers{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+}
+
+/*LOGIN*/
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+    background-color: #3A3B36;
+}
+
+.cadastre {
+    width: 30vw;
+    height: 55vh;
+    padding: 20px;
+    background-color: #292525;
+}
+
+.cadastre input,
+.cadastre button {
+    width: 280px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: block;
+    color: transparent;
+}
+
+#div_mensagem {
+    color: #fbff00;
+    margin-top: 10px;
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    color: #ffffff;
+}
+
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    justify-content: center;
+    padding: 20px;
+    height: 40vh;
+    margin: auto;
+}
+
+.botao {
+    display: flex;
+    justify-content: center;
+}
+
+.botao button {
+    margin: 5vh;
+    height: 100%;
+    background-color: blue;
+    width: fit-content;
+}

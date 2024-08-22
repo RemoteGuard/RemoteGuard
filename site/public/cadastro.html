@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | RemoteGuard</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+
+    <link rel="icon" href="img/svg/aguia2.svg">
+</head>
+<body>
+    <header>
+        <div class="headerLogo">
+            <a href="index.html">
+                <img src="img/svg/aguia2.svg" alt="">  
+                <h1>Remote Guard</h1>  
+            </a>
+        </div>
+        <ul class="headerBar">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="#">Sobre nós</a>
+            </li>
+            <li>
+                <a href="#">Demonstração</a>
+            </li>
+            <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
+                <div class="botaoAreaCliente">
+                    <a >Área do cliente</a>
+                </div>
+                <div id="divLinksLogin" class="linksLogin">
+                    <div>
+                        <a href="#">Login</a>    
+                    </div>
+                    <div class="ultimoLink">
+                        <a href="#">Cadastro</a>
+                    </div>
+                </div> 
+            </li>
+        
+        </ul>
+        
+    </header>
+    <div class="container">
+        <div class="cadastre">
+            <div class="card">
+                <h2>Cadastre-se e Aproveite</h2>
+                <div class="formulario">
+                    <div class="campo">
+                        <input type="text" id="input_nome" placeholder="Nome">
+                        <input type="email" id="input_email" placeholder="E-mail">
+                        <input type="password" id="input_senha" placeholder="Senha">
+                    </div>
+                    <div class="campo">
+                        <input type="text" id="input_cargo" placeholder="Cargo">
+                        <input type="text" id="input_empresa" placeholder="Empresa">
+                        <input type="password" id="input_cpf" placeholder="CPF">
+                    </div>
+                </div>
+                <div class="botao">
+                    <button onclick="cadastrar()" style="color: antiquewhite; font-size: medium;">Cadastrar</button>
+                </div>
+
+                <div id="div_mensagem"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let menu = document.querySelector('#divLinksLogin');
+
+function showMain(){
+    menu.style.display = 'flex';
+}
+function hiddeMain(){
+    menu.style.display = 'none';
+}
+</script>
+</script>

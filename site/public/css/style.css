@@ -115,7 +115,9 @@ header ul li a:hover{
 .botaoAreaCliente a {
     color: black;
 }
-
+.botaoAreaCliente a:hover{
+    color: black;
+}
 .areaCliente:hover{
     text-decoration: none;
     transform: scale(110%, 110%);
