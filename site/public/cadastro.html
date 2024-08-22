@@ -70,6 +70,90 @@
 </body>
 </html>
 <script>
+
+function cadastrar() {
+            var nome = input_nome.value;
+            var email = input_email.value;
+            var senha = input_senha.value;
+            var cargo = input_cargo.value;
+            var nomeEmpresa = input_empresa.value;
+            var cpf = input_cpf.value;
+
+            var caixaAltaNome = nome.toUperCase();
+            var caixaBaixaEmail = email.toLowerCase();
+            var caixaBaixaEmpresa = nomeEmpresa.toLowerCase();
+
+            var tamanhoSenha = senha.length;
+
+            var cpfTamanho = cpf.length;
+            var senhaTamanho = senha.length;
+
+            var indiceArrobaSenha = senha.indexOf('@');
+            var indiceHashtagSenha = senha.indexOf('#');
+            var indiceCifraoSenha = senha.indexOf('$');
+            var indiceComercialSenha = senha.indexOf('&');
+
+            var indiceArrobaEmail = email.indexOf('@');
+            var indicePontoEmail = email.indexOf('.');
+
+            var fazerCadastro = true;
+
+            div_mensagem.innerHTML = ` `;
+
+            if (nome == "" ||
+                email == "" ||
+                senha  == "" ||
+                cargo == "" ||
+                nomeEmpresa == 0 ||
+                cpf == ""
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+                return false;
+            }
+
+            if (indiceArrobaSenha < 0 &&
+                indiceCifraoSenha < 0 &&
+                indiceComercialSenha < 0 &&
+                indiceHashtagSenha < 0
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
+                return false;
+            }
+
+            if (cpfTamanho != 11
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
+                return false;
+            }
+
+            if (senha != senhaConfirm
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
+                return false;
+            }
+
+            if (tamanhoSenha < 5 ||
+                tamanhoSenha > 15
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
+                return false;
+            }
+
+            if (indiceArrobaEmail < 0 ||
+                indicePontoEmail < 0
+            ) {
+                div_mensagem.innerHTML =
+                    `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
+                return false;
+            }
+
+        }
+
     let menu = document.querySelector('#divLinksLogin');
 
 function showMain(){
@@ -78,5 +162,8 @@ function showMain(){
 function hiddeMain(){
     menu.style.display = 'none';
 }
+
+
+
 </script>
 </script>
