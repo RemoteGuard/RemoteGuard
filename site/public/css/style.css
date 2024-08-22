@@ -26,31 +26,33 @@ Fontes:
     padding: 0;
   }
 
+html{
+    scroll-behavior: smooth;
+}
+
 body{
     background-color: #000;
     color: #fff;
 }
+
 header{
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #ffff00;
     height: 20vh;
-    width: 100vw;
+    max-width: 100vw;
     background-color: #0f0f0f;
 }
 
-
-
 .headerLogo a{
-    
     display: flex;
     flex-direction: row;
     align-items: center;
     text-decoration: none;
     color: white;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    width: 110%;
+    width: 100%;
 }
 
 .headerLogo a img{
@@ -75,7 +77,6 @@ header ul li{
     list-style-type: none;
 }
 header ul li a{
-
     text-decoration: none;
     color: #fff;
     font-size: 19px;
@@ -172,7 +173,7 @@ header ul li a:hover{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    max-width: 100vw;
     height: 100vh;
 }
 
@@ -264,12 +265,11 @@ header ul li a:hover{
     flex-direction: row;
     background-color: #000;
     justify-content:center;
-
 }
 
 .logo{
-    width: 300px;
-    height: 300px;
+    width: 290px;
+    height: 290px;
 }
 
 .session_hovers{
@@ -293,21 +293,36 @@ header ul li a:hover{
     text-align: center;
     font-size: 30px;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    transition: transform .3s;
 }
 
-.fotos_cards{
-    width: 250px;
-    height: 250px;
+.hovers:hover{
+    transform: scale(1.2);
+    .cor_hover{
+        background-color: #ffff00;
+    }
+}
+
+.cor_hover{
+    background-color: #fff;
 }
 
 .textos_cards{
     display: flex;
     background-color: #000;
     width: 80%;
+    height: 30vh;
+    justify-content: center;
     font-size: 30px;
+    flex-direction: column;
     text-align: center;
     color: #fff;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+}
+
+.fotos_cards{
+    width: 200px;
+    height: 200px;
 }
 
 .footer{

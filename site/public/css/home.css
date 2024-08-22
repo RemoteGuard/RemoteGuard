@@ -11,7 +11,7 @@
 Fontes: 
     Constantia
     Georgia
-
+    League Spartan 
 */
 
 .sessaoLema{
@@ -21,7 +21,7 @@ Fontes:
     flex-direction: column;
     background-image: url(../img/site/fundoIndex/note_ajuste.jpg);
     background-size: cover;
-    width: 100vw;
+    max-width: 100vw;
     height: 80vh;
 }
 

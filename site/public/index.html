@@ -62,7 +62,7 @@
             </div>
             <span class="separador">|</span>
             <div class="quadrado">
-                <span class="numero">6K⁺</span>
+                <span class="numero">6K<span style="color:white; font-weight: bold;" >⁺</span></span>
                 <span class="conteudo_metrica">dados analisados</span>
             </div>
             <span class="separador">|</span>
@@ -72,8 +72,8 @@
             </div>
             <span class="separador">|</span>
             <div class="quadrado">
-                <span class="numero">99⁺</span>
-                <span class="conteudo_metrica">Fiquei sem ideias</span>
+                <span class="numero">20<span style="color:white; font-weight: bold;" >⁺</span></span>
+                <span class="conteudo_metrica">Segundos de Delay</span>
             </div>
         </div>
     </section>
@@ -109,27 +109,41 @@
         </div>
         <div class="session_hovers">
             <div class="cards" >
-                <div class="hovers">
+                <div id="mtrmt"  class="hovers">
                     <span>Monitoramento</span>
-                    <div style="background-color: #ffff00;" >
+                    <div class="cor_hover">
                         <img class="fotos_cards" src="./img/site/sessionHover/Captura_de_tela_2024-08-15_001418-removebg-preview.png" alt="lupa">
                     </div>
                 </div>
-                <div class="hovers">
+                <div id="vglc" class="hovers">
                     <span>Vigilância</span>
-                    <div style="background-color: #ffff00;">
+                    <div class="cor_hover">
                         <img class="fotos_cards" src="./img/site/sessionHover/Captura_de_tela_2024-08-15_001429-removebg-preview.png" alt="lupa com olho">
                     </div>
                 </div>
-                <div class="hovers">
+                <div id="job" class="hovers">
                     <span>Trabalho</span>
-                    <div style="background-color: #ffff00;">
+                    <div class="cor_hover">
                         <img class="fotos_cards" src="./img/site/sessionHover/Captura_de_tela_2024-08-15_001456-removebg-preview.png" alt="trabalhador">
                     </div>
                 </div>
             </div>
             <div class="textos_cards">
-                <span>aaaaaaaaaaaaaaaaaaaaaaaa</span>
+                <div id="texto_monitoramento" style="display: none;" >
+                    Através de nosso monitoramento de componentes, conseguimos averiguar o
+                    uso do computador, juntamente com estatísticas e insights relevantes 
+                    para a sua tomada de decisão.
+                </div>
+                <div id="texto_vigilancia" style="display: none;" >
+                    Vigilângia diz muito sobre quem somos. Com a premissa de vistoriar
+                    o uso de computadores, a RemoteGuard busca fazer com que seus clientes
+                    fiquem tranquilos com a segurança de nosso serviço.
+                </div>
+                <div id="texto_trabalho" style="display: none;" >
+                    Entendemos que o trabalho é um ambiente de execução de tarefas eficaz,
+                    e é por este motivo que nos comprometemos em entregar uma solução que 
+                    garanta uma visão completa da produtividade dos seus funcionários.  
+                </div>
             </div>
         </div>
     </section>
@@ -151,7 +165,7 @@
                 <ul>
                     <li>Email: remoteGuard@gmail.com</li>
                     <li>Endereço: Rua Haddock Lobo, 595 - SP</li>
-                    <li>Telefone: 11 98765-4321</li>
+                    <li>Telefone: (11) 98765-4321</li>
                 </ul>
             </div>
         </div>
@@ -182,4 +196,37 @@
     function hiddeMain(){
         menu.style.display = 'none';
     }
+
+
+    // Texto do hover do card de monitoramento
+    const aparecerTextoMonitoramento = document.getElementById("mtrmt");
+    aparecerTextoMonitoramento.addEventListener("mouseover", () => {
+        texto_monitoramento.style.display = 'block';
+    })
+    aparecerTextoMonitoramento.addEventListener("mouseout", () => {
+        texto_monitoramento.style.display = 'none';
+    })
+
+    // Texto do hover do card de vigilancia
+    const aparecerTextoVigilancia = document.getElementById("vglc");
+    aparecerTextoVigilancia.addEventListener("mouseover", () => {
+        texto_vigilancia.style.display = 'block';
+    })
+    aparecerTextoVigilancia.addEventListener("mouseout", () => {
+        texto_vigilancia.style.display = 'none';
+    })
+    
+    // Texto do hover do card de trabalho
+    const aparecerTextoTrabalho = document.getElementById("job");
+    aparecerTextoTrabalho.addEventListener("mouseover", () => {
+        texto_trabalho.style.display = 'block';
+    });
+    aparecerTextoTrabalho.addEventListener("mouseout", () => {
+        texto_trabalho.style.display = 'none';
+    });
+
+
+
+    
+    
 </script>
