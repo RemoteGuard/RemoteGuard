@@ -1,3 +1,4 @@
-node-modules
+node_modules
+minimist
 package-lock.json
 package.json

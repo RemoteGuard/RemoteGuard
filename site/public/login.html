@@ -63,6 +63,25 @@
 </body>
 </html>
 <script>
+
+var tentativas = 3;
+
+    function autenticar() {
+        aguardar();
+
+        var email = input_user.value;
+        var senha = input_senha.value;
+
+        if (email == "" || senha == "") {
+            div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            finalizarAguardar();
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", email);
+        console.log("FORM SENHA: ", senha);
+    }
+
     let menu = document.querySelector('#divLinksLogin');
 
 function showMain(){
