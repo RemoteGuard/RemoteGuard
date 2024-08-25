@@ -185,8 +185,11 @@ header ul li a:hover{
     justify-content: space-between;
     background-color: #000;
     width: 50%;
-    height: 40%;
+    height: 20%;
     border-radius: 10px;
+    z-index: 1;
+    position: absolute;
+    top: 90%
 }
 
 .quadrado{
@@ -235,6 +238,7 @@ header ul li a:hover{
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
+    margin-top: 5%;
 }
 
 .jobiador{
@@ -254,6 +258,8 @@ header ul li a:hover{
     font-size: 30px;
     text-align: center;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    margin-top: 3%;
+    padding: 1%;
 }
 
 .foto_texto_sessaoIndex{
@@ -267,11 +273,20 @@ header ul li a:hover{
     flex-direction: row;
     background-color: #000;
     justify-content:center;
+    /* clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 0% 50%, 50% 50%); */
 }
 
 .logo{
-    width: 290px;
-    height: 290px;
+    width: 250px;
+    height: 250px;
+    margin-top: 3%;
+}
+
+.titulo_logo {
+    align-items: center;
+    font-size: 30px;
+    text-align: center;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
 .session_hovers{
@@ -287,6 +302,7 @@ header ul li a:hover{
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+    margin-top: 3%;
 }
 
 .hovers{
@@ -342,13 +358,15 @@ header ul li a:hover{
     flex-direction: row;
     justify-content:space-between;
     color:#fff;
-    margin-bottom: 3%;
+    list-style-type: disc;
+    padding: 1%;
+    list-style: none;
 }
 
 .span_footer{
     font-size: 35px;
     font-weight: bold;
-    margin-bottom: 7%;
+    margin-bottom: 5%;
     text-decoration: none;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
@@ -356,6 +374,10 @@ header ul li a:hover{
 .developers .contato {
     display: flex;
     flex-direction: column;
+}
+
+.list{
+    list-style: none;
 }
 
 
