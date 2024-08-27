@@ -33,6 +33,7 @@ html{
 body{
     background-color: #000;
     color: #fff;
+    overflow-x: hidden;
 }
 
 header{
@@ -225,6 +226,7 @@ header ul li a:hover{
     font-weight: bold;
     color:#000;
     text-align: center;
+    margin-top: 2%;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -251,6 +253,7 @@ header ul li a:hover{
     font-size: 30px;
     text-align: center;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    padding: 3%;
 }
 
 .conteudo_solucao{
@@ -258,7 +261,7 @@ header ul li a:hover{
     font-size: 30px;
     text-align: center;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-    margin-top: 3%;
+    margin-top: 5.5%;
     padding: 1%;
 }
 
@@ -273,13 +276,23 @@ header ul li a:hover{
     flex-direction: row;
     background-color: #000;
     justify-content:center;
-    /* clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 0% 50%, 50% 50%); */
+    margin-top: 3.5%;
+}
+
+.trianguloRetangulo{
+    background-color: #000;
+    position: absolute;
+    z-index: 1;
+    width: 101%;
+    height: 16vh;
+    overflow-x: hidden;
+    transform: rotate(0.49turn);
 }
 
 .logo{
     width: 250px;
     height: 250px;
-    margin-top: 3%;
+    margin-top: 11%;
 }
 
 .titulo_logo {
