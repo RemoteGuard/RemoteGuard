@@ -32,7 +32,6 @@ Fontes:
 
 .sidebar{
   /*6% fechado*/
-  position: absolute;
   width: 20vw;
   height: 100vh;
   border-right: 2px solid yellow;
@@ -40,6 +39,25 @@ Fontes:
   transition: 0.5s;
   padding-left: 10px;
 }
+
+.sidebar {
+  /*6% fechado*/
+  position: relative;
+  width: 7vw;
+  height: 100vh;
+  border-right: 2px solid yellow;
+  font-family: 'Poppins';
+  transition: 0.5s;
+  padding-left: 10px;
+  overflow: hidden;
+}
+
+
+.ativoSide{
+  width: 20vw;
+}
+
+
 
 .sidebar ul{
   position: relative;
@@ -58,20 +76,8 @@ Fontes:
 /*
 IF os.name == 'nt' = = windows
   */
-.burguer{
-  margin-top: 10px;
-  display: flex;
-  width: 40px;
-  height: 40px;
-  margin-left: 5%;
-  cursor: pointer;
-}
 
 
-.imgBurguer{
-  width: 40px;
-  height: 40px;
-}
 
 .sidebar ul li.logo .icon{
   width: 70px;
@@ -99,11 +105,13 @@ IF os.name == 'nt' = = windows
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 60px;
-    height: 70px;
+    min-width: 70px;
+    height: 80px;
     transition: 0.5s;
   }
-  .sidebar ul li a .text{
+
+  .text{display: none;}
+  .ativoSide ul li a .text{
     position: relative;
     height: 70px;
     display: flex;
@@ -147,8 +155,54 @@ IF os.name == 'nt' = = windows
   .icon img{
     width: 25px;
   }
- 
+  .burguer{
+    margin-top: 10px;
+    display: flex;
+    width: 45px;
+    height: 45px;
+    margin-left: 20%;
+    cursor: pointer;
+    background-color: #ffff00;
+    border-radius: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
+  .burguer::before{
+    content: '';
+    width: 30px;
+    height: 3px;
+    position: absolute;
+    background: #000;
+    transform: translateY(-9px);
+    transition: 0.5s;
+    box-shadow: 0 9px 0 #000;
+  }
+  
+  .burguer::after{
+    margin-top: 37px;
+    content: '';
+    width: 30px;
+    height: 3px;
+    position: absolute;
+    background: #000;
+    transform: translateY(-9px);
+    transition: 0.5s;
+  }
+   
+    
+  .ativo::before{
+    transform: translateY(0px) rotate(45deg);
+    box-shadow: 0 0 0 #000;
+  }
+  .ativo::after{
+    margin-top: 0px;
+    transform: translateY(0px) rotate(-45deg);
+  }
+  .ativoSide .text{
+    display: none;
+  }
 
 
   /*

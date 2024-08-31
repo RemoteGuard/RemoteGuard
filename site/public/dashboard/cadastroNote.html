@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>notebook | RemoteGuard</title>
     <link rel="stylesheet" href="./../css/dashboard.css" />
+
   </head>
   <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <ul>
         <li class="logo">
           <a href="">
@@ -16,9 +17,6 @@
             </div>
             <div class="text">Remote Guard</div>
           </a>
-          <div class=" burguer">
-            <img class="imgBurguer" src="svg/burguer.svg" alt="" />
-          </div>
         </li>
         <div class="Menulist">
           <li>
@@ -70,5 +68,11 @@
         </div>
       </ul>
     </div>
+    <section>
+      <div class="burguer" id="burguer" onclick="alterarSidebar()">
+      </div>
+    </section>
   </body>
 </html>
+
+<script src="js/sessao.js"></script>
