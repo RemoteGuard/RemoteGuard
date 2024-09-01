@@ -19,6 +19,7 @@ Fontes:
     box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
     margin: 0;
     padding: 0;
+    font-family:Tahoma, sans-serif;
   }
 
   
@@ -133,6 +134,7 @@ IF os.name == 'nt' = = windows
   }
 
   .imgBox img{
+    margin-left: 10px;
     width: 60px;
     height: 60px;
     border: 2px solid #ffff00;
@@ -156,11 +158,12 @@ IF os.name == 'nt' = = windows
     width: 25px;
   }
   .burguer{
+    position: absolute;
     margin-top: 10px;
     display: flex;
     width: 45px;
     height: 45px;
-    margin-left: 20%;
+    margin-left: 15px;
     cursor: pointer;
     background-color: #ffff00;
     border-radius: 5%;
