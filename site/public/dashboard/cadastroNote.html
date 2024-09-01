@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>notebook | RemoteGuard</title>
     <link rel="stylesheet" href="./../css/dashboard.css" />
-
+    <link rel="stylesheet" href="./../css/cadastroNote.css" />
   </head>
   <body>
     <div class="sidebar" id="sidebar">
@@ -68,11 +68,71 @@
         </div>
       </ul>
     </div>
+    <div>
+      <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+    </div>
+
     <section>
-      <div class="burguer" id="burguer" onclick="alterarSidebar()">
+      <div class="container">
+        <h1>Cadastro de Notebooks</h1>
+        <div class="inputs">
+          <div class="esquerda">
+            <input placeholder="Marca..." type="text" />
+            <input placeholder="Modelo..." type="text" />
+            <input placeholder="Processador..." type="text" />
+          </div>
+          <div class="direita">
+            <input placeholder="Memória RAM..." type="text" name="" id="" />
+            <div class="divArmazenamento">
+              <h2>Armazenamento</h2>
+              <div class="containerArmazenamento">
+                <div class="inpArmazenamento" id="inpArmazenamento">
+                  <div class="inpArm">
+                    <select name="" id="">
+                      <option selected disabled value="">Tipo</option>
+                      <option value="HD">HD</option>
+                      <option value="SSD">SSD</option>
+                    </select>
+                    <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
+                    <img onclick="adcDisco()" src="svg/circuloMais.svg" alt="" />
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <button>Cadastrar</button>
       </div>
     </section>
   </body>
 </html>
 
 <script src="js/sessao.js"></script>
+
+<script>
+  
+    var contadorArmazenamento = 0;
+  function adcDisco(){
+    var divInpArmazenamento = document.getElementById('inpArmazenamento')
+    divInpArmazenamento.innerHTML += `
+                     <div class="inpArm" id="div${contadorArmazenamento}">
+                    <select name="" >
+                      <option selected disabled value="">Tipo</option>
+                      <option value="HD">HD</option>
+                      <option value="SSD">SSD</option>
+                    </select>
+                    <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
+                    <img onclick="apagarArmazenamento(${contadorArmazenamento})" src="svg/circuloX.svg" alt="" />
+                  </div>`
+                  contadorArmazenamento ++;
+    
+  }
+
+  function apagarArmazenamento(num){
+    var divInpArmazenamento = document.getElementById('inpArmazenamento')
+    var divExcluida = document.getElementById(`div${num}`)
+    divExcluida.remove()
+
+  }
+</script>

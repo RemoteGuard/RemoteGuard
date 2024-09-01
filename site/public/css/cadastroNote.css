@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), 
+    url(./../img/site/fundoIndex/pc2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #000;
+    
+}
+
+input:focus {
+    outline: none; /* Remove a borda de foco */
+}
+
+section{
+    color: white;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section .container{
+    width: 55%;
+    height: 61%;
+    border-radius: 13px;
+    border: 2px solid #ffff00;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+section .container h1{
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 29px;
+}
+
+section .container .inputs{
+    min-height: 60%;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+section .container .inputs .esquerda{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    justify-content: space-around;
+    align-items: center;
+    height: 75%;
+
+}
+
+section .container .inputs .esquerda input, section .container .inputs .direita input{
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px ;
+    text-align: center;
+    border-bottom: 2px solid #ffff00;
+    width: 65%;
+}
+section .container .inputs .esquerda input::placeholder, .direita input::placeholder{
+    font-size: 18px;
+    color: #fff;
+    font-family: 'Poppins';
+}
+
+section .container .inputs .direita{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around	;
+    height: 80%;
+    width: 43%;
+    align-items: center;
+}
+
+section .container .inputs .direita .divArmazenamento{
+    margin-top: 5%;
+    display: flex;
+    height: 80%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section .container .inputs .direita .divArmazenamento h2{
+    font-family: monospace;
+    font-size: 28px;
+}
+
+.inputs .direita .divArmazenamento .containerArmazenamento{
+    display: flex;
+    flex-direction: row;
+    min-height: 70%;
+    width: 100%;
+
+}
+
+
+.inputs .direita .divArmazenamento .containerArmazenamento img{
+    
+    cursor: pointer;
+    width: 35px;
+    transition: transform 0.3s;
+}
+.inputs .direita .divArmazenamento .containerArmazenamento img:hover{
+    transform: scale(1.2);
+}
+.inpArmazenamento{
+    gap: 5px;
+    width: 100%;
+    min-height: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm{
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between;
+    
+    width: 100%;
+    margin-right: auto;
+}
+
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm select{
+    cursor: pointer;
+    width: 60px;
+    background: none;
+    color: #ffff00;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+}
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm select option{
+    background-color: #000;
+}
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm select:focus{
+    outline: none;
+}
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm select option:focus{
+    outline: none;
+}
+
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm .inpTamanho{
+    width:140px;
+    font-size: 22px;
+}
+
+.inputs .direita .divArmazenamento .containerArmazenamento .inpArm .inpTamanho::placeholder{
+    font-size: 14px;
+}
+
+section .container button{
+    background: none;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 13px;
+    font-family: monospace;
+    border: 2px solid #ffff00;
+    cursor: pointer;
+    width: 190px;
+    height: 56px;
+    transition: color 0.6s, background-color 0.6s; /* Correção no tempo de transição */
+}
+
+section .container button:hover{
+    color: #000;
+    background-color: #ffff00;
+}
