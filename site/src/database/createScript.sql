@@ -20,8 +20,9 @@ CREATE TABLE funcionario(
     cargo VARCHAR(45) NOT NULL,
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) NOT NULL,
-    login VARCHAR(45) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     senha VARCHAR(45) NOT NULL,
+    fotoPerfil text,
     fkEmpresa INT NOT NULL,
     fkSupervisor INT,
     CONSTRAINT pkFuncionario primary key (idFuncionario, fkEmpresa),
@@ -31,46 +32,72 @@ CREATE TABLE funcionario(
 
 );
 
-
-CREATE TABLE armazenamento(
-	idArmazenamento INT primary key auto_increment,
-    tipo VARCHAR(45) NOT NULL,
-    tamanho INT NOT NULL, 
-    CONSTRAINT chkTipo CHECK (tipo IN ('SSD', 'HD'))
-);
-
 CREATE TABLE notebook(
-	idNotebook INT auto_increment,
+	idNotebook BIGINT primary key,
     marca VARCHAR(30) NOT NULL,
     modelo VARCHAR(45) NOT NULL,
     memoriaRAM INT NOT NULL,
-    processador VARCHAR(25) NOT NULL,
-    fkArmazenamento INT NOT NULL,
-    CONSTRAINT fkArmazenamentoNotebook foreign key (fkArmazenamento) references armazenamento(idArmazenamento),
-    CONSTRAINT pkNotebook primary key (idNotebook, fkArmazenamento)
+    processador VARCHAR(25) NOT NULL
 );
 
+CREATE TABLE armazenamento(
+	idArmazenamento INT auto_increment,
+    tipo VARCHAR(45) NOT NULL,
+    tamanho INT NOT NULL, 
+    fkNotebook bigint,
+    CONSTRAINT pkArmazenamento  primary key(idArmazenamento, fkNotebook),
+    CONSTRAINT fkNotebookArmazenamento foreign key (fkNotebook) references notebook(idNotebook),
+    CONSTRAINT chkTipo CHECK (tipo IN ('SSD', 'HD'))
+);
+
+
 CREATE TABLE controleFluxo(
-	idControleFluxo INT NOT NULL,
-    dtInicio DATE NOT NULL,
+	idControleFluxo INT NOT NULL auto_increment,
+    dtInicio timestamp default current_timestamp,
     dtSaida DATE,
     fkFuncionario INT NOT NULL,
-    fkNotebook INT NOT NULL,
+    fkNotebook bigint NOT NULL,
     CONSTRAINT pkControleFluxo primary key (idControleFluxo, fkFuncionario, fkNotebook),
     CONSTRAINT fkFuncionarioControleFluxo foreign key (fkFuncionario) references funcionario(idFuncionario),
     CONSTRAINT fkNotebookControleFluxo foreign key (fkNotebook) references notebook(idNotebook)
 );
 
+USE remoteGuard;
+
 CREATE TABLE dados(
-    idDados INT not null,
-    processador decimal(5,2),
-    armazenamento decimal(5,2),
-    RAM decimal(5,2),
-    dataHora datetime,
-    fkNotebook int,
+	idDados int auto_increment,
+	dataHora timestamp default current_timestamp,
+	percCPU decimal(5,2),
+    tempoInativo decimal(10,2),
+	percRAM decimal(5,2),
+    usedRAM decimal(7,2),
+    percDisc decimal(5,2),
+    usedDisc decimal(7,2),
+    fkNotebook bigint,
     constraint pkDados primary key (idDados, fkNotebook),
     constraint fkNotebookDados foreign key (fkNotebook) references notebook(idNotebook)
-);
+    );
 
--- TROCAR CEP NA MODELAGEM PARA CHAR RESUMIR NOMES DAS FK
--- COLOCAR DUAS ULTIMAS TABELAS COM NOT NULL
+
+
+
+
+
+
+
+
+
+CREATE VIEW notebook_um AS SELECT * FROM teste WHERE notebook = 1;
+CREATE VIEW notebook_dois AS SELECT * FROM teste WHERE notebook = 2;
+CREATE VIEW notebook_tres AS SELECT * FROM teste WHERE notebook = 3;
+CREATE VIEW notebook_quatro AS SELECT * FROM teste WHERE notebook = 4;
+CREATE VIEW notebook_cinco AS SELECT * FROM teste WHERE notebook = 5;
+
+SELECT * FROM notebook_um;
+SELECT * FROM notebook_dois;
+SELECT * FROM notebook_tres;
+SELECT * FROM notebook_quatro;
+SELECT * FROM notebook_cinco;
+
+
+
