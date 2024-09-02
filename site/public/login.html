@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,13 @@
     <link rel="stylesheet" href="css/login.css">
     <link rel="icon" href="img/svg/aguia2.svg">
 </head>
+
 <body>
     <header>
         <div class="headerLogo">
             <a href="index.html">
-                <img src="img/svg/aguia2.svg" alt="">  
-                <h1>Remote Guard</h1>  
+                <img src="img/svg/aguia2.svg" alt="">
+                <h1>Remote Guard</h1>
             </a>
         </div>
         <ul class="headerBar">
@@ -27,20 +29,20 @@
             </li>
             <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
                 <div class="botaoAreaCliente">
-                    <a >Área do cliente</a>
+                    <a>Área do cliente</a>
                 </div>
                 <div id="divLinksLogin" class="linksLogin">
                     <div>
-                        <a href="#">Login</a>    
+                        <a href="#">Login</a>
                     </div>
                     <div class="ultimoLink">
                         <a href="#">Cadastro</a>
                     </div>
-                </div> 
+                </div>
             </li>
-        
+
         </ul>
-        
+
     </header>
     <div class="container">
         <div class="cadastre">
@@ -61,16 +63,21 @@
         </div>
     </div>
 </body>
+
 </html>
 <script>
 
-var tentativas = 3;
+    var tentativas = 3;
+    var sendEmail = '';
+    var sendSenha = '';
 
     function autenticar() {
         aguardar();
 
         var email = input_user.value;
         var senha = input_senha.value;
+        sendEmail = email;
+        sendSenha = senha;
 
         if (email == "" || senha == "") {
             div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
@@ -80,14 +87,49 @@ var tentativas = 3;
 
         console.log("FORM LOGIN: ", email);
         console.log("FORM SENHA: ", senha);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: sendEmail,
+                senhaServer: sendSenha
+            })
+        }).then(function (resposta) {
+            console.log(`Resposta da requisição: ${resposta}`);
+
+            if (resposta.ok) {
+                alert("Autenticação feita com sucesso");
+                resposta.json().then(json => {
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.data.email;
+                    sessionStorage.ID_USUARIO = json.data.id;
+                });
+
+            } else {
+                alert('Usuário não encontrado!');
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
     }
 
     let menu = document.querySelector('#divLinksLogin');
 
-function showMain(){
-    menu.style.display = 'flex';
-}
-function hiddeMain(){
-    menu.style.display = 'none';
-}
+    function showMain() {
+        menu.style.display = 'flex';
+    }
+    function hiddeMain() {
+        menu.style.display = 'none';
+    }
 </script>

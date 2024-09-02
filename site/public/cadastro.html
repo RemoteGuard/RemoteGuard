@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +9,13 @@
 
     <link rel="icon" href="img/svg/aguia2.svg">
 </head>
+
 <body>
     <header>
         <div class="headerLogo">
             <a href="index.html">
-                <img src="img/svg/aguia2.svg" alt="">  
-                <h1>Remote Guard</h1>  
+                <img src="img/svg/aguia2.svg" alt="">
+                <h1>Remote Guard</h1>
             </a>
         </div>
         <ul class="headerBar">
@@ -28,20 +30,20 @@
             </li>
             <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
                 <div class="botaoAreaCliente">
-                    <a >Área do cliente</a>
+                    <a>Área do cliente</a>
                 </div>
                 <div id="divLinksLogin" class="linksLogin">
                     <div>
-                        <a href="#">Login</a>    
+                        <a href="#">Login</a>
                     </div>
                     <div class="ultimoLink">
                         <a href="#">Cadastro</a>
                     </div>
-                </div> 
+                </div>
             </li>
-        
+
         </ul>
-        
+
     </header>
     <div class="container">
         <div class="cadastre">
@@ -68,100 +70,138 @@
         </div>
     </div>
 </body>
+
 </html>
 <script>
 
-function cadastrar() {
-            var nome = input_nome.value;
-            var email = input_email.value;
-            var senha = input_senha.value;
-            var cargo = input_cargo.value;
-            var nomeEmpresa = input_empresa.value;
-            var cpf = input_cpf.value;
+    function cadastrar() {
+        var nome = input_nome.value;
+        var email = input_email.value;
+        var senha = input_senha.value;
+        var cargo = input_cargo.value;
+        var nomeEmpresa = input_empresa.value;
+        var cpf = input_cpf.value;
 
-            var caixaAltaNome = nome.toUperCase();
-            var caixaBaixaEmail = email.toLowerCase();
-            var caixaBaixaEmpresa = nomeEmpresa.toLowerCase();
 
-            var tamanhoSenha = senha.length;
+        var caixaAltaNome = nome.toUperCase();
+        var caixaBaixaEmail = email.toLowerCase();
+        var caixaBaixaEmpresa = nomeEmpresa.toLowerCase();
 
-            var cpfTamanho = cpf.length;
-            var senhaTamanho = senha.length;
+        var tamanhoSenha = senha.length;
 
-            var indiceArrobaSenha = senha.indexOf('@');
-            var indiceHashtagSenha = senha.indexOf('#');
-            var indiceCifraoSenha = senha.indexOf('$');
-            var indiceComercialSenha = senha.indexOf('&');
+        var cpfTamanho = cpf.length;
+        var senhaTamanho = senha.length;
 
-            var indiceArrobaEmail = email.indexOf('@');
-            var indicePontoEmail = email.indexOf('.');
+        var indiceArrobaSenha = senha.indexOf('@');
+        var indiceHashtagSenha = senha.indexOf('#');
+        var indiceCifraoSenha = senha.indexOf('$');
+        var indiceComercialSenha = senha.indexOf('&');
 
-            var fazerCadastro = true;
+        var indiceArrobaEmail = email.indexOf('@');
+        var indicePontoEmail = email.indexOf('.');
 
-            div_mensagem.innerHTML = ` `;
+        var fazerCadastro = true;
 
-            if (nome == "" ||
-                email == "" ||
-                senha  == "" ||
-                cargo == "" ||
-                nomeEmpresa == 0 ||
-                cpf == ""
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
-                return false;
-            }
+        div_mensagem.innerHTML = ` `;
 
-            if (indiceArrobaSenha < 0 &&
-                indiceCifraoSenha < 0 &&
-                indiceComercialSenha < 0 &&
-                indiceHashtagSenha < 0
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
-                return false;
-            }
-
-            if (cpfTamanho != 11
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
-                return false;
-            }
-
-            if (senha != senhaConfirm
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
-                return false;
-            }
-
-            if (tamanhoSenha < 5 ||
-                tamanhoSenha > 15
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
-                return false;
-            }
-
-            if (indiceArrobaEmail < 0 ||
-                indicePontoEmail < 0
-            ) {
-                div_mensagem.innerHTML =
-                    `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
-                return false;
-            }
-
+        if (nome == "" ||
+            email == "" ||
+            senha == "" ||
+            cargo == "" ||
+            nomeEmpresa == 0 ||
+            cpf == ""
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            fazerCadastro = false;
+            return false;
         }
+
+        if (indiceArrobaSenha < 0 &&
+            indiceCifraoSenha < 0 &&
+            indiceComercialSenha < 0 &&
+            indiceHashtagSenha < 0
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
+
+        if (cpfTamanho != 11
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
+
+        if (senha != senhaConfirm
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
+
+        if (tamanhoSenha < 5 ||
+            tamanhoSenha > 15
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
+
+        if (indiceArrobaEmail < 0 ||
+            indicePontoEmail < 0
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
+
+        if (fazerCadastro) {
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nomeServer: nome,
+                    emailServer: email,
+                    senhaServer: senha
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        cardErro.style.display = "block";
+
+                        setTimeout(() => {
+                            window.location = "login.html";
+                        }, "2000");
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+        }
+
+    }
 
     let menu = document.querySelector('#divLinksLogin');
 
-function showMain(){
-    menu.style.display = 'flex';
-}
-function hiddeMain(){
-    menu.style.display = 'none';
-}
+    function showMain() {
+        menu.style.display = 'flex';
+    }
+    function hiddeMain() {
+        menu.style.display = 'none';
+    }
 
 
 
