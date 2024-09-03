@@ -83,6 +83,20 @@ CREATE TABLE dados(
 
 
 
+-- Código para teste de autenticação/cadastro:
+
+
+-- CREATE DATABASE userData;
+-- USE userData;
+-- CREATE TABLE usuario(
+-- 	id int auto_increment primary key,
+-- 	nome varchar(50),
+-- 	email varchar(50) UNIQUE,
+-- 	senha varchar(50)
+-- );
+
+
+
 
 
 
