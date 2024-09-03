@@ -2,9 +2,9 @@ var mysql = require("mysql2");
 
 var mySqlConfig = {
     host: 'localhost',
-    database: 'remoteGuard',
+    database: 'userData',
     user: 'root',
-    password: 'Sua senha',
+    password: 'sua senha',
     port: 3306
 };
 

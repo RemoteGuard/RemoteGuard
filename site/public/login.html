@@ -36,7 +36,7 @@
                         <a href="#">Login</a>
                     </div>
                     <div class="ultimoLink">
-                        <a href="#">Cadastro</a>
+                        <a href="./cadastro.html">Cadastro</a>
                     </div>
                 </div>
             </li>
@@ -50,12 +50,12 @@
                 <h2>Bem-vindo de volta!</h2>
                 <div class="formulario">
                     <div class="campo">
-                        <input type="email" id="input_email" placeholder="E-mail">
+                        <input type="text" id="input_email" placeholder="E-mail">
                         <input type="password" id="input_senha" placeholder="Senha">
                     </div>
                 </div>
                 <div class="botao">
-                    <button onclick="cadastrar()" style="color: antiquewhite; font-size: medium;">Login</button>
+                    <button onclick="autenticar()" style="color: antiquewhite; font-size: medium;">Login</button>
                 </div>
 
                 <div id="div_mensagem"></div>
@@ -72,9 +72,9 @@
     var sendSenha = '';
 
     function autenticar() {
-        aguardar();
+        // aguardar();
 
-        var email = input_user.value;
+        var email = input_email.value;
         var senha = input_senha.value;
         sendEmail = email;
         sendSenha = senha;
@@ -98,7 +98,7 @@
                 senhaServer: sendSenha
             })
         }).then(function (resposta) {
-            console.log(`Resposta da requisição: ${resposta}`);
+            console.log(`Resposta da requisição: ${JSON.stringify(resposta)}`);
 
             if (resposta.ok) {
                 alert("Autenticação feita com sucesso");
@@ -114,10 +114,9 @@
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    finalizarAguardar(texto);
+                    // finalizarAguardar(texto);
                 });
             }
-
         }).catch(function (erro) {
             console.log(erro);
         })
