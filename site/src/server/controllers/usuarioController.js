@@ -73,7 +73,11 @@ async function cadastrar(req, res) {
                         "\nHouve um erro ao realizar o cadastro! Erro: ",
                         erro.sqlMessage
                     );
-                    res.status(500).json(erro.sqlMessage);
+                    // A estrutura retornada de erro seta a requisição como bem sucedida, mas não indica sucesso no cadastro de dados, assim retornando o erro para que seja tratado posteriormente 
+                    res.status(500).json({
+                        ok: true,
+                        msg: erro.sqlMessage
+                        });
                 }
             );
     }
