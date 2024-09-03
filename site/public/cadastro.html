@@ -83,7 +83,7 @@
         var cpf = input_cpf.value;
 
 
-        var caixaAltaNome = nome.toUperCase();
+        // var caixaAltaNome = nome.toUperCase();
         var caixaBaixaEmail = email.toLowerCase();
         var caixaBaixaEmpresa = nomeEmpresa.toLowerCase();
 
@@ -104,64 +104,65 @@
 
         div_mensagem.innerHTML = ` `;
 
-        if (nome == "" ||
-            email == "" ||
-            senha == "" ||
-            cargo == "" ||
-            nomeEmpresa == 0 ||
-            cpf == ""
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (nome == "" ||
+        //     email == "" ||
+        //     senha == "" ||
+        //     cargo == "" ||
+        //     nomeEmpresa == 0 ||
+        //     cpf == ""
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
-        if (indiceArrobaSenha < 0 &&
-            indiceCifraoSenha < 0 &&
-            indiceComercialSenha < 0 &&
-            indiceHashtagSenha < 0
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (indiceArrobaSenha < 0 &&
+        //     indiceCifraoSenha < 0 &&
+        //     indiceComercialSenha < 0 &&
+        //     indiceHashtagSenha < 0
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
-        if (cpfTamanho != 11
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (cpfTamanho != 11
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
-        if (senha != senhaConfirm
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (senha != null // Ajustar a criação de variável
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
-        if (tamanhoSenha < 5 ||
-            tamanhoSenha > 15
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (tamanhoSenha < 5 ||
+        //     tamanhoSenha > 15
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
-        if (indiceArrobaEmail < 0 ||
-            indicePontoEmail < 0
-        ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
-            fazerCadastro = false;
-            return false;
-        }
+        // if (indiceArrobaEmail < 0 ||
+        //     indicePontoEmail < 0
+        // ) {
+        //     div_mensagem.innerHTML =
+        //         `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
+        //     fazerCadastro = false;
+        //     return false;
+        // }
 
+        // O fetch só pode ser realizado se os dados inseridos não passarem em todos os ifs, validando através da variável fazerCadastro. 
         if (fazerCadastro) {
             fetch("/usuarios/cadastrar", {
                 method: "POST",
@@ -175,21 +176,29 @@
                 }),
             })
                 .then(function (resposta) {
-                    console.log("resposta: ", resposta);
-
+                    console.log(`Resposta da requisição: ${JSON.stringify(resposta)}`);
                     if (resposta.ok) {
-                        cardErro.style.display = "block";
-
+                        alert("Cadastro feito com sucesso");
+                        resposta.json().then(json => {
+                            console.log(JSON.stringify(json));
+                        });
                         setTimeout(() => {
-                            window.location = "login.html";
-                        }, "2000");
+                            window.location.href = "./login.html"
+                        }, 1000);
                     } else {
-                        throw "Houve um erro ao tentar realizar o cadastro!";
+                        resposta.json().then(json => {
+                            console.log(JSON.stringify(json));
+                            // O método includes busca uma substring dentro de um string, ou seja, se o SQL retornar a mensagem "Duplicate entry" ele entra no if
+                            if(JSON.stringify(json).includes("Duplicate entry")){
+                                alert("O email utilizado já existe no sistema");
+                            }
+                        });
+                        // alert('Não foi possível cadastrar o usuário');
+                        console.log("Houve um erro ao tentar realizar o login!");
                     }
+                }).catch(function (erro) {
+                    console.log(erro);
                 })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
         }
 
     }
