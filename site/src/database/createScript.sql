@@ -51,6 +51,14 @@ CREATE TABLE armazenamento(
 );
 
 
+SELECT * FROM notebook as nb 
+	JOIN controleFluxo as cf 
+		ON nb.idNotebook = cf.fkNotebook 
+    JOIN funcionario as f 
+		ON cf.fkFuncionario = f.idFuncionario
+	WHERE nb.idNotebook = 91755279024;
+		
+
 CREATE TABLE controleFluxo(
 	idControleFluxo INT NOT NULL auto_increment,
     dtInicio timestamp default current_timestamp,
@@ -61,8 +69,6 @@ CREATE TABLE controleFluxo(
     CONSTRAINT fkFuncionarioControleFluxo foreign key (fkFuncionario) references funcionario(idFuncionario),
     CONSTRAINT fkNotebookControleFluxo foreign key (fkNotebook) references notebook(idNotebook)
 );
-
-USE remoteGuard;
 
 CREATE TABLE dados(
 	idDados int auto_increment,
@@ -78,7 +84,14 @@ CREATE TABLE dados(
     constraint fkNotebookDados foreign key (fkNotebook) references notebook(idNotebook)
     );
 
-
+CREATE TABLE processos(
+	idProcesso int auto_increment,
+    dataHora timestamp default current_timestamp,
+    nomeProcesso varchar(60),
+	fkNotebook bigint,
+    constraint pkProcessos primary key (idProcesso, fkNotebook),
+    constraint fkNotebookProcessos foreign key (fkNotebook) references notebook(idNotebook)
+);
 
 
 

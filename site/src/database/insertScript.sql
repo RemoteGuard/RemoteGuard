@@ -16,7 +16,7 @@ insert into notebook values(91755279024, 'samsung', 'GalaxyBook 3 360', 16,'i7-1
 insert into armazenamento values(default, 'SSD', 512, 91755279024);
 
 INSERT INTO controleFluxo ( dtSaida, fkFuncionario, fkNotebook) VALUES (null, 3, 91755279024);
-
+UPDATE funcionario set cargo ='analista' where idFuncionario = 3; 
 
 select * from empresa;
 select * from funcionario;
@@ -24,3 +24,4 @@ select * from notebook;
 select * from armazenamento;
 select * from controleFluxo;
 select * from dados;
+select * from processos;
