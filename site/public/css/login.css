@@ -56,7 +56,7 @@ header{
 .headerLogo a h1{
     color: #ffff00;
     font-size: 28px;
-    margin-left: 5%;
+    /* margin-left: 5%; */
 }
 
 header ul{
@@ -188,6 +188,7 @@ header ul li a:hover{
     font-size: 25px;
     font-weight: bold;
     border-radius: 12px;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
 .cadastre {
@@ -196,6 +197,7 @@ header ul li a:hover{
     padding: 20px;
     background-color: rgb(41,37,37, 0.6);
     border-radius: 10px;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
 .cadastre input,
@@ -206,6 +208,7 @@ header ul li a:hover{
     border: none;
     margin-top: 20px;
     display: block;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
     /* color: transparent; */
 }
 
