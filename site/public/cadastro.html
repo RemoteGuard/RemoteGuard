@@ -28,7 +28,7 @@
             <li>
                 <a href="#">Demonstração</a>
             </li>
-            <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
+            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
                 <div class="botaoAreaCliente">
                     <a>Área do cliente</a>
                 </div>
@@ -206,11 +206,14 @@
 
     let menu = document.querySelector('#divLinksLogin');
 
-    function showMain() {
+    function showMain(){
         menu.style.display = 'flex';
+        clearTimeout(tempo_espera);
     }
-    function hiddeMain() {
-        menu.style.display = 'none';
+    function hiddeMain(){
+            tempo_espera = setTimeout(function(){
+            menu.style.display = 'none';
+        }, 1000);
     }
 
 
