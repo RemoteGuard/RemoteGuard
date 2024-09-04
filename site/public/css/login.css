@@ -56,7 +56,6 @@ header{
 .headerLogo a h1{
     color: #ffff00;
     font-size: 28px;
-    /* margin-left: 5%; */
 }
 
 header ul{
@@ -169,7 +168,11 @@ header ul li a:hover{
     align-items: center;
     width: 100vw;
     height: 80vh;
-    background-color: #d9d9d9;
+    background-color: #333233;
+    background-image: url(./../img/site/fundoLoginCadastro/tecladoEmouse_ajustado.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
 }
 
 /* Estilização do título no container de login */

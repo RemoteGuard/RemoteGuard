@@ -18,7 +18,6 @@ filtrar exibição
 
 '''
 
-
 conn = mysql.connector.connect(
         host="localhost",
         user="root",
