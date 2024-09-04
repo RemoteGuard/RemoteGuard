@@ -51,13 +51,6 @@ CREATE TABLE armazenamento(
 );
 
 
-SELECT * FROM notebook as nb 
-	JOIN controleFluxo as cf 
-		ON nb.idNotebook = cf.fkNotebook 
-    JOIN funcionario as f 
-		ON cf.fkFuncionario = f.idFuncionario
-	WHERE nb.idNotebook = 91755279024;
-		
 
 CREATE TABLE controleFluxo(
 	idControleFluxo INT NOT NULL auto_increment,
@@ -87,44 +80,24 @@ CREATE TABLE dados(
 CREATE TABLE processos(
 	idProcesso int auto_increment,
     dataHora timestamp default current_timestamp,
-    nomeProcesso varchar(60),
+    nomeProcesso varchar(80),
 	fkNotebook bigint,
     constraint pkProcessos primary key (idProcesso, fkNotebook),
     constraint fkNotebookProcessos foreign key (fkNotebook) references notebook(idNotebook)
 );
 
 
+-- CREATE VIEW notebook_um AS SELECT * FROM teste WHERE notebook = 1;
+-- CREATE VIEW notebook_dois AS SELECT * FROM teste WHERE notebook = 2;
+-- CREATE VIEW notebook_tres AS SELECT * FROM teste WHERE notebook = 3;
+-- CREATE VIEW notebook_quatro AS SELECT * FROM teste WHERE notebook = 4;
+-- CREATE VIEW notebook_cinco AS SELECT * FROM teste WHERE notebook = 5;
 
-
--- Código para teste de autenticação/cadastro:
-
-
--- CREATE DATABASE userData;
--- USE userData;
--- CREATE TABLE usuario(
--- 	id int auto_increment primary key,
--- 	nome varchar(50),
--- 	email varchar(50) UNIQUE,
--- 	senha varchar(50)
--- );
-
-
-
-
-
-
-
-CREATE VIEW notebook_um AS SELECT * FROM teste WHERE notebook = 1;
-CREATE VIEW notebook_dois AS SELECT * FROM teste WHERE notebook = 2;
-CREATE VIEW notebook_tres AS SELECT * FROM teste WHERE notebook = 3;
-CREATE VIEW notebook_quatro AS SELECT * FROM teste WHERE notebook = 4;
-CREATE VIEW notebook_cinco AS SELECT * FROM teste WHERE notebook = 5;
-
-SELECT * FROM notebook_um;
-SELECT * FROM notebook_dois;
-SELECT * FROM notebook_tres;
-SELECT * FROM notebook_quatro;
-SELECT * FROM notebook_cinco;
+-- SELECT * FROM notebook_um;
+-- SELECT * FROM notebook_dois;
+-- SELECT * FROM notebook_tres;
+-- SELECT * FROM notebook_quatro;
+-- SELECT * FROM notebook_cinco;
 
 
 

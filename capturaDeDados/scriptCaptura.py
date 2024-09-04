@@ -17,6 +17,8 @@ endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa d
 filtrar exibição
 
 '''
+
+
 conn = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -85,9 +87,8 @@ def capturarDados():
             else:
                 print(cont, "registros inseridos.")
             '''
-            if(cont % 10 == 0):
+            if(cont % 60 == 0) or cont == 1:
                 listaNomesProcessos = ['svchost.exe','SamsungSARMode.exe', 'IntelAnalyticsService.exe' ,'conhost.exe']
-                print('ENTREIIIIII')
                 for process in psutil.process_iter():
                     
                     nome = process.name()
@@ -106,7 +107,7 @@ def capturarDados():
             time.sleep(1)
         except:
             print('\n\n\n')
-            print('Valeu ai')
+            print('Obrigado por usar nossos serviços')
             break
 import pandas as pd
 listaFinal = []
@@ -120,8 +121,8 @@ def monitorarAnalista(medida):
         cursor.execute(query)
 
         resultado = cursor.fetchall()
-        column_names = [desc[0] for desc in cursor.description]
         
+        column_names = [desc[0] for desc in cursor.description]
         df = pd.DataFrame(resultado, columns=column_names)
 
         if medida == 0:
@@ -151,7 +152,46 @@ def monitorarAnalista(medida):
             print('Obrigado por consultar a RemoteGuard!')  
             
             cursor.close()
-            conn.close()          
+            conn.close()  
+            
+            
+            
+def monitorarGerente():
+    tipoMonitoramento = int(input('Deseja monitorar os programas do usuário ou verificar o tempo de inatividade? \n Digite 0 para inatividade e 1 para programas: '))
+    if tipoMonitoramento == 0:
+                
+        query = f"""SELECT p.*,supervisor.nome, f.nome, f.cargo FROM processos as p 
+            JOIN notebook as n
+                ON p.fkNotebook = n.idNotebook
+            JOIN controleFluxo as cf 
+                ON n.idNotebook = cf.fkNotebook 
+            JOIN funcionario as f 
+                ON cf.fkFuncionario = f.idFuncionario
+            JOIN funcionario as supervisor 
+                ON f.fkSupervisor = supervisor.idFuncionario
+            WHERE supervisor.idFuncionario = 3;"""
+            #resultado[10]
+        cursor.execute(query)
+
+        resultado = cursor.fetchall()
+        colunaHora = [linha[1] for linha in resultado]
+        colunaProcesso = [linha[2] for linha in resultado]
+        colunaNomes = [linha[5] for linha in resultado]
+        colunaCargo = [linha[6] for linha in resultado]
+
+
+        if 'Discord.exe' in colunaProcesso:
+                posicao = colunaProcesso.index('Discord.exe')
+                print(f'O {colunaCargo[posicao]} {colunaNomes[posicao]} começou a usar o {colunaProcesso[posicao]} as {colunaHora[posicao]}')
+                
+
+                
+    elif tipoMonitoramento == 1:
+        print('sla2') 
+    else: 
+        print('Valor invalido!')   
+        monitorarGerente()
+    
 def conferirSenha():
     global resultado
     tentativa = 1
@@ -173,8 +213,9 @@ def conferirSenha():
 def menu():
     global resultado
     cargo = resultado[11]
-    print(cargo)
-    if(cargo == 'analista'):   
+    if cargo == 'analista':   
+        
+        
         listaComponentes = ['percCPU', 'percRAM', 'usedRAM', 'percDisk', 'usedDisk']
         
         for componente in listaComponentes:
@@ -186,14 +227,15 @@ def menu():
         medida = int(input('Se deseja monitorar a média por maquina digite 0 \n Se for de todos digite 1: '))
             
         monitorarAnalista(medida)
-    else:
-        print('Redirecionar para gerente')
+    elif cargo == 'gerente':
+        monitorarGerente()
         
+    else: 
+        print('Os funcionarios não tem permissão para acessar arquivos sensiveis!')        
     
         
 
 def home():
-      
     print("\n\n")
     print(f'Bem vindo à RemoteGuard {resultado[12]}!\n ')
     passouSenha = conferirSenha()
@@ -202,7 +244,6 @@ def home():
     else:
         print('Você não tem permissão para acessar nossos dados!')
    
-    
 threadCaptura = threading.Thread(target=capturarDados)
 threadCaptura.start()
 
