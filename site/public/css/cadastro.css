@@ -162,14 +162,33 @@ header ul li a:hover{
     align-items: center;
     width: 100vw;
     height: 80vh;
-    background-color: #3A3B36;
+    background-color: #d9d9d9;
+}
+
+/* Estilização do título no container de cadastro */
+.titleCad{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 40px;
+    background-color: #1a1a1a;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -50px;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 12px;
 }
 
 .cadastre {
     width: 660px;
     height: 55vh;
     padding: 20px;
-    background-color: #292525;
+    background-color: rgb(41,37,37, 0.6);
+    border-radius: 10px;
 }
 
 .cadastre input,
@@ -212,8 +231,10 @@ h2 {
 .botao button {
     margin: 5vh;
     height: 100%;
-    background-color: blue;
-    width: fit-content;
+    width: 40%;
+    background-color: #345e7d;
+    /* width: fit-content; */
+    cursor: pointer;
 }
 
 
