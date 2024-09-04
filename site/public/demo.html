@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo | RemoteGuard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="icon" href="img/svg/aguia2.svg">
+</head>
+<body>
+    <header>
+        <div class="headerLogo">
+            <a href="index.html">
+                <img src="img/svg/aguia2.svg" alt="">  
+                <h1>Remote Guard</h1>  
+            </a>
+        </div>
+        <ul class="headerBar">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="#">Sobre nós</a>
+            </li>
+            <li>
+                <a href="#" class="pagAtual">Demonstração</a>
+            </li>
+            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
+                <div class="botaoAreaCliente">
+                    <a>Área do cliente</a>
+                </div>
+                <div id="divLinksLogin" class="linksLogin">
+                    <div>
+                        <a href="#">Login Gerente</a>    
+                    </div>
+                    <div>
+                        <a href="./login.html">Login Analista</a>
+                    </div>
+                    <div class="ultimoLink">
+                        <a href="./cadastro.html">Cadastro</a>
+                    </div>
+                </div> 
+            </li>
+        
+        </ul>
+    </header>
+    <div class="white">
+        Como será os nossos gráficos?
+        <div class="containerCarrossel">
+            <img src="img/Captura de tela de 2024-09-04 12-41-07.png" alt="">
+            <img src="img/Captura de tela de 2024-09-04 12-51-43.png" style="display: none;" alt="">
+        </div>
+        <div>
+            <button><</button>
+            <button>></button>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+     let menu = document.querySelector('#divLinksLogin');
+
+function showMain(){
+    menu.style.display = 'flex';
+    clearTimeout(tempo_espera);
+}
+function hiddeMain(){
+        tempo_espera = setTimeout(function(){
+        menu.style.display = 'none';
+    }, 1000);
+}
+</script>
