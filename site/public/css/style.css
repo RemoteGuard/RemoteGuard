@@ -184,12 +184,13 @@ header ul li a:hover{
     flex-direction: row;
     justify-content: space-between;
     background-color: #000;
-    width: 50%;
-    height: 20%;
+    justify-items: center;
+    width: 65%;
+    height: 22%;
     border-radius: 10px;
     z-index: 1;
     position: absolute;
-    top: 90%
+    top: 85%;
 }
 
 .quadrado{
@@ -199,18 +200,18 @@ header ul li a:hover{
 }
 
 .numero {
-    font-size: 50px;
+    font-size: 60px;
     color:#ffff00;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
 .conteudo_metrica{
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-    font-size: 25px;
+    font-size: 30px;
 }
 
 .separador{
-    font-size: 90px;
+    font-size: 100px;
 }
 
 .sessaoIndex{
