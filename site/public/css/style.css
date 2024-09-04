@@ -404,6 +404,33 @@ header ul li a:hover{
 .list{
     list-style: none;
 }
+.white{
+    background-color: white;
+    height: 80vh;
+    color: black;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 10vh;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.white img{
 
+    height: 60vh;
+    width: 120vh;
+
+}
+.white btn{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid white; /* Cor da seta */
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    margin-left: 10px;
+}
 
  
