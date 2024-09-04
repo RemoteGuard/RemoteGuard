@@ -222,14 +222,26 @@ header ul li a:hover{
 }
 
 .titulo_sessao_index{
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
-    color:#000;
+    color:#ffffff;
     text-align: center;
     margin-top: 2%;
+    overflow-x: none;
+    overflow-y: none;
+    transform: rotate(-0.49turn);
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
-
+.titulo_sessao_index2{
+    font-size: 35px;
+    font-weight: bold;
+    color:#000000;
+    text-align: center;
+    margin-top: 2%;
+    overflow-x: none;
+    overflow-y: none;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+}
 .homem_trabalhador{
     display:flex;
     flex-direction: column;
@@ -284,8 +296,9 @@ header ul li a:hover{
     position: absolute;
     z-index: 1;
     width: 101%;
-    height: 16vh;
-    overflow-x: hidden;
+    height: 15vh;
+    overflow-x: none;
+    overflow-y: none;
     transform: rotate(0.49turn);
 }
 

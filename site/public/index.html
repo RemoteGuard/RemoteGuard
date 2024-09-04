@@ -26,7 +26,7 @@
             <li>
                 <a href="#">Demonstração</a>
             </li>
-            <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
+            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
                 <div class="botaoAreaCliente">
                     <a >Área do cliente</a>
                 </div>
@@ -81,10 +81,10 @@
         <div class="foto_texto_sessaoIndex" >
             <div class="homem_trabalhador">
                 <div><img class="jobiador" src="./img/site/sessionIndex/6844410-removebg-preview.png" alt=""></div>
-                <div class="titulo_sessao_index">Nossa Solução</div>
+                
             </div>
             <div class="texto_problema">
-                <div class="titulo_sessao_index">Problema</div>
+                <div class="titulo_sessao_index2">Problema</div>
                 <div class="conteudo_problema" >No cenário atual de trabalho remoto, muitas
                      empresas enfrentam o desafio de garantir que seus funcionários mantenham 
                      a produtividade e o foco durante o horário de expediente. Com a falta de
@@ -96,8 +96,11 @@
                 </div>
             </div>
         </div>
-        <div class="trianguloRetangulo" ></div>
+        <div class="trianguloRetangulo" >
+            <div class="titulo_sessao_index">Nossa Solução</div>
+        </div>
         <div class="solucao_index">
+
             <div class="conteudo_solucao" >A RemoteGuard surge como a solução definitiva para esse 
                 desafio, oferecendo uma plataforma de monitoramento avançado que permite às empresas
                 acompanhar em tempo real a atividade dos computadores fornecidos para home office.
@@ -196,9 +199,12 @@
 
     function showMain(){
         menu.style.display = 'flex';
+        clearTimeout(tempo_espera);
     }
     function hiddeMain(){
-        menu.style.display = 'none';
+            tempo_espera = setTimeout(function(){
+            menu.style.display = 'none';
+        }, 1000);
     }
 
 
