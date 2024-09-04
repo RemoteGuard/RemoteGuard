@@ -24,7 +24,7 @@ Fontes:
     box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
     margin: 0;
     padding: 0;
-  }
+}
 
 body{
     background-color: #000;
@@ -191,11 +191,17 @@ header ul li a:hover{
     border-radius: 10px;
 }
 
+.campo{
+    position: relative;
+    margin-top: 20px;
+}
+
 .cadastre input,
 .cadastre button {
     width: 280px;
     padding: 10px;
     border-radius: 10px;
+    border: none;
     margin-top: 10px;
     display: block;
 }
@@ -226,6 +232,8 @@ h2 {
 .botao {
     display: flex;
     justify-content: center;
+    position: relative;
+    margin-top: 10px;
 }
 
 .botao button {
