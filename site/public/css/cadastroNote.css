@@ -250,10 +250,3 @@ section .container button:hover{
     }
 
   }
-
-  @media (max-width: 600px){
-    section .container .inputs .esquerda input, section .container .inputs .direita input{
-        width: 125%;
-    }
-
-  }

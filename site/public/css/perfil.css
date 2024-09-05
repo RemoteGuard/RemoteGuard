@@ -39,6 +39,7 @@ button:hover{
   border-right: 2px solid #000;
 }
 
+
 .burguer{
     background-color: #000;
   }
@@ -57,10 +58,15 @@ button:hover{
   .ativo::before{
     box-shadow: 0 0 0 #ffff00;
   }
+.containerSessoes{
+  display: flex;
+  justify-content: space-between;
+  width: 93vw;
+}
+
 
 .sessaoUm{
-    height: 100vh;
-    
+    height: 100vh;  
     min-width: 30vw;
     
 }
@@ -149,7 +155,7 @@ button:hover{
   }
 
   .sessaoDois .container{
-    margin-right: 20px;
+    margin-right: 3%;
     border: 3px solid black;
     display: flex;
     flex-direction: column;
@@ -225,4 +231,73 @@ button:hover{
     text-align: center;
     border: 2px solid black;
     border-radius: 5px;
+  }
+
+  @media (max-width: 1024px){
+
+    .containerSessoes{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sessaoUm{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100vw;
+      height: 87vh;
+    }
+    .sessaoUm button{
+      width: 400px;
+      
+    } 
+
+    .sessaoUm .conteudo{
+      height: 80vh;
+      
+    }
+    .sessaoUm .conteudo .containerImg{
+      height: 80%;
+    }
+    .sessaoUm .conteudo .containerImg button{
+      width: 70%;
+      margin-left: 6%;
+    }
+    .sessaoUm .conteudo .containerImg img{
+      margin-right: 2%;
+    }
+
+    .sessaoUm .botoesCadastro
+    {
+      margin-top: 20px;
+      height: 20%;
+    }
+
+    .sessaoDois{
+      height: 70vh;
+    }
+
+    .sessaoDois .container{
+      height: 100%;
+      border: none;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 750px){
+    .sessaoDois{
+      height: 78vh;
+    }
+
+
+    .sessaoDois .container .inputs .divSelecao{
+      display: flex;
+      flex-direction: column;
+  }
+
+  .sessaoUm .conteudo .botoesCadastro  button{
+    width: 45vw;
+    font-size: 18px;
+  }
+
   }

@@ -88,7 +88,7 @@ def capturarDados(delayProcessos, delayDados):
         #     print('Obrigado por usar nossos serviços')
         #     break
 
-def menu():
+def menu(): #discretização
   delayProcessos = int(input('Deseja capturar os processos de quanto em quanto tempo: '))
   delayDados = int(input('Deseja monitorar os dados de quanto em quanto tempo: '))
   capturarDados(delayProcessos, delayDados)

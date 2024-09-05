@@ -154,8 +154,6 @@ def monitorarGerente():
                                                 #iloc = index location ou seja pega a primeira (0) e ultima (-1) linha de cada funcionário
                 primerio_valor = dadosNotebook.iloc[0, 3]
                 ultimo_valor = dadosNotebook.iloc[-1, 3]
-                print(primerio_valor)
-                print(ultimo_valor)
                 inatividadeDiaria = round((ultimo_valor - primerio_valor) / 100)
                 print(inatividadeDiaria)
                 tempo_formatado = str(timedelta(seconds=inatividadeDiaria))
