@@ -6,6 +6,7 @@
     <title>Demonstração | RemoteGuard</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="./css/demo.css">
     <link rel="icon" href="img/svg/aguia2.svg">
 </head>
 <body>
@@ -45,12 +46,12 @@
     <div class="white">
         Como será os nossos gráficos?
         <div class="containerCarrossel">
-            <img src="img/Captura de tela de 2024-09-04 13-02-34.png" alt="">
-            <img src="img/Captura de tela de 2024-09-04 13-02-40.png" style="display: none;" alt="">
+            <img src="img/Captura de tela de 2024-09-04 13-02-34.png" id="img1" style="display: block;" alt="">
+            <img src="img/Captura de tela de 2024-09-04 13-02-40.png" id="img2" style="display: block;" alt="">
         </div>
-        <div>
-            <button><</button>
-            <button>></button>
+        <div class="btnCarrossel">
+            <button onclick="carrossel(1)"><</button>
+            <button onclick="carrossel(2)">></button>
         </div>
     </div>
 
@@ -67,5 +68,16 @@ function hiddeMain(){
         tempo_espera = setTimeout(function(){
         menu.style.display = 'none';
     }, 1000);
+}
+
+function carrossel(num) {
+    if(num == 1){
+        img1.style.transform = "translateX(50px)"
+        img2.style.transform = "translateX(50px)"
+
+    } else{
+        img1.style.transform = "translateX(-500px)"
+        img2.style.transform = "translateX(-500px)"
+    }
 }
 </script>

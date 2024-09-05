@@ -1,0 +1,25 @@
+.btnCarrossel button{
+    width: 40px;
+    background-color: #ffff00;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.containerCarrossel{
+    width: 70%;
+    display: flex;
+    column-gap: 40px;
+    overflow: hidden;
+}
+
+#img1{
+    transform: translateX(50px);
+    transition: all 2s ease-in-out;
+}
+
+#img2{
+    transform: translateX(50px);
+    transition: all 2s ease-in-out;
+}
