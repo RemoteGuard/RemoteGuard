@@ -62,7 +62,6 @@ header{
 .headerLogo a h1{
     color: #ffff00;
     font-size: 28px;
-    margin-left: 5%;
 }
 
 header ul{
@@ -185,12 +184,13 @@ header ul li a:hover{
     flex-direction: row;
     justify-content: space-between;
     background-color: #000;
-    width: 50%;
-    height: 20%;
+    justify-items: center;
+    width: 65%;
+    height: 22%;
     border-radius: 10px;
     z-index: 1;
     position: absolute;
-    top: 90%
+    top: 85%;
 }
 
 .quadrado{
@@ -200,18 +200,18 @@ header ul li a:hover{
 }
 
 .numero {
-    font-size: 50px;
+    font-size: 60px;
     color:#ffff00;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 
 .conteudo_metrica{
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-    font-size: 25px;
+    font-size: 30px;
 }
 
 .separador{
-    font-size: 90px;
+    font-size: 100px;
 }
 
 .sessaoIndex{
@@ -405,6 +405,33 @@ header ul li a:hover{
 .list{
     list-style: none;
 }
+.white{
+    background-color: white;
+    height: 80vh;
+    color: black;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 10vh;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.white img{
 
+    height: 60vh;
+    width: 120vh;
+
+}
+.white btn{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid white; /* Cor da seta */
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    margin-left: 10px;
+}
 
  

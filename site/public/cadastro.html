@@ -23,21 +23,18 @@
                 <a href="index.html">Home</a>
             </li>
             <li>
-                <a href="#">Sobre nós</a>
+                <a href="#">Solução</a>
             </li>
             <li>
                 <a href="#">Demonstração</a>
             </li>
-            <li class="areaCliente" onmouseover="showMain()" onmouseout="hiddeMain()">
+            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
                 <div class="botaoAreaCliente">
                     <a>Área do cliente</a>
                 </div>
                 <div id="divLinksLogin" class="linksLogin">
-                    <div>
-                        <a href="#">Login</a>
-                    </div>
-                    <div class="ultimoLink">
-                        <a href="#">Cadastro</a>
+                    <div class="ultimoLinkLogin" >
+                        <a href="./login.html">Login</a>
                     </div>
                 </div>
             </li>
@@ -63,7 +60,7 @@
                     </div>
                 </div>
                 <div class="botao">
-                    <button onclick="cadastrar()" style="color: antiquewhite; font-size: medium;">Cadastrar</button>
+                    <button onclick="cadastrar()" style="font-size: medium;">Cadastrar</button>
                 </div>
 
                 <div id="div_mensagem"></div>
@@ -206,11 +203,14 @@
 
     let menu = document.querySelector('#divLinksLogin');
 
-    function showMain() {
+    function showMain(){
         menu.style.display = 'flex';
+        clearTimeout(tempo_espera);
     }
-    function hiddeMain() {
-        menu.style.display = 'none';
+    function hiddeMain(){
+            tempo_espera = setTimeout(function(){
+            menu.style.display = 'none';
+        }, 1000);
     }
 
 

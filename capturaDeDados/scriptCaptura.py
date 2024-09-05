@@ -7,7 +7,6 @@ import os # Nos fala se estamos usando Windows ou Linux
 
 endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa de rede interna do dispositivo 
 
-
 conn = mysql.connector.connect(
         host="localhost",
         user="root",
