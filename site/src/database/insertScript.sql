@@ -25,9 +25,10 @@ select * from controleFluxo;
 select * from dados;
 select * from processos;
 
-SELECT p.*,supervisor.nome, f.nome, f.cargo FROM processos as p 
+
+SELECT d.*,supervisor.nome as 'nome supervisor', f.nome, f.cargo FROM dados as d 
 	JOIN notebook as n
-		ON p.fkNotebook = n.idNotebook
+		ON d.fkNotebook = n.idNotebook
 	JOIN controleFluxo as cf 
 		ON n.idNotebook = cf.fkNotebook 
     JOIN funcionario as f 
@@ -36,6 +37,7 @@ SELECT p.*,supervisor.nome, f.nome, f.cargo FROM processos as p
 		ON f.fkSupervisor = supervisor.idFuncionario
 	WHERE supervisor.idFuncionario = 3;
 TRUNCATE TABLE processos;
+TRUNCATE TABLE dados;
 
 
 SELECT * FROM notebook as nb 
