@@ -9,8 +9,8 @@ endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa d
 
 conn = mysql.connector.connect(
         host="localhost",
-        user="root",
-        password="Lqsym@2020",
+        user="server",
+        password="",
         database="remoteGuard"
     )
 
@@ -28,13 +28,14 @@ def capturarDados(delayProcessos, delayDados):
   cont = 1
   while True:
         # try:
-          if(cont % delayProcessos == 0) or cont == 1:
+          if(cont % delayProcessos == 0) or cont == 1:# Quando o contador for divisivel pelo numero escolhido pelo usuario entra nesse IF
                   
-                  listaNomesProcessos = ['svchost.exe','SamsungSARMode.exe', 'IntelAnalyticsService.exe' ,'conhost.exe']
+                  listaProcessosIgnorados = ['svchost.exe','SamsungSARMode.exe', 'IntelAnalyticsService.exe' ,'IntelConnectivityNetworkService.exe','IntelAudioService.exe', 'Intel_PIE_Service.exe', 'IntelCpHDCPSvc.exe','IntelConnectService.exe','IntelConnect.exe','conhost.exe',  'System Idle Process' , 'SystemPlatformEngine.exe', 'SamsungSystemSupportService.exe', 'SecurityHealthSystray.exe', 'SamsungSystemSupportEngine.exe','SystemSettingsBroker.exe' , 'IntelCpHDCPSvc.exe', 'System', 'Registry', 'dllhost.exe', 'services.exe', 'wininit.exe', 'lsass.exe', 'RbackgroundTaskHost.exe', 'idea64.exe', 'sServiceKeyMonitor.exe', 'WindowsMCFCore.exe', 'SamsungSettingsHost.exe', 'Widgets.exe', 'FileSyncHelper.exe', 'SamsungSystemSupportEngine.exe']
+                  
                   for process in psutil.process_iter():
                       
                       nome = process.name()
-                      if(nome not in listaNomesProcessos and process.status() == 'running'):
+                      if(nome not in listaProcessosIgnorados and process.status() == 'running'):
                                       sql = "INSERT INTO processos (nomeProcesso, fkNotebook) values (%s,%s);"
                                       valores = (nome, endereco)
 
@@ -43,7 +44,7 @@ def capturarDados(delayProcessos, delayDados):
                                       conn.commit()
                                       
       
-          if cont % delayDados == 0:
+          if cont % delayDados == 0 or cont == 1: # Quando o contador for divisivel pelo numero escolhido pelo usuario entra nesse IF
               contRegistros = 1
               dadosCPU = psutil.cpu_times()
               dadosCPU = dadosCPU._asdict()

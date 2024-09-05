@@ -1,5 +1,10 @@
 USE remoteGuard;
 
+CREATE USER 'server'@'%' identified by ""; 
+GRANT ALL PRIVILEGES ON *.* TO 'server'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
 insert into empresa values (default, 'TechConsult','TechSolutions Consultoria','01523500', 498,'11998123456','techConsult@gmail.com', '05720367000101' );
 
 insert into funcionario values (default, 'gerente', 'Fernando Brandão', '32312345678', 'brandao@gmail.com', 'teste#123', './../img/site/dashboard/perfil.png',1, null);
@@ -12,10 +17,20 @@ insert into funcionario values
 	(default, 'funcionario', 'Felipe Gasparotto', '32765345678', 'felipe@gmail.com', 'teste#123', null,1, 3);
     
 insert into notebook values(91755279024, 'samsung', 'GalaxyBook 3 360', 16,'i7-1360P');
+insert into notebook values(150013896150328, 'dell', 'inspiron 14', '16', 'i5-8');
+insert into notebook values(132243596628502, 'dell', 'inspiron 14', '16', 'i5-8');
+insert into notebook values(251682014498224, 'dell', 'inspiron 13', 16,'i3-10');
 
 insert into armazenamento values(default, 'SSD', 512, 91755279024);
+insert into armazenamento values(default, 'SSD', 256, 150013896150328);
+insert into armazenamento values(default, 'HD', 960, 150013896150328);
+insert into armazenamento values(default, 'SSD', 256, 132243596628502);
+insert into armazenamento values(default, 'SSD', 256, 251682014498224);
 
 INSERT INTO controleFluxo ( dtSaida, fkFuncionario, fkNotebook) VALUES (null, 4, 91755279024);
+INSERT INTO controleFluxo ( dtSaida, fkFuncionario, fkNotebook) VALUES (null, 3, 150013896150328);
+INSERT INTO controleFluxo ( dtSaida, fkFuncionario, fkNotebook) VALUES (null, 6, 132243596628502);
+INSERT INTO controleFluxo ( dtSaida, fkFuncionario, fkNotebook) VALUES (null, 7, 251682014498224);
 
 select * from empresa;
 select * from funcionario;

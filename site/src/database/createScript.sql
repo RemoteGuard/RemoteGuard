@@ -32,6 +32,8 @@ CREATE TABLE funcionario(
 
 );
 
+
+select * from notebook;
 CREATE TABLE notebook(
 	idNotebook BIGINT primary key,
     marca VARCHAR(30) NOT NULL,

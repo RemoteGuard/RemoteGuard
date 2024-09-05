@@ -96,7 +96,7 @@ def monitorarAnalista():
             conn.close()   #fechando conexao com o banco de dados
             
             
-            
+from datetime import timedelta# importando biblioteca para formatar     
 def monitorarGerente():
     global resultado
     tipoMonitoramento = int(input('Deseja monitorar os programas do usuário ou verificar o tempo de inatividade? \n Digite 0 para programas e 1 para inatividade: '))
@@ -141,15 +141,30 @@ def monitorarGerente():
                     ON cf.fkFuncionario = f.idFuncionario
                 JOIN funcionario as supervisor 
                     ON f.fkSupervisor = supervisor.idFuncionario
-                WHERE supervisor.idFuncionario = {resultado[10]};"""
+                WHERE supervisor.idFuncionario = 3;"""
             #resultado[10]
             cursor.execute(query)
 
             resultado = cursor.fetchall()
-            column_names = [desc[0] for desc in cursor.description]
-            df = pd.DataFrame(resultado, columns=column_names)
+            column_names = ['idDados', 'dataHora', 'percCPU', 'tempoInativo', 'percRAM', 'usedRAM', 'percDisc', 'usedDisc', 'fkNotebook', 'nome supervisor', 'nome', 'cargo']
             
-            print(df)
+            df = pd.DataFrame(resultado, columns=column_names)
+            df = df.groupby('fkNotebook')
+            for idNotebook, dadosNotebook in df:
+                                                #iloc = index location ou seja pega a primeira (0) e ultima (-1) linha de cada funcionário
+                primerio_valor = dadosNotebook.iloc[0, 3]
+                ultimo_valor = dadosNotebook.iloc[-1, 3]
+                print(primerio_valor)
+                print(ultimo_valor)
+                inatividadeDiaria = round((ultimo_valor - primerio_valor) / 100)
+                print(inatividadeDiaria)
+                tempo_formatado = str(timedelta(seconds=inatividadeDiaria))
+
+                # Exibe o tempo formatado
+                print(tempo_formatado)
+
+            
+            
         
     else: 
         print('Valor invalido!')   
@@ -162,7 +177,7 @@ def menu():
     if cargo == 'analista':   
         
             
-        monitorarGerente()
+        monitorarAnalista()
         
     elif cargo == 'gerente':
         monitorarGerente()
@@ -191,7 +206,7 @@ def home():
     print("\n\n")
     print(f'Bem vindo à RemoteGuard {resultado[12]}!\n ')
     passouSenha = conferirSenha()
-    if(passouSenha):
+    if(passouSenha): #Passou senha é boolean
         menu()
     else:
         print('Você não tem permissão para acessar nossos dados!')

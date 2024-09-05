@@ -158,6 +158,13 @@ section .container .inputs .direita .divArmazenamento h2{
 }
 
 
+.divInpTamanho{
+    display: flex;
+    align-items: center;
+    width: 80%;
+    justify-content: space-around;
+}
+
 .inputs .direita .divArmazenamento .containerArmazenamento .inpArm .inpTamanho{
     width:140px;
     font-size: 22px;
@@ -185,3 +192,68 @@ section .container button:hover{
     color: #000;
     background-color: #ffff00;
 }
+
+@media (max-width: 1145px){
+    section .container{
+        height: 90vh;
+    }
+    section .container .inputs{
+        flex-direction: column;
+    }
+
+    section .container .inputs .esquerda input, section .container .inputs .direita input{
+        width: 89%;
+    }
+    .inpArmazenamento{
+        width: 120%;
+    }
+
+    .inputs .direita .divArmazenamento .containerArmazenamento .inpArm{
+        width: 120%;
+        margin-left: -13%;
+    }
+    .inpArm img{
+        
+        width: 10px;
+    }
+
+  
+}
+
+@media (max-width: 800px){
+    section{
+        display: flex;
+        align-items: center;
+        width: 100vw;
+    }
+    section .container{
+        width:  60vw;
+        text-align: center ;
+    }
+
+  }
+
+  @media (max-width: 600px){
+    section .container{
+        margin-top: 7%;
+        border: none;
+        width: 95%;
+    }
+    .inputs .direita .divArmazenamento .containerArmazenamento .inpArm{
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
+    section .container .inputs .esquerda input, section .container .inputs .direita input{
+        width: 115%;
+    }
+
+  }
+
+  @media (max-width: 600px){
+    section .container .inputs .esquerda input, section .container .inputs .direita input{
+        width: 125%;
+    }
+
+  }
