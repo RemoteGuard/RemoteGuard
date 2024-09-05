@@ -18,22 +18,22 @@ while True:
 
     print("\n")
 
-    cpuFreq = psutil.cpu_freq()
+    cpuPerc = psutil.cpu_percent()
 
     cpuTime = psutil.cpu_times()
 
     memory = psutil.virtual_memory()
     
-    memoria_formatada = round(memory.used/(1024**3),2)
+    memoria_formatada = round(memory.free/(1024**3),2)
 
-    print(f"Medição de frequência da CPU: {cpuFreq.current/1000} MHz")
+    print(f"Medição de porcentagem da CPU: {cpuPerc} %")
     print("Medição do tempo de uso da CPU")
     print(f"Sistema: {cpuTime.system} segundos")
     print(f"Usuário: {cpuTime.user} segundos")
     print(f"Ociosidade: {cpuTime.idle} segundos")
     print("\n")
 
-    print(f"Uso de memória RAM: {memoria_formatada} GB ")
+    print(f"Memoria RAM livre: {memoria_formatada} GB ")
     print("\n")
 
     # bancoQuery = database.cursor()
