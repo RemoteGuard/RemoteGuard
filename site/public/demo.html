@@ -44,7 +44,7 @@
         </ul>
     </header>
     <div class="white">
-        Como será os nossos gráficos?
+        <span class="titleCarrossel">Como será os nossos gráficos?</span>
         <div class="containerCarrossel">
             <img src="img/Captura de tela de 2024-09-04 13-02-34.png" id="img1" style="display: block;" alt="">
             <img src="img/Captura de tela de 2024-09-04 13-02-40.png" id="img2" style="display: block;" alt="">
@@ -52,6 +52,13 @@
         <div class="btnCarrossel">
             <button onclick="carrossel(1)"><</button>
             <button onclick="carrossel(2)">></button>
+        </div>
+
+        <div id="titleInfoGraf">
+            Analista
+        </div>
+        <div id="textInfoGraf">
+            O analiste é apresentado a dados mais específicos no gráfico, dando uma visão mais profunda sobre os computadores dos funcionários, com isso ele se encarrega de monitorar o consumo de componentes dos computadores, podendo selecionar diferentes componentes ou então visualizar os componentes de um funcionário específico, para que enfim ele possa ter a tomada de decisão de fazer ou não melhorias no computador do funcionário.
         </div>
     </div>
 
@@ -71,13 +78,19 @@ function hiddeMain(){
 }
 
 function carrossel(num) {
+    var textGer = "O gráfico do gerente possui informações essenciais para o gerenciamento de seus funcionários, apenas exibindo seu tempo de inatividade total juntamente com sua carga horária do dia em que o funcionário trabalhou, também é possível o gerente selecionar um funcionário em específico para que haja um monitoramento mais acertivo. Com isso o gerente pode ter a melhor tomada de decisão quanto a distribuição de tarefas e escapadas que o funcionário pode acabar dando."
+
+    var textAna = "O analiste é apresentado a dados mais específicos no gráfico, dando uma visão mais profunda sobre os computadores dos funcionários, com isso ele se encarrega de monitorar o consumo de componentes dos computadores, podendo selecionar diferentes componentes ou então visualizar os componentes de um funcionário específico, para que enfim ele possa ter a tomada de decisão de fazer ou não melhorias no computador do funcionário.";
     if(num == 1){
         img1.style.transform = "translateX(50px)"
         img2.style.transform = "translateX(50px)"
-
+        textInfoGraf.innerHTML = textAna;
+        titleInfoGraf.innerHTML = "Analista";
     } else{
         img1.style.transform = "translateX(-500px)"
         img2.style.transform = "translateX(-500px)"
+        textInfoGraf.innerHTML = textGer;
+        titleInfoGraf.innerHTML = "Gerente";
     }
 }
 </script>
