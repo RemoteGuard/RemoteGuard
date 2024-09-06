@@ -14,8 +14,8 @@ public class ConexaoComBanco {
         BasicDataSource bds = new BasicDataSource();
         bds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         bds.setUrl("jdbc:mysql://localhost:3306/remoteGuard");
-        bds.setUsername("root");
-        bds.setPassword("#Gf52253850870");
+        bds.setUsername("server");
+        bds.setPassword("");
 
         jdbcTemplate = new JdbcTemplate(bds);
     }

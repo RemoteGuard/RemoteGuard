@@ -132,26 +132,41 @@ def monitorarGerente():
             print('nada errado')
                 
     elif tipoMonitoramento == 1:
-            query = f"""SELECT d.*,supervisor.nome as 'nome supervisor', f.nome, f.cargo FROM dados as d 
-                JOIN notebook as n
-                    ON d.fkNotebook = n.idNotebook
-                JOIN controleFluxo as cf 
-                    ON n.idNotebook = cf.fkNotebook 
-                JOIN funcionario as f 
-                    ON cf.fkFuncionario = f.idFuncionario
-                JOIN funcionario as supervisor 
-                    ON f.fkSupervisor = supervisor.idFuncionario
-                WHERE supervisor.idFuncionario = 3;"""
+            query = f"""SELECT
+                            f.nome,
+                            SUM(d.tempoInativo) AS totalTempoInativo
+                        FROM 
+                            dados AS d 
+                        JOIN 
+                            notebook AS n ON d.fkNotebook = n.idNotebook 
+                        JOIN 
+                            controleFluxo AS cf ON n.idNotebook = cf.fkNotebook 
+                        JOIN 
+                            funcionario AS f ON cf.fkFuncionario = f.idFuncionario 
+                        JOIN 
+                            funcionario AS supervisor ON f.fkSupervisor = supervisor.idFuncionario 
+                        WHERE 
+                            supervisor.idFuncionario = 3
+                        GROUP BY 
+                            d.fkNotebook, 
+                            supervisor.nome, 
+                            f.nome, 
+                            f.cargo;"""
             #resultado[10]
             cursor.execute(query)
 
             resultado = cursor.fetchall()
+            
+            print(resultado)
+            print(type(resultado))
+            '''
             column_names = ['idDados', 'dataHora', 'percCPU', 'tempoInativo', 'percRAM', 'usedRAM', 'percDisc', 'usedDisc', 'fkNotebook', 'nome supervisor', 'nome', 'cargo']
             
             df = pd.DataFrame(resultado, columns=column_names)
             df = df.groupby('fkNotebook')
+             
             for idNotebook, dadosNotebook in df:
-                                                #iloc = index location ou seja pega a primeira (0) e ultima (-1) linha de cada funcionário
+                    #iloc = index location ou seja pega a primeira (0) e ultima (-1) linha de cada funcionário
                 primerio_valor = dadosNotebook.iloc[0, 3]
                 ultimo_valor = dadosNotebook.iloc[-1, 3]
                 inatividadeDiaria = round((ultimo_valor - primerio_valor) / 100)
@@ -161,7 +176,7 @@ def monitorarGerente():
                 # Exibe o tempo formatado
                 print(tempo_formatado)
 
-            
+            '''
             
         
     else: 
@@ -175,7 +190,7 @@ def menu():
     if cargo == 'analista':   
         
             
-        monitorarAnalista()
+        monitorarGerente()
         
     elif cargo == 'gerente':
         monitorarGerente()

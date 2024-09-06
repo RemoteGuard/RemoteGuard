@@ -152,6 +152,7 @@ header ul li a:hover{
 }
 
 .footer {
+    border: 2px solid blue;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     align-items: center;

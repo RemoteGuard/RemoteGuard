@@ -54,7 +54,10 @@ def capturarDados(delayProcessos, delayDados):
               percCPU = psutil.cpu_percent(interval = 1)
               memoria = psutil.virtual_memory()
               memoria = memoria._asdict()
-
+              
+              inativo = psutil.cpu_percent(percpu=False) 
+              
+              inativo = (delayDados * inativo) / 100
               disco = psutil.disk_usage(chamadaDisco)
               disco = disco._asdict()
               percRAM = memoria['percent']
