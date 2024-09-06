@@ -51,7 +51,7 @@
           </li>
         </div>
         <div class="bottom">
-          <li>
+          <li class="liPerfil">
             <a href="perfil.html">
               <div class="imgBox">
                 <img src="./../img/site/dashboard/perfil.png" alt="" />
@@ -93,8 +93,10 @@
                       <option value="HD">HD</option>
                       <option value="SSD">SSD</option>
                     </select>
-                    <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
-                    <img onclick="adcDisco()" src="svg/circuloMais.svg" alt="" />
+                    <div class="divInpTamanho">
+                      <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
+                      <img onclick="adcDisco()" src="svg/circuloMais.svg" alt="" />
+                    </div>
                   </div>
                 </div>
                 
@@ -122,8 +124,10 @@
                       <option value="HD">HD</option>
                       <option value="SSD">SSD</option>
                     </select>
-                    <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
-                    <img onclick="apagarArmazenamento(${contadorArmazenamento})" src="svg/circuloX.svg" alt="" />
+                    <div class="divInpTamanho">
+                      <input class="inpTamanho" placeholder="Tamanho em GB" type="number" name="" id="" />
+                      <img onclick="apagarArmazenamento(${contadorArmazenamento})" src="svg/circuloX.svg" alt="" />
+                    </div>
                   </div>`
                   contadorArmazenamento ++;
     

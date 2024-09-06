@@ -17,6 +17,7 @@ Fontes:
 
 
 
+
 *{
     box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
     margin: 0;
@@ -35,15 +36,6 @@ Fontes:
     flex-direction: row;
   }
 
-.sidebar{
-  /*6% fechado*/
-  width: 20vw;
-  height: 100vh;
-  border-right: 2px solid yellow;
-  font-family: 'Poppins';
-  transition: 0.5s;
-  padding-left: 10px;
-}
 
 .sidebar {
   /*6% fechado*/
@@ -53,7 +45,6 @@ Fontes:
   border-right: 2px solid yellow;
   font-family: 'Poppins';
   transition: 0.5s;
-  padding-left: 10px;
   overflow: hidden;
 }
 
@@ -68,6 +59,7 @@ Fontes:
   position: relative;
   align-items: center;
   height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -75,6 +67,7 @@ Fontes:
 .sidebar ul li{
   position: relative;
   list-style: none;
+  width: 100%;
 }
 
 
@@ -130,15 +123,19 @@ IF os.name == 'nt' = = windows
   .sidebar ul li a:hover .text{
     color: yellow;
   }
-
-  .imgBox{
+  .liPerfil{
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+  }
+  .imgBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
     gap: 5%;
   }
 
   .imgBox img{
-    margin-left: 10px;
     width: 60px;
     height: 60px;
     border: 2px solid #ffff00;
@@ -158,6 +155,8 @@ IF os.name == 'nt' = = windows
     height: 50px;
   }
 */
+
+  
   .icon img{
     width: 25px;
   }
@@ -211,60 +210,52 @@ IF os.name == 'nt' = = windows
     display: none;
   }
 
-
-  /*
-.Menulist{
-  border: 2px solid green;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 55vh;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.Menulist li{
-  width: 87%;
-  border: 2px solid blue;
-  display: flex;
-
-}  
-.Menulist li a{
-  border: 2px solid red;
-  display: flex;
-  width: 100%;
-  font-size: 22px;
-  align-items: center;
-  
-  justify-content: space-between;
-}
-
-
-
-.Menulist li a .icon{
-
-}
-
-
-  .icon{
-    width: 60px;
-    height: 60px;
+  @media (max-width: 1300px){
+    
+  .burguer{
+    display: none;
   }
-  
-  .icon img{
-    width: 100%;
-    height: 100%;
-  }
- 
-
-
   .imgBox img{
-    width: 70px;
-    height: 70px;
-    border: 2px solid #ffff00;
-    border-radius: 110%;
+    width: 50px;
+    height: 50px;
+
+  }
+}
+
+@media (max-width: 1145px){
+
+}
+
+@media (max-width: 800px){
+  .burguer{
+  display: flex;
+  align-self: flex-end;
+  right: 5%;
+}
+  .sidebar{
+    display: none;
   }
 
-  .text{
+  .ativoSide{
+    background-color: black;
+    position: absolute;
+    display: block;
+    width: 60vw;
   }
-  */
+}
+@media (max-width: 450px){
+  .ativoSide{
+    background-color: black;
+    position: absolute;
+    display: block;
+    width: 80vw;
+  }
+
+  .sidebar ul li.logo a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40%;
+    
+  }
+}
