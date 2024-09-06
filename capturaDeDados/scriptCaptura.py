@@ -7,10 +7,10 @@ import os # Nos fala se estamos usando Windows ou Linux
 
 endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa de rede interna do dispositivo 
 
-conn = mysql.connector.connect(
+conn = mysql.connector.connect( #Estabelecendo conexao com o banco de dados
         host="localhost",
         user="root",
-        password="Lqsym@2020",
+        password="#Gf52253850870",
         database="remoteGuard"
     )
 
