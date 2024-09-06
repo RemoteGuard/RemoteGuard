@@ -9,13 +9,8 @@ endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa d
 
 conn = mysql.connector.connect( #Estabelecendo conexao com o banco de dados
         host="localhost",
-<<<<<<< HEAD
-        user="root",
-        password="#Gf52253850870",
-=======
         user="server",
         password="",
->>>>>>> 19cda3c93211b0bafbaf3e8088009404f355c2f7
         database="remoteGuard"
     )
 
