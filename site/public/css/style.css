@@ -407,7 +407,8 @@ header ul li a:hover{
 }
 .white{
     background-color: white;
-    height: 80vh;
+    /* height: 100vh; */
+    /* overflow: auto; */
     color: black;
     justify-content: space-around;
     text-align: center;
@@ -415,8 +416,7 @@ header ul li a:hover{
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    
+    align-items: center;    
 }
 .white img{
 
