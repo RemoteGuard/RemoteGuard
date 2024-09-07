@@ -18,23 +18,26 @@ Fontes:
 
 
 
-*{
-    box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
-    margin: 0;
-    padding: 0;
-    font-family:Tahoma, sans-serif;
-  }
-  input:focus {
-    outline: none; /* Remove a borda de foco */
+* {
+  box-sizing: border-box;
+  /* o padding e a borda são contados no tamanho definido */
+  margin: 0;
+  padding: 0;
+  font-family: Tahoma, sans-serif;
 }
-  
+
+input:focus {
+  outline: none;
+  /* Remove a borda de foco */
+}
 
 
-  body{
-    background-color: #000;
-    display: flex;
-    flex-direction: row;
-  }
+
+body {
+  background-color: #000;
+  display: flex;
+  flex-direction: row;
+}
 
 
 .sidebar {
@@ -49,13 +52,13 @@ Fontes:
 }
 
 
-.ativoSide{
+.ativoSide {
   width: 20vw;
 }
 
 
 
-.sidebar ul{
+.sidebar ul {
   position: relative;
   align-items: center;
   height: 100vh;
@@ -64,7 +67,8 @@ Fontes:
   flex-direction: column;
   justify-content: space-between;
 }
-.sidebar ul li{
+
+.sidebar ul li {
   position: relative;
   list-style: none;
   width: 100%;
@@ -77,78 +81,85 @@ IF os.name == 'nt' = = windows
 
 
 
-.sidebar ul li.logo .icon{
+.sidebar ul li.logo .icon {
   width: 70px;
-  
+
 }
 
-.sidebar ul li.logo .icon img{
+.sidebar ul li.logo .icon img {
   width: 45px;
 }
-.sidebar ul li.logo .text{
+
+.sidebar ul li.logo .text {
   font-size: 24px;
 }
 
-  .sidebar ul li a{
-    position: relative;
-    display: flex;
-    
-    white-space: nowrap;
-    text-decoration: none;
-    color: white;
-  }
+.sidebar ul li a {
+  position: relative;
+  display: flex;
 
-  .sidebar ul li a .icon{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 70px;
-    height: 80px;
-    transition: 0.5s;
-  }
+  white-space: nowrap;
+  text-decoration: none;
+  color: white;
+}
 
-  .text{display: none;}
-  .ativoSide ul li a .text{
-    position: relative;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    font-size: 19px;
-    letter-spacing: 2.5px;
-    transition: 0.5s;
-  }
+.sidebar ul li a .icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 70px;
+  height: 80px;
+  transition: 0.5s;
+}
+
+.text {
+  display: none;
+}
+
+.ativoSide ul li a .text {
+  position: relative;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 19px;
+  letter-spacing: 2.5px;
+  transition: 0.5s;
+}
 
 
-  .sidebar ul li a:hover .text{
-    color: yellow;
-  }
-  .liPerfil{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .imgBox{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 5%;
-  }
+.sidebar ul li a:hover .text {
+  color: yellow;
+}
 
-  .imgBox img{
-    width: 60px;
-    height: 60px;
-    border: 2px solid #ffff00;
-    border-radius: 100%;
-  }
+.liPerfil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .atual{
-    color: #ffff00;
-  }
+.imgBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+}
 
-  .bottom{
-    width: 80%;
-  }
+.imgBox img {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #ffff00;
+  border-radius: 100%;
+}
+
+.atual {
+  color: #ffff00;
+}
+
+.bottom {
+  width: 80%;
+}
+
 /*
   .icon{
     width: 50px;
@@ -156,95 +167,99 @@ IF os.name == 'nt' = = windows
   }
 */
 
-  
-  .icon img{
-    width: 25px;
-  }
-  .burguer{
-    position: absolute;
-    margin-top: 10px;
-    display: flex;
-    width: 45px;
-    height: 45px;
-    margin-left: 15px;
-    cursor: pointer;
-    background-color: #ffff00;
-    border-radius: 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .burguer::before{
-    content: '';
-    width: 30px;
-    height: 3px;
-    position: absolute;
-    background: #000;
-    transform: translateY(-9px);
-    transition: 0.5s;
-    box-shadow: 0 9px 0 #000;
-  }
-  
-  .burguer::after{
-    margin-top: 37px;
-    content: '';
-    width: 30px;
-    height: 3px;
-    position: absolute;
-    background: #000;
-    transform: translateY(-9px);
-    transition: 0.5s;
-  }
-   
-    
-  .ativo::before{
-    transform: translateY(0px) rotate(45deg);
-    box-shadow: 0 0 0 #000;
-  }
-  .ativo::after{
-    margin-top: 0px;
-    transform: translateY(0px) rotate(-45deg);
-  }
-  .ativoSide .text{
+
+.icon img {
+  width: 25px;
+}
+
+.burguer {
+  position: absolute;
+  margin-top: 10px;
+  display: flex;
+  width: 45px;
+  height: 45px;
+  margin-left: 15px;
+  cursor: pointer;
+  background-color: #ffff00;
+  border-radius: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.burguer::before {
+  content: '';
+  width: 30px;
+  height: 3px;
+  position: absolute;
+  background: #000;
+  transform: translateY(-9px);
+  transition: 0.5s;
+  box-shadow: 0 9px 0 #000;
+}
+
+.burguer::after {
+  margin-top: 37px;
+  content: '';
+  width: 30px;
+  height: 3px;
+  position: absolute;
+  background: #000;
+  transform: translateY(-9px);
+  transition: 0.5s;
+}
+
+
+.ativo::before {
+  transform: translateY(0px) rotate(45deg);
+  box-shadow: 0 0 0 #000;
+}
+
+.ativo::after {
+  margin-top: 0px;
+  transform: translateY(0px) rotate(-45deg);
+}
+
+.ativoSide .text {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+
+  .burguer {
     display: none;
   }
 
-  @media (max-width: 1300px){
-    
-  .burguer{
-    display: none;
-  }
-  .imgBox img{
+  .imgBox img {
     width: 50px;
     height: 50px;
 
   }
 }
 
-@media (max-width: 1145px){
+@media (max-width: 1145px) {}
 
-}
+@media (max-width: 800px) {
+  .burguer {
+    display: flex;
+    align-self: flex-end;
+    right: 5%;
+  }
 
-@media (max-width: 800px){
-  .burguer{
-  display: flex;
-  align-self: flex-end;
-  right: 5%;
-}
-  .sidebar{
+  .sidebar {
     display: none;
   }
 
-  .ativoSide{
+  .ativoSide {
     background-color: black;
     position: absolute;
     display: block;
     width: 60vw;
   }
 }
-@media (max-width: 450px){
-  .ativoSide{
+
+@media (max-width: 450px) {
+  .ativoSide {
     background-color: black;
     position: absolute;
     display: block;
@@ -256,6 +271,6 @@ IF os.name == 'nt' = = windows
     flex-direction: column;
     align-items: center;
     height: 40%;
-    
+
   }
 }
