@@ -59,78 +59,36 @@ header ul li a:hover {
     text-decoration: underline;
 }
 
-
-
-.areaCliente{
+/* Responsive area */
+.areaCliente {
     transition: transform 0.2s;
     background-color: #ffff00;
-    border-radius: 10px; 
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    width: 27%;
-    height: 30%;
-    align-items: center;
+    border-radius: 10px;
+    padding: 5px 10px;
     cursor: pointer;
 }
 
-.campo{
-    position: relative;
-    margin-top: 20px;
-}
-
-.botaoAreaCliente{
-    display: flex;
-    margin-top: 9px;
-    justify-content: center;
-    align-items: center;
-}
 .botaoAreaCliente a {
     color: black;
 }
-.botaoAreaCliente a:hover{
-    color: black;
-}
-.areaCliente:hover{
-    text-decoration: none;
-    transform: scale(110%, 110%);
+
+.areaCliente:hover {
+    transform: scale(1.1);
 }
 
-.linksLogin{
-    margin-top: 6%; 
+.linksLogin {
     display: none;
-    flex-direction: column;
-    height: auto;
 }
 
-.linksLogin div{
-    display: flex;
-    border: 2px solid #333233;
-    width: 100%;
-    height: 5vh;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s;
+.linksLogin div {
     background-color: #0f0f0f;
+    padding: 10px;
+    transition: transform 0.2s;
 }
 
-.linksLogin div:hover{
-    transform: scale(110%, 110%);
-    
+.linksLogin div:hover {
+    transform: scale(1.1);
 }
-
-.ultimoLink{
-    border-radius: 0 0 10px 10px;
-}
-
-.hovers{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    font-size: 30px;
-    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-}
-
 /*LOGIN*/
 
 .container{
