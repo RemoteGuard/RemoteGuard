@@ -1,165 +1,198 @@
-/* Global styles */
-* {
-    box-sizing: border-box;
+/*
+    Paleta de cores:
+
+#000 background
+#333233
+#fee600
+#ffff00
+#ffff56
+#ffff81
+
+Fontes: 
+    Constantia
+    Georgia
+
+*/
+
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./fontes/LeagueSpartan/LeagueSpartan-VariableFont_wght.ttf')
+    format('truetype');
+}
+
+*{
+    box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
     margin: 0;
     padding: 0;
-}
+  }
 
-body {
+body{
     background-color: #000;
     color: #fff;
-    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
-
-header {
+header{
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #ffff00;
-    height: 15vh;
-    padding: 0 20px;
+    height: 20vh;
+    width: 100vw;
     background-color: #0f0f0f;
 }
 
-.headerLogo a {
+.headerLogo a{    
     display: flex;
+    flex-direction: row;
     align-items: center;
     text-decoration: none;
     color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 110%;
 }
 
-.headerLogo a img {
-    width: 60px;
+.headerLogo a img{
+    width: 90px;
 }
-
-.headerLogo a h1 {
+.headerLogo a h1{
     color: #ffff00;
-    font-size: 22px;
+    font-size: 28px;
 }
 
-header ul {
+header ul{
     display: flex;
+    height: 100%;
     align-items: center;
-    gap: 15px;
+    text-align: center;
+    width: 60%;
+    justify-content: space-around;
 }
 
-header ul li {
+header ul li{
     list-style-type: none;
 }
+header ul li a{
 
-header ul li a {
     text-decoration: none;
     color: #fff;
-    font-size: 16px;
+    font-size: 19px;
     font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-header ul li a:hover {
+header ul li a:hover{
     color: #ffff81;
+    text-decoration: underline;    
+
+}
+
+.pagAtual{
+    color: #ffff00;
     text-decoration: underline;
 }
 
-/* Responsive area */
-.areaCliente {
+.areaCliente{
     transition: transform 0.2s;
     background-color: #ffff00;
-    border-radius: 10px;
-    padding: 5px 10px;
+    border-radius: 10px; 
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 27%;
+    height: 30%;
+    align-items: center;
     cursor: pointer;
 }
 
+.campo{
+    position: relative;
+    margin-top: 20px;
+}
+
+.botaoAreaCliente{
+    display: flex;
+    margin-top: 9px;
+    justify-content: center;
+    align-items: center;
+}
 .botaoAreaCliente a {
     color: black;
 }
-
-.areaCliente:hover {
-    transform: scale(1.1);
+.botaoAreaCliente a:hover{
+    color: black;
+}
+.areaCliente:hover{
+    text-decoration: none;
+    transform: scale(110%, 110%);
 }
 
-.linksLogin {
+.linksLogin{
+    margin-top: 6%; 
     display: none;
+    flex-direction: column;
+    height: auto;
 }
 
-.linksLogin div {
-    background-color: #0f0f0f;
-    padding: 10px;
+.linksLogin div{
+    display: flex;
+    border: 2px solid #333233;
+    width: 100%;
+    height: 5vh;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     transition: transform 0.2s;
+    background-color: #0f0f0f;
 }
 
-.linksLogin div:hover {
-    transform: scale(1.1);
+.linksLogin div:hover{
+    transform: scale(110%, 110%);
+    
 }
 
-/* Login container */
-.container {
+.ultimoLink{
+    border-radius: 0 0 10px 10px;
+}
+
+.hovers{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+}
+
+/*LOGIN*/
+
+.container{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 80vh;
+    background-color: #333233;
     background-image: url(./../img/site/fundoLoginCadastro/tecladoEmouse_ajustado.jpg);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size:cover;
 }
 
-/* Login card */
-.cadastre {
-    width: 90vw;
-    max-width: 400px;
-    background-color: rgba(41,37,37, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.titleLog {
+/* Estilização do título no container de login */
+.titleLog{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 40px;
     background-color: #1a1a1a;
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 24px;
-    font-weight: bold;
-    margin: -30px auto 20px auto;
-    color: #ffff00;
-}
-
-h2 {
-    color: #ffffff;
-    margin-bottom: 20px;
-}
-
-input,
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 8px;
-    border: none;
-}
-
-input {
-    background-color: #333;
-    color: #fff;
-}
-
-button {
-    background-color: #000;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.4s, color 0.4s;
-}
-
-button:hover {
-    background-color: #ffff00;
-    color: #000;
-}
-
-#div_mensagem {
-    color: #fbff00;
-    margin-top: 10px;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -50px;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 12px;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
-
 
 .cadastre {
     width: 30vw;
