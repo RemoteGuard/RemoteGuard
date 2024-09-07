@@ -1,94 +1,65 @@
-/*
-    Paleta de cores:
-
-#000 background
-#333233
-#fee600
-#ffff00
-#ffff56
-#ffff81
-
-Fontes: 
-    Constantia
-    Georgia
-
-*/
-
-@font-face {
-    font-family: 'League Spartan';
-    src: url('./fontes/LeagueSpartan/LeagueSpartan-VariableFont_wght.ttf')
-    format('truetype');
-}
-
-*{
-    box-sizing: border-box; /* o padding e a borda são contados no tamanho definido */
+/* Global styles */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
+}
 
-body{
+body {
     background-color: #000;
     color: #fff;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
-header{
+
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #ffff00;
-    height: 20vh;
-    width: 100vw;
+    height: 15vh;
+    padding: 0 20px;
     background-color: #0f0f0f;
 }
 
-.headerLogo a{    
+.headerLogo a {
     display: flex;
-    flex-direction: row;
     align-items: center;
     text-decoration: none;
     color: white;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    width: 110%;
 }
 
-.headerLogo a img{
-    width: 90px;
+.headerLogo a img {
+    width: 60px;
 }
-.headerLogo a h1{
+
+.headerLogo a h1 {
     color: #ffff00;
-    font-size: 28px;
+    font-size: 22px;
 }
 
-header ul{
+header ul {
     display: flex;
-    height: 100%;
     align-items: center;
-    text-align: center;
-    width: 60%;
-    justify-content: space-around;
+    gap: 15px;
 }
 
-header ul li{
+header ul li {
     list-style-type: none;
 }
-header ul li a{
 
+header ul li a {
     text-decoration: none;
     color: #fff;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-header ul li a:hover{
+header ul li a:hover {
     color: #ffff81;
-    text-decoration: underline;    
-
-}
-
-.pagAtual{
-    color: #ffff00;
     text-decoration: underline;
 }
+
+
 
 .areaCliente{
     transition: transform 0.2s;
