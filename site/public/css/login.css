@@ -89,39 +89,77 @@ header ul li a:hover {
 .linksLogin div:hover {
     transform: scale(1.1);
 }
-/*LOGIN*/
 
-.container{
+/* Login container */
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 80vh;
-    background-color: #333233;
     background-image: url(./../img/site/fundoLoginCadastro/tecladoEmouse_ajustado.jpg);
     background-position: center;
     background-repeat: no-repeat;
-    background-size:cover;
+    background-size: cover;
 }
 
-/* Estilização do título no container de login */
-.titleLog{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 250px;
-    height: 40px;
-    background-color: #1a1a1a;
+/* Login card */
+.cadastre {
+    width: 90vw;
+    max-width: 400px;
+    background-color: rgba(41,37,37, 0.6);
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -50px;
-    font-size: 25px;
-    font-weight: bold;
-    border-radius: 12px;
-    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
+
+.titleLog {
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    margin: -30px auto 20px auto;
+    color: #ffff00;
+}
+
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: none;
+}
+
+input {
+    background-color: #333;
+    color: #fff;
+}
+
+button {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+button:hover {
+    background-color: #ffff00;
+    color: #000;
+}
+
+#div_mensagem {
+    color: #fbff00;
+    margin-top: 10px;
+    text-align: center;
+}
+
 
 .cadastre {
     width: 30vw;
