@@ -40,12 +40,12 @@ def monitorarAnalista():
 
         cursor.execute(query) # Executando select
 
-        resultado = cursor.fetchall()# pegando todas os linhas dados do select 
+        resultSelect = cursor.fetchall()# pegando todas os linhas dados do select 
         
         
         #Nomeando as colunas do df com base nas colunas do banco de dados 
         column_names = ['idDados', 'dataHora', 'percCPU', 'tempoInativo', 'percRAM', 'usedRAM', 'percDisc', 'usedDisc', 'fkNotebook']
-        df = pd.DataFrame(resultado, columns=column_names) # df = linha e coluna 
+        df = pd.DataFrame(resultSelect, columns=column_names) # df = linha e coluna 
         
         #Se o usuario quiser ver cada notebook separadamente
         if medida == 0:
@@ -111,25 +111,29 @@ def monitorarGerente():
                 ON cf.fkFuncionario = f.idFuncionario
             JOIN funcionario as supervisor 
                 ON f.fkSupervisor = supervisor.idFuncionario
-            WHERE supervisor.idFuncionario = 3;"""
-            #resultado[10]
+            WHERE supervisor.idFuncionario = 3;""" #Pegando todos os processos dos subordinados desse esse gerente
+            #resultado[10] 
         cursor.execute(query)
-        resultado = cursor.fetchall()
+        resultSelect = cursor.fetchall()
         
         column_names = ['idProcesso', 'dataHora', 'nomeProcesso', 'fkNotebook', 'nome supervisor', 'nome', 'cargo']
-        df = pd.DataFrame(resultado, columns=column_names) 
-        colunaHora = [linha[1] for linha in resultado]
-        colunaProcesso = [linha[2] for linha in resultado]
-        colunaNomes = [linha[5] for linha in resultado]
-        colunaCargo = [linha[6] for linha in resultado]
+        df = pd.DataFrame(resultSelect, columns=column_names)
 
+        colunaHora = df['dataHora']
+        colunaProcesso = df['nomeProcesso']
+        colunaNomes = df['nome']
+        colunaCargo = df['cargo']
 
-        if 'Discord.exe' in colunaProcesso:
-                posicao = colunaProcesso.index('Discord.exe')
-                print(f'O {colunaCargo[posicao]} {colunaNomes[posicao]} começou a usar o {colunaProcesso[posicao]} as {colunaHora[posicao]}')
+        # Verificando se 'Discord.exe' está presente na coluna 'nomeProcesso'
+        listaProcessos = ['Discord.exe', 'gamingservices.exe']
+        for processo in listaProcessos:
+                            #.values = pega o valor
+            if processo in colunaProcesso.values: # Se o processo estiver na lista de processos capturados
+                posicao = colunaProcesso.tolist().index(processo)  #Pegue a posição (index) 
+                print(f'O {colunaCargo[posicao]} {colunaNomes[posicao]} começou a usar o {colunaProcesso[posicao]} às {colunaHora[posicao]}')
                 
-        else:
-            print('nada errado')
+            else:
+                print('Nenhum programa não permitido foi encontrado')
                 
     elif tipoMonitoramento == 1:
             query = f"""SELECT
@@ -137,48 +141,24 @@ def monitorarGerente():
                             SUM(d.tempoInativo) AS totalTempoInativo
                         FROM 
                             dados AS d 
-                        JOIN 
-                            notebook AS n ON d.fkNotebook = n.idNotebook 
-                        JOIN 
-                            controleFluxo AS cf ON n.idNotebook = cf.fkNotebook 
-                        JOIN 
-                            funcionario AS f ON cf.fkFuncionario = f.idFuncionario 
-                        JOIN 
-                            funcionario AS supervisor ON f.fkSupervisor = supervisor.idFuncionario 
-                        WHERE 
-                            supervisor.idFuncionario = 3
-                        GROUP BY 
-                            d.fkNotebook, 
-                            supervisor.nome, 
-                            f.nome, 
-                            f.cargo;"""
+                        JOIN notebook AS n 
+                            ON d.fkNotebook = n.idNotebook 
+                        JOIN controleFluxo AS cf 
+                            ON n.idNotebook = cf.fkNotebook 
+                        JOIN funcionario AS f 
+                            ON cf.fkFuncionario = f.idFuncionario 
+                        JOIN funcionario AS supervisor 
+                            ON f.fkSupervisor = supervisor.idFuncionario 
+                        WHERE supervisor.idFuncionario = 3
+                        GROUP BY d.fkNotebook, supervisor.nome,f.nome,f.cargo;"""
             #resultado[10]
             cursor.execute(query)
 
-            resultado = cursor.fetchall()
-            
-            print(resultado)
-            print(type(resultado))
-            '''
-            column_names = ['idDados', 'dataHora', 'percCPU', 'tempoInativo', 'percRAM', 'usedRAM', 'percDisc', 'usedDisc', 'fkNotebook', 'nome supervisor', 'nome', 'cargo']
-            
-            df = pd.DataFrame(resultado, columns=column_names)
-            df = df.groupby('fkNotebook')
-             
-            for idNotebook, dadosNotebook in df:
-                    #iloc = index location ou seja pega a primeira (0) e ultima (-1) linha de cada funcionário
-                primerio_valor = dadosNotebook.iloc[0, 3]
-                ultimo_valor = dadosNotebook.iloc[-1, 3]
-                inatividadeDiaria = round((ultimo_valor - primerio_valor) / 100)
-                print(inatividadeDiaria)
-                tempo_formatado = str(timedelta(seconds=inatividadeDiaria))
-
-                # Exibe o tempo formatado
-                print(tempo_formatado)
-
-            '''
-            
-        
+            resultSelect= cursor.fetchall()
+       
+            for linha in resultSelect:
+                print(f'O funcionário {linha[0]} passou {linha[1]}s inativo  ')
+                print('\n')
     else: 
         print('Valor invalido!')   
         monitorarGerente()
@@ -219,10 +199,8 @@ def home():
     print("\n\n")
     print(f'Bem vindo à RemoteGuard {resultado[12]}!\n ')
     passouSenha = conferirSenha()
-    if(passouSenha): #Passou senha é boolean
+    if(passouSenha): #passouSenha é boolean
         menu()
     else:
         print('Você não tem permissão para acessar nossos dados!')
-   
-
 home()
