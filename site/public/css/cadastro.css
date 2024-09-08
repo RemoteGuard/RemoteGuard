@@ -264,5 +264,104 @@ h2 {
     font-weight: bold;
 }
 
+.headerBarResp{
+    display: none;
+}
 
- 
+.burguer {
+  position: absolute;
+  margin-top: 0px;
+  display: none;
+  width: 45px;
+  height: 45px;
+  margin-left: 15px;
+  cursor: pointer;
+  background-color: #ffff00;
+  border-radius: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.burguer::before {
+  content: '';
+  width: 30px;
+  height: 3px;
+  position: absolute;
+  background: #000;
+  transform: translateY(-9px);
+  transition: 0.5s;
+  box-shadow: 0 9px 0 #000;
+}
+
+.burguer::after {
+  margin-top: 37px;
+  content: '';
+  width: 30px;
+  height: 3px;
+  position: absolute;
+  background: #000;
+  transform: translateY(-9px);
+  transition: 0.5s;
+}
+
+@media screen and (max-width: 800px) {
+    .cadastre{
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 90%;
+    }
+
+    .formulario{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card{
+        margin-top: 0;
+    }
+
+    .headerBar{
+        display: none;
+    }
+
+    .headerBarResp{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+        z-index: 1;
+        width: 50%;
+        right: 0;
+        top: 0;
+        background-color: #1a1a1a;
+        height: 100%;
+    }
+
+    .headerBarResp a{
+        text-decoration: none;
+        outline: none;
+        color: white;
+    }
+
+    .areaCliente{
+        display: flex;
+        flex-direction: column;
+        /* transition: transform 0.2s; */
+        border-radius: 10px;
+        width: 55%;
+        height: 30px;
+        align-items: center;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .areaCliente a{
+        font-size: 20px;
+        color: #0f0f0f;
+    }
+}

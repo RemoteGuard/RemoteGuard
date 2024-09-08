@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro | RemoteGuard</title>
     <link rel="stylesheet" href="css/cadastro.css">
-
     <link rel="icon" href="img/svg/aguia2.svg">
+    <script src="./dashboard/js/sessao.js"></script>
 </head>
 
 <body>
@@ -42,6 +42,17 @@
         </ul>
 
     </header>
+    <div>
+        <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+    </div>
+    <div class="headerBarResp">
+        <a href="index.html" style="margin-top: 30px;">Home</a>
+        <a href="#">Solução</a>
+        <a href="#">Demonstração</a>
+        <div class="areaCliente">
+            <a href="./login.html">Login</a>
+        </div>
+    </div>
     <div class="container">
         <div class="cadastre">
             <div class="titleCad">Cadastro</div>
@@ -53,7 +64,7 @@
                         <input type="email" id="input_email" placeholder="E-mail">
                         <input type="password" id="input_senha" placeholder="Senha">
                     </div>
-                    <div class="campo">
+                    <div class="campo" style="margin-top: 0px;">
                         <input type="text" id="input_cargo" placeholder="Cargo">
                         <input type="text" id="input_empresa" placeholder="Empresa">
                         <input type="password" id="input_cpf" placeholder="CPF">
