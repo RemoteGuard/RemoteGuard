@@ -7,7 +7,6 @@
     <title>Cadastro | RemoteGuard</title>
     <link rel="stylesheet" href="css/cadastro.css">
     <link rel="icon" href="img/svg/aguia2.svg">
-    <script src="./dashboard/js/sessao.js"></script>
 </head>
 
 <body>
@@ -41,12 +40,16 @@
 
         </ul>
 
+        <div>
+            <div class="burguer" id="burguer" onclick="alterarSidebar()" style="margin-right: 30px; margin-top: 0px;"></div>
+        </div>
+
     </header>
-    <div>
-        <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
-    </div>
     <div class="headerBarResp">
-        <a href="index.html" style="margin-top: 30px;">Home</a>
+        <div>
+            <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+        </div>
+        <a href="index.html" style="margin-top: -20px;">Home</a>
         <a href="#">Solução</a>
         <a href="#">Demonstração</a>
         <div class="areaCliente">
@@ -64,7 +67,7 @@
                         <input type="email" id="input_email" placeholder="E-mail">
                         <input type="password" id="input_senha" placeholder="Senha">
                     </div>
-                    <div class="campo" style="margin-top: 0px;">
+                    <div class="campo">
                         <input type="text" id="input_cargo" placeholder="Cargo">
                         <input type="text" id="input_empresa" placeholder="Empresa">
                         <input type="password" id="input_cpf" placeholder="CPF">
@@ -73,7 +76,6 @@
                 <div class="botao">
                     <button onclick="cadastrar()" style="font-size: medium;">Cadastrar</button>
                 </div>
-
                 <div id="div_mensagem"></div>
             </div>
         </div>
@@ -82,6 +84,17 @@
 
 </html>
 <script>
+
+    function alterarSidebar() {
+        let menu = document.querySelector('.headerBarResp');
+        // alert("Ativado")
+
+        if(menu.style.width == '50%'){
+            menu.style.width = '0%'
+        } else{
+            menu.style.width = '50%'
+        }
+    }
 
     function cadastrar() {
         var nome = input_nome.value;

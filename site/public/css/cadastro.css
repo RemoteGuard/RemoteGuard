@@ -269,8 +269,8 @@ h2 {
 }
 
 .burguer {
-  position: absolute;
-  margin-top: 0px;
+  position: relative;
+  margin-top: 20px;
   display: none;
   width: 45px;
   height: 45px;
@@ -278,10 +278,9 @@ h2 {
   cursor: pointer;
   background-color: #ffff00;
   border-radius: 5%;
-  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 0;
 }
 
 .burguer::before {
@@ -315,6 +314,10 @@ h2 {
         height: 90%;
     }
 
+    .burguer{
+        display: flex;
+    }
+
     .formulario{
         display: flex;
         flex-direction: column;
@@ -335,11 +338,13 @@ h2 {
         align-items: center;
         gap: 50px;
         z-index: 1;
-        width: 50%;
+        width: 0%;
         right: 0;
         top: 0;
         background-color: #1a1a1a;
         height: 100%;
+        overflow: hidden;
+        transition: all 1s ease-in-out;
     }
 
     .headerBarResp a{
