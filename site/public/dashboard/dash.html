@@ -26,9 +26,9 @@
             </a>
           </li>
           <li>
-            <a href="dash.html">
+            <a href="">
               <div class="icon"><img src="svg/grafico.svg" alt="" /></div>
-              <div class="text">Dashboards</div>
+              <div class="text atual">Dashboards</div>
             </a>
           </li>
           <li>
@@ -46,7 +46,7 @@
           <li>
             <a href="perfil.html">
               <div class="icon"><img src="svg/config.svg" alt="" /></div>
-              <div class="text atual">Configurações</div>
+              <div class="text">Configurações</div>
             </a>
           </li>
         </div>
@@ -69,54 +69,12 @@
       </ul>
     </div>
     <div class="containerSessoes">
-
-    
     <section class="sessaoUm">
       <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
       <div class="conteudo">
-        <div class="containerImg">
-          <div class="imgPerfil" onclick="alterarFoto()">
-            <img src="svg/edit.svg" alt="" />
-          </div>
-          <div class="infoImg" id="infoImagem">
-            <h2>Escolha sua nova foto:</h3>
-            <input placeholder="https://urldesite/imagem.jpg" type="text" name="" id="" />
-            <div id="botaoFoto">
-              <button>Alterar Foto</button>
-              <img src="svg/quadradoX.svg" onclick="fecharInfoImg()" alt="">
-            </div>
-          </div>
+        <div class="grafico_teste">
+          <canvas id="myChart" ></canvas>
         </div>
-
-        <div class="botoesCadastro">
-          <button>Cadastrar Notebook</button>
-
-          <button>Cadastrar Funcionários</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="sessaoDois">
-      <div class="container">
-        <h1>Editar Informações</h1>
-        <div class="inputs">
-          <div class="topoInputs">
-            <div class="imp"><h3>Email Principal: </h3><input type="email" placeholder="emailPrincipal@gmail.com" name="" id="" /></div>
-              <div class="imp"><h3>Telefone para contato: </h3><input type="number" placeholder="+55 11 987129876" name="" id="" /></div>
-              <div class="imp"><h3>Email secundário</h3><input type="email" name="" placeholder="emailSecundário@gmail.com" id="" /></div>
-              
-          </div>
-          <div class="divSelecao">
-            <select name="" id="selCargo">
-              <option value="gerente">Gerente</option>
-              <option value="analista">Analista</option>
-            </select>
-            <div class="imp divTolerancia"> <h3>Tolerância para <br> inatividade:</h3><input placeholder="HH:MM" class="impTolerancia" type="time" name="" id="" /></div>
-            
-          </div>
-          
-        </div>
-        <button>Alterar</button>
       </div>
     </section>
   </div>
@@ -134,4 +92,37 @@
     divInfoImg.style.display = 'none';
     
   }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['João', 'Gabriel', 'Ivan', 'Lucas', 'Thiago'],
+      datasets: [{
+        label: 'Minutos em Ociosidade',
+        data: [120, 190, 30, 50, 2],
+        borderWidth: 1,
+        backgroundColor: '#fee600',
+        borderColor: '#030202'
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'TESTE',
+      },
+
+    }
+  });
 </script>
