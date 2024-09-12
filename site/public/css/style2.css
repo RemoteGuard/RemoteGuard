@@ -1,0 +1,242 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    height: 70vh;
+    background-image: url('../img/tela1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #eeeeee00;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 5px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.menu ul li a:hover {
+    color: #FCDF3B;
+    border-bottom: 2px solid #FCDF3B;
+}
+
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.acoes a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.area-cliente {
+    color: #FCDF3B;
+    border: 1px solid transparent;
+}
+
+.area-cliente:hover {
+    border-color: #FCDF3B;
+}
+
+.abrir-conta {
+    color: #FCDF3B;
+    border: 1px solid #FCDF3B;
+}
+
+.abrir-conta:hover {
+    background-color: #FCDF3B;
+    color: rgb(0, 0, 0);
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 150px;
+}
+
+.promo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 100px;
+    margin-left: 3px;
+}
+
+.promo-text h1 {
+    font-size: 80px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+}
+
+.promo-text p {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+}
+
+.btn-guard {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #FCDF3B;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn-guard:hover{
+    background-color: transparent;
+    border: 1px solid #FCDF3B;
+    color: #FCDF3B;
+}
+
+.promo-image img {
+    width: 400px;
+    border-radius: 10px;
+}
+
+/* Style the section container */
+
+
+.sessaoLema {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 10%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.conteudo {
+    flex: 1;
+    max-width: 50%;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #3b3b3b;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    color: #EEC302;
+    border: 2px solid #EEC302;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #EEC302;
+    color: #000000;
+}
+
+.recursoss {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 40%;
+}
+
+.recursos-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.recursos-icon {
+    max-width: 30%;
+    max-height: 30%;
+}
+
+.recursos-icon img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.recursos-text h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #3b3b3b;
+    font-weight: bold;
+}
+
+.recursos-text p {
+    margin: 4px 0 0;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.oque-somos{
+    background-image: url(../img/tela2.png);
+    height: 100%;
+}
+
+.oque-somos {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    height: 100vh;
+    padding: 20px; 
+    background-color: #f4f4f4; 
+}
+
+.texto h2 {
+    font-size: 24px;
+    max-width: 800px; 
+    line-height: 1.5;
+    color: #333; 
+}
