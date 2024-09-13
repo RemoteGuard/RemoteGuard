@@ -5,31 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RemoteGuard - Seus funcionários, Nosso Problema </title>
-    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="img/svg/aguia2.svg">
 </head>
 
 <body>
-
+     <!-- HEADER/ CABEÇARIO  -->
     <header class="header">
         <div class="logo">
             <a href="index.html"><img src="img/svg/aguia3.svg" alt="Logo"></a>
         </div>
         <nav class="menu">
             <ul>
-                <li><a href="index.html">Página Inicial</a></li>
+                <li><a href="#" id="linkinicial">Página Inicial</a></li>
                 <li><a href="#" id="linkSobre-nos">Para você</a></li>
                 <li><a href="#" id="linkoque-somos">Para seu Negócio</a></li>
                 <li><a href="#" id="linksessaoLema">O Remote Guard </a></li>
-
             </ul>
         </nav>
         <div class="acoes">
-            <a href="login.html" class="abrir-conta">Login</a>
+            <a href="login.html" class="fazer-login">Login</a>
         </div>
     </header>
 
-    <main>
+    <main id="Inicial">
         <div class="promo">
             <div class="promo-text">
                 <h1>REMOTEGUARD <br> </h1>
@@ -39,12 +38,13 @@
         </div>
     </main>
 
+    <!-- SESSÃO NOSSO LEMA -->
     <section id="sessaoLema" class="sessaoLema">
         <div class="conteudo">
             <h2> <br><br><br>Monitoramento inteligente <br> para produtividade máxima</h2>
             <p>Elevando a produtividade e segurança no home office, com monitoramento <br>inteligente e em tempo real.
             </p>
-            <a href="#" class="cta-button">Saiba Mais</a>
+            <a href="#" id="linkSobre-nos2" class="cta-button">Saiba Mais</a>
         </div>
         <div class="recursoss">
             <div class="recursos-item">
@@ -79,14 +79,13 @@
                     <img src="img/tempo.png" alt="Icone de Rendimento CDI">
                 </div>
                 <div class="recursos-text">
-                    <h1>6+</h1>
+                    <h1>6</h1>
                     <p>Segundos de Delay</p>
                 </div>
             </div>
         </div>
-
     </section>
-
+<!-- SESSÃO SOBRE NÓS -->
     <section id="Sobre-nos" class="sobre-nos">
         <h2 class="titulo-sobre-nos">Conheça Nosso Trabalho</h2>
         <div class="container-missao">
@@ -106,10 +105,13 @@
             </div>
         </div>
     </section>
-    <div class="teste1">
-        <h1>Como será os nossos gráficos?</h1>
-    </div>
 
+    <!-- SESSÃO DE TITULO -->
+    <section id="teste1" class="teste1">
+        <h1>Como serão nossos gráficos?</h1>
+    </section>
+
+    <!-- SESSÃO DA DASHBOARD PARA O CLIENTE DE EXEMPLO -->
     <section id="oque-somos" class="oque-somos">
         <div class="container">
             <div class="card card-left">
@@ -118,7 +120,7 @@
                     <h2>Analista</h2>
                     <p>Tem a visão de dados mais específicos em forma de gráficos, com ums visão mais profunda sobre as
                         máquinas utilizada por funcionarios.</p>
-                    <a href="#">Saiba mais</a>
+                    <a href="cadastro.html">Saiba mais</a>
                 </div>
             </div>
 
@@ -128,12 +130,50 @@
                     <h2>Gerente</h2>
                     <p>Um gerente possui informações essenciais, exibindo sobre o funcionario, seu tempo de inatividade
                         total juntamente com sua carga horária do dia em que o funcionário trabalhou</p>
-                    <a href="#">Saiba mais</a>
+                    <a href="cadastro.html">Saiba mais</a>
                 </div>
             </div>
         </div>
     </section>
 
+<!-- /* SESSÃO MISSÃO, VISÃO E VALORES */ -->
+    <section class="sessao-mvv">
+        <div class="titulo-mvv">
+            <h2>Nossa Missão, Visão e Valores</h2>
+            <p>Transforme o trabalho remoto com precisão e inovação</p>
+        </div>
+        <div class="cards-mvv-container">
+            <div class="card-mvv missao">
+                <div class="icone-container">
+                    <img src="img/missao.png" alt="missao icone" class="icone">
+                </div>
+                <h3>Missão</h3>
+                <p>Promover a excelência no trabalho remoto e híbrido por meio de soluções de monitoramento inovadoras
+                    que asseguram a produtividade e o foco dos colaboradores.</p>
+            </div>
+
+            <div class="card-mvv visao">
+                <div class="icone-container">
+                    <img src="img/visao.png" alt="visao icone" class="icone">
+                </div>
+                <h3>Visão</h3>
+                <p>Ser a referência em soluções de monitoramento para ambientes de trabalho remoto e híbrido,
+                    reconhecidos por nossa capacidade de transformar a produtividade e o bem-estar dos colaboradores.
+                </p>
+            </div>
+
+            <div class="card-mvv valores">
+                <div class="icone-container">
+                    <img src="img/valores.png" alt="valores icone" class="icone">
+                </div>
+                <h3>Valores</h3>
+                <p>Inovação, transparência, eficácia, empatia e excelência no atendimento são nossos pilares para
+                    melhorar a produtividade e o bem-estar no trabalho remoto e híbrido.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SESSÃO FOOTER -->
     <footer class="footer"></footer>
     <div class="footer-container">
         <div class="footer-logo">
@@ -157,13 +197,97 @@
 </html>
 <script>
 
+    // FUNÇÃO PARA ROLAR PELA SESSÃO
+    document.addEventListener('DOMContentLoaded', () => {
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        document.getElementById('linkSobre-nos').addEventListener('click', function (event) {
+            event.preventDefault();
+            scrollToSection('Sobre-nos');
+        });
+
+        document.getElementById('linkinicial').addEventListener('click', function (event) {
+            event.preventDefault();
+            scrollToSection('Inicial');
+        });
+
+        document.getElementById('linkSobre-nos2').addEventListener('click', function (event) {
+            event.preventDefault(); 
+            scrollToSection('Sobre-nos');
+        });
+
+        document.getElementById('linkoque-somos').addEventListener('click', function (event) {
+            event.preventDefault();
+            scrollToSection('oque-somos');
+        });
+
+        document.getElementById('linksessaoLema').addEventListener('click', function (event) {
+            event.preventDefault();
+            scrollToSection('sessaoLema');
+        });
+    });
+
+    // FUNÇÃO DE ANIMAÇÃO DAS SESSÕES
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const tituloSobreNos = document.querySelector('.titulo-sobre-nos');
+        const containerMissao = document.querySelector('.container-missao');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.4
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(tituloSobreNos);
+        observer.observe(containerMissao);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const cards = document.querySelectorAll('.card-mvv');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.4
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    });
 
 
-
-
-
+    // FUNÇÃO PARA BACKGROUD DO HEADER AO ROLAR A TELA
     const header = document.querySelector('header');
-    const secondSection = document.querySelector('.sessaoLema'); // Segunda seção
+    const secondSection = document.querySelector('.sessaoLema');
 
     window.addEventListener('scroll', function () {
         const sectionPosition = secondSection.getBoundingClientRect().top;
@@ -172,80 +296,6 @@
         } else {
             header.classList.remove('scrolled');
         }
-    });
-
-    // Função para rolar suavemente para uma seção
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        section.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Função para navegar para a seção "Sobre Mim" ao clicar no link
-    document.getElementById('linksessaoLema').addEventListener('click', function () {
-        scrollToSection('sessaoLema');
-    });
-    // Função para navegar para a seção "Sobre Mim" ao clicar no link
-    document.getElementById('linkoque-somos').addEventListener('click', function () {
-        scrollToSection('oque-somos');
-    });
-
-    // Função para navegar para a seção "Sobre Mim" ao clicar no link
-    document.getElementById('linkSobre-nos').addEventListener('click', function () {
-        scrollToSection('Sobre-nos');
-    });
-
-
-    // var contadorHeaderMenu = 0;
-    // function abrirMenu(){
-    //     if((contadorHeaderMenu % 2) == 0){
-    //         divLinksLogin.style.display = "flex";
-    //         contadorHeaderMenu ++;
-    //     }else{
-    //         divLinksLogin.style.display = "none";
-    //         contadorHeaderMenu ++;
-    //     }
-
-    // }
-
-    // Atribuição de variável para controle de menu Área de candidato
-    let menu = document.querySelector('#divLinksLogin');
-
-    function showMain() {
-        menu.style.display = 'flex';
-        clearTimeout(tempo_espera);
-    }
-    function hiddeMain() {
-        tempo_espera = setTimeout(function () {
-            menu.style.display = 'none';
-        }, 1000);
-    }
-
-
-    // Texto do hover do card de monitoramento
-    const aparecerTextoMonitoramento = document.getElementById("mtrmt");
-    aparecerTextoMonitoramento.addEventListener("mouseover", () => {
-        texto_monitoramento.style.display = 'block';
-    })
-    aparecerTextoMonitoramento.addEventListener("mouseout", () => {
-        texto_monitoramento.style.display = 'none';
-    })
-
-    // Texto do hover do card de vigilancia
-    const aparecerTextoVigilancia = document.getElementById("vglc");
-    aparecerTextoVigilancia.addEventListener("mouseover", () => {
-        texto_vigilancia.style.display = 'block';
-    })
-    aparecerTextoVigilancia.addEventListener("mouseout", () => {
-        texto_vigilancia.style.display = 'none';
-    })
-
-    // Texto do hover do card de trabalho
-    const aparecerTextoTrabalho = document.getElementById("job");
-    aparecerTextoTrabalho.addEventListener("mouseover", () => {
-        texto_trabalho.style.display = 'block';
-    });
-    aparecerTextoTrabalho.addEventListener("mouseout", () => {
-        texto_trabalho.style.display = 'none';
     });
 
 </script>
