@@ -2,11 +2,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Empréstimos</title>
+    <title>Cards Tela Inteira</title>
     <style>
-     * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -14,79 +13,99 @@
 
 body {
     font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #800080; /* Fundo roxo Nubank */
 }
 
-.emprestimo-section {
+.container {
     display: flex;
+    width: 100%;
+    height: 100vh; /* Ocupa a altura total da tela */
+}
+
+.card {
+    flex: 1; /* Cada card ocupa 50% da tela */
+    display: flex;
+    justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color: #f8f8f8;
-}
-
-.image-container {
-    flex: 1;
-    padding-right: 20px;
-}
-
-.emprestimo-image {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.content-container {
-    flex: 1;
-    padding-left: 20px;
-    background-color: #0f9d58; /* Cor de fundo verde */
-    border-radius: 10px;
-    padding: 30px;
     color: white;
+    text-align: center;
+    transition: transform 0.3s ease;
+    flex-direction: column;
 }
 
-.content-container h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+.card:hover {
+    transform: scale(1.02); /* Efeito de zoom ao passar o mouse */
 }
 
-.content-container p {
-    font-size: 1rem;
+.card-left {
+    background-color: #4B0082; /* Cor roxa escura */
+}
+
+.card-right {
+    background-color: #9400D3; /* Roxo mais claro */
+}
+
+.card-image {
+    width: 550px; /* Largura da imagem */
+    height: auto;
+    margin-bottom: 120px; /* Espaço entre a imagem e o texto */
+
+}
+
+.content h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.content p {
+    font-size: 18px;
     margin-bottom: 20px;
 }
 
-.button-group {
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-    background-color: white;
-    color: #0f9d58;
-    border: none;
+.content a {
+    color: white;
+    text-decoration: none;
+    background-color: #FFF;
     padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    color: #800080; /* Texto do botão em roxo */
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    background-color: #e0e0e0;
+.content a:hover {
+    background-color: #4B0082; /* Muda cor ao passar o mouse */
+    color: white;
 }
+
 
     </style>
 </head>
 <body>
-    <section class="emprestimo-section">
-        <div class="image-container">
-            <img src="path-to-image.jpg" alt="Pessoa segurando um celular" class="emprestimo-image">
-        </div>
-        <div class="content-container">
-            <h1>PicPay Empréstimos</h1>
-            <p>Crédito seguro, transparente e que cabe no seu bolso. Você pode simular em tempo real seu empréstimo e escolher a opção que mais funciona pra você.</p>
-            <div class="button-group">
-                <button class="btn">Empréstimo Pessoal</button>
-                <button class="btn">Empréstimo Consignado</button>
-                <button class="btn">Antecipação do FGTS</button>
+    <div class="container">
+        <!-- Primeiro card - Conta Nubank -->
+        <div class="card card-left">
+            <div class="content">
+                <img src="img/Captura de tela de 2024-09-04 12-41-07.png" alt="Conta Nubank" class="card-image">
+                <h2>Conta do Nubank</h2>
+                <p>Manter suas contas em dia nunca foi tão simples com Assistente de Pagamentos.</p>
+                <a href="#">Saiba mais</a>
             </div>
         </div>
-    </section>
+
+        <!-- Segundo card - Conta PJ -->
+        <div class="card card-right">
+            <div class="content">
+                <img src="nubank_pj.jpg" alt="Conta PJ" class="card-image">
+                <h2>Conta PJ</h2>
+                <p>Ficou mais fácil organizar o seu negócio com a conta PJ do Nubank.</p>
+                <a href="#">Saiba mais</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
