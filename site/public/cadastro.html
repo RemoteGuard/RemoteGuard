@@ -7,70 +7,49 @@
     <title>Cadastro | RemoteGuard</title>
     <link rel="stylesheet" href="css/cadastro.css">
     <link rel="icon" href="img/svg/aguia2.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-    <header>
-        <div class="headerLogo">
-            <a href="index.html">
-                <img src="img/svg/aguia2.svg" alt="">
-                <h1>Remote Guard</h1>
-            </a>
+
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="img/aguia2.png" alt="Logo"></a>
         </div>
-        <ul class="headerBar">
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li>
-                <a href="#">Solução</a>
-            </li>
-            <li>
-                <a href="#">Demonstração</a>
-            </li>
-            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
-                <div class="botaoAreaCliente">
-                    <a>Área do cliente</a>
-                </div>
-                <div id="divLinksLogin" class="linksLogin">
-                    <div class="ultimoLinkLogin" >
-                        <a href="./login.html">Login</a>
-                    </div>
-                </div>
-            </li>
-
-        </ul>
-
-        <div>
-            <div class="burguer" id="burguer" onclick="alterarSidebar()" style="margin-right: 30px; margin-top: 0px;"></div>
+        <nav class="menu">
+            <ul>
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#">Para você</a></li>
+                <li><a href="demo.html">Para seu Negócio</a></li>
+                <li><a href="#">O Remote Guard </a></li>
+            </ul>
+        </nav>
+        <div class="acoes">
+            <a href="login.html" class="abrir-conta">Login</a>
         </div>
-
     </header>
-    <div class="headerBarResp">
-        <div>
-            <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
-        </div>
-        <a href="index.html" style="margin-top: -20px;">Home</a>
-        <a href="#">Solução</a>
-        <a href="#">Demonstração</a>
-        <div class="areaCliente">
-            <a href="./login.html">Login</a>
-        </div>
-    </div>
+
     <div class="container">
+        <div class="cadastre_esquerda">
+            <img  src="img/AguiaComOnome.png" alt="">
+            <h1><br><b>Potencialize</b> a produtividade no trabalho remoto</h1>
+            <h2>_________________________</h2>
+            <button onclick="location.href='index.html'">Voltar ao Início</button>
+        </div>
         <div class="cadastre">
-            <div class="titleCad">Cadastro</div>
             <div class="card">
-                <h2>Cadastre-se e Aproveite</h2>
+                <div class="titleCad">Cadastre-se</div>
                 <div class="formulario">
                     <div class="campo">
-                        <input type="text" id="input_nome" placeholder="Nome">
-                        <input type="email" id="input_email" placeholder="E-mail">
-                        <input type="password" id="input_senha" placeholder="Senha">
+                        <div></div>
+                        <input type="text" id="input_nome" placeholder="Inserir Nome" >
+                        <input type="email" id="input_email" placeholder="  Inserir E-mail">
+                        <input type="password" id="input_senha" placeholder= " Inserir Senha">
                     </div>
                     <div class="campo">
-                        <input type="text" id="input_cargo" placeholder="Cargo">
-                        <input type="text" id="input_empresa" placeholder="Empresa">
-                        <input type="password" id="input_cpf" placeholder="CPF">
+                        <input type="text" id="input_cargo" placeholder=" Inserir Cargo">
+                        <input type="text" id="input_empresa" placeholder=" Inserir Empresa">
+                        <input type="password" id="input_cpf" placeholder="Inserir  CPF">
                     </div>
                 </div>
                 <div class="botao">

@@ -30,77 +30,25 @@ body{
     background-color: #000;
     color: #fff;
 }
-header{
+header {
+    position: fixed;
+    width: 100%;
     display: flex;
+    justify-content: end;
     align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid #ffff00;
-    height: 20vh;
-    width: 100vw;
-    background-color: #0f0f0f;
+    border-bottom: 1px solid #eeeeee00;
 }
 
 .headerLogo a{    
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     text-decoration: none;
     color: white;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    width: 110%;
+    width: 100%;
 }
 
-.headerLogo a img{
-    width: 90px;
-}
-.headerLogo a h1{
-    color: #ffff00;
-    font-size: 28px;
-}
-
-header ul{
-    display: flex;
-    height: 100%;
-    align-items: center;
-    text-align: center;
-    width: 60%;
-    justify-content: space-around;
-}
-
-header ul li{
-    list-style-type: none;
-}
-header ul li a{
-
-    text-decoration: none;
-    color: #fff;
-    font-size: 19px;
-    font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-header ul li a:hover{
-    color: #ffff81;
-    text-decoration: underline;    
-
-}
-
-.pagAtual{
-    color: #ffff00;
-    text-decoration: underline;
-}
-
-.areaCliente{
-    transition: transform 0.2s;
-    background-color: #ffff00;
-    border-radius: 10px; 
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    width: 27%;
-    height: 30%;
-    align-items: center;
-    cursor: pointer;
-}
 .botaoAreaCliente{
     display: flex;
     margin-top: 9px;
@@ -181,42 +129,93 @@ header ul li a:hover{
     align-items: center;
     width: 300px;
     height: 40px;
-    background-color: #1a1a1a;
+    color: black;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -50px;
-    font-size: 25px;
+    margin-top: -100px;
+    font-size: 35px;
     font-weight: bold;
     border-radius: 12px;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
-
+.cadastre_esquerda{
+    height: 60%;
+    width: 25%;
+    border-radius: 10px 0 0 10px;
+    background-color: black;
+    display: flex;
+    padding: 35px;
+    flex-direction: column;
+}
 .cadastre {
-    width: 660px;
-    height: 55vh;
-    padding: 20px;
-    background-color: rgb(41,37,37, 0.6);
-    border-radius: 10px;
+    height: 60%;
+    width: 25%;
+    border-radius: 0 10px 10px 0;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ajusta o layout para que o botão fique no final */
+    padding: 0px; /* Adiciona espaçamento interno */
+}
+.cadastre_esquerda img{
+    width: 28vh;
+    height:8vh;
+}
+.cadastre_esquerda h1{
+    color: #ffffff;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    font-size: 45px;    
+    margin-left: 30px;
 }
-
-.campo{
-    position: relative;
-    margin-top: 20px;
+.cadastre_esquerda b{
+    color: #fce251;
 }
-
-.cadastre input,
-.cadastre button {
-    width: 280px;
-    padding: 10px;
+.cadastre_esquerda h2{
+    margin-top: 0.8vh;
+    margin-right: 3vh;
+    display: flex;
+    justify-content: center;
+}
+.cadastre_esquerda button{
+    width: 180px;
+    padding: 10px ;
     border-radius: 10px;
-    border: none;
-    margin-top: 10px;
+    margin-top: 25px;
+    margin-left: 11vh;
     display: block;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    border: 1px solid rgb(0, 0, 0);
+    transition: color 0.6s, background-color 0.6s; 
 }
-
+.cadastre_esquerda button:hover{
+    background-color: #ffff00;
+    color: #000;
+    font-weight: bold;
+    
+}
+.cadastre input,
+.cadastre button {
+    width: 180px;
+    padding: 10px ;
+    border-radius: 10px;
+    border: none;
+    margin-top: 25px;
+    margin-left: 20px;
+    display: block;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    border: 1px solid rgb(0, 0, 0);
+}
+.inputs {
+    margin-top: 5px;
+    height: 60%;
+    padding: 0 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 10px;
+}
 #div_mensagem {
     color: #fbff00;
     margin-top: 10px;
@@ -231,12 +230,13 @@ h2 {
 .formulario {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
 }
 
 .card {
     justify-content: center;
     padding: 20px;
-    height: 40vh;
+    height: 20vh;
     margin: auto;
 }
 
@@ -257,6 +257,7 @@ h2 {
     cursor: pointer;
     transition: color 0.6s, background-color 0.6s; /* Correção no tempo de transição */
 }
+
 
 .botao button:hover{
     background-color: #ffff00;
@@ -370,3 +371,71 @@ h2 {
         color: #0f0f0f;
     }
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+header {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #eeeeee00;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 5px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.menu ul li a:hover {
+    color: #FCDF3B;
+    border-bottom: 2px solid #FCDF3B;
+}
+
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.acoes a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+
+
+.abrir-conta {
+    color: #FCDF3B;
+    border: 1px solid #FCDF3B;
+}
+
+.abrir-conta:hover {
+    background-color: #FCDF3B;
+    color: rgb(0, 0, 0);
+}
+
+
