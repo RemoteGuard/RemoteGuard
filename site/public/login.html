@@ -4,62 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | RemoteGuard</title>
+    <title>Cadastro | RemoteGuard</title>
     <link rel="stylesheet" href="css/login.css">
     <link rel="icon" href="img/svg/aguia2.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-    <header>
-        <div class="headerLogo">
-            <a href="index.html">
-                <img src="img/svg/aguia2.svg" alt="Logo RemoteGuard">
-                <h1>Remote Guard</h1>
-            </a>
-        </div>
-        <ul class="headerBar">
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li>
-                <a href="#">Solução</a>
-            </li>
-            <li>
-                <a href="#">Demonstração</a>
-            </li>
-            <li class="areaCliente" onmouseover="showMain()" onmouseleave="hiddeMain()">
-                <div class="botaoAreaCliente">
-                    <a>Área do cliente</a>
-                </div>
-                <div id="divLinksLogin" class="linksLogin">
-                    <div class="ultimoLink">
-                        <a href="./cadastro.html">Cadastro</a>
-                    </div>
-                </div>
-            </li>
-
-        </ul>
-
-    </header>
     <div class="container">
-        <div class="cadastre">
-            <div class="titleLog">Login</div>
-            <div class="card">
-                <h2>Bem-vindo de volta!</h2>
-                <div class="formulario">
-                    <div class="campo">
-                        <input type="text" id="input_email" placeholder="E-mail">
-                        <input type="password" id="input_senha" placeholder="Senha">
-                    </div>
-                </div>
-                <div class="botao">
-                    <button onclick="autenticar()" style="font-size: medium;">Login</button>
-                </div>
-
-
-                <div id="div_mensagem"></div>
-            </div>
+        <div class="cadastre_esquerda">
+            <img  src="img/AguiaComOnome.png" alt="">
+            <h1><br><b>Potencialize</b> a produtividade no trabalho remoto</h1>
+            <h2>___________________________</h2>
+            <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
+        <div class="cadastre">
+            <div class="card">
+                <div class="titleCad">Bem-Vindo!!</div><br><br>
+                <div class="inputs">
+                        <div class="input-caixa">
+                            <label for="input_email">Email:</label>
+                            <div class="input-field" id="email_field">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="text" id="input_email" placeholder="Insira seu Email">
+                            </div>
+                            <div id="email-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="input_senha">Senha:</label>
+                            <div class="input-field" id="senha_field">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="input_senha" placeholder="Insira sua Senha">
+                                <i class="fa-solid fa-eye" id="showPassword" onclick="showPassword()"></i>
+                            </div>
+                            <div id="senha-erro" class="mensagem-erro"></div>
+                        </div>
+                            <div id="funcao-erro" class="mensagem-erro"></div>
+                        </div>
+                        <button onclick="autenticar()">Entar</button>
+                    </div>
+                    </div>
     </div>
 </body>
 
@@ -69,7 +53,18 @@
     var tentativas = 3;
     var sendEmail = '';
     var sendSenha = '';
-
+    function showPassword() {
+        if (document.getElementById("showPassword").classList.contains("fa-eye")) {
+            document.getElementById("showPassword").classList.remove("fa-eye");
+            document.getElementById("showPassword").classList.add("fa-eye-slash");
+            input_senha.type = "text";
+        }
+        else {
+            document.getElementById("showPassword").classList.remove("fa-eye-slash");
+            document.getElementById("showPassword").classList.add("fa-eye");
+            input_senha.type = "password";
+        }
+    }
     function autenticar() {
         // aguardar();
 

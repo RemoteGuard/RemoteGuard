@@ -109,18 +109,13 @@ header {
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 80vh;
+    height: 100vh;
     background-color: #d9d9d9;
-    background-image: url(./../img/site/fundoLoginCadastro/tecladoEmouse_ajustado.jpg);
+    background-image: url('../img/Fundo_Login_Cadastro2.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size:cover;
 }
-
-.ultimoLinkLogin{
-    border-radius: 0 0 10px 10px;
-}
-
 /* Estilização do título no container de cadastro */
 .titleCad{
     position: relative;
@@ -133,15 +128,15 @@ header {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -100px;
+    margin-top: -111px;
     font-size: 35px;
     font-weight: bold;
     border-radius: 12px;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
 }
 .cadastre_esquerda{
-    height: 60%;
-    width: 25%;
+    height: 70%;
+    width: 28%;
     border-radius: 10px 0 0 10px;
     background-color: black;
     display: flex;
@@ -149,8 +144,8 @@ header {
     flex-direction: column;
 }
 .cadastre {
-    height: 60%;
-    width: 25%;
+    height: 70%;
+    width: 28%;
     border-radius: 0 10px 10px 0;
     background-color: #ffffff;
     display: flex;
@@ -159,13 +154,13 @@ header {
     padding: 0px; /* Adiciona espaçamento interno */
 }
 .cadastre_esquerda img{
-    width: 28vh;
-    height:8vh;
+    width: 32vh;
+    height:9vh;
 }
 .cadastre_esquerda h1{
     color: #ffffff;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-    font-size: 45px;    
+    font-size: 52px;    
     margin-left: 30px;
 }
 .cadastre_esquerda b{
@@ -177,51 +172,140 @@ header {
     display: flex;
     justify-content: center;
 }
-.cadastre_esquerda button{
-    width: 180px;
+button{
+    display: inline-block;
+  padding: 15px 30px;
+  background-color: #FCDF3B;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 20px;
+  transition: 0.3s;
+    width: 200px;
     padding: 10px ;
     border-radius: 10px;
-    margin-top: 25px;
-    margin-left: 11vh;
-    display: block;
+    margin-top: 5vh;
+    margin-left: 13vh;
     font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
     font-size: 16px;
     border: 1px solid rgb(0, 0, 0);
     transition: color 0.6s, background-color 0.6s; 
 }
-.cadastre_esquerda button:hover{
-    background-color: #ffff00;
-    color: #000;
-    font-weight: bold;
-    
+ button:hover{
+    background-color: transparent;
+    border: 1px solid #FCDF3B;
+    color: #FCDF3B;
+  }
+
+.cadastre button{
+border: 1px solid rgb(0, 0, 0);
+display: flex;
+justify-content: center;
+margin-left: 12vh;
+margin-top: 6vh;
 }
-.cadastre input,
-.cadastre button {
-    width: 180px;
-    padding: 10px ;
-    border-radius: 10px;
-    border: none;
-    margin-top: 25px;
-    margin-left: 20px;
-    display: block;
-    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
-    border: 1px solid rgb(0, 0, 0);
+.cadastre button:hover{
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
 }
 .inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-grupo {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.input-caixa {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-caixa label {
+    font-weight: 900;
+}
+
+.input-field{
     margin-top: 5px;
     height: 60%;
-    padding: 0 5px;
+    padding: 0 10px;
     display: flex;
     gap: 10px;
     align-items: center;
+    border: 1px solid rgb(175, 175, 175);
     border-radius: 10px;
+}
+.input-field_cargo{
+    width: 105%;
+    margin-top: 5px;
+    height: 60%;
+    padding: 0 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 10px;
+}
+
+.input-field i {
+    color: #000000;
+    width: 16px;
+    height: 16px;
+}
+.input-field_cargo i{
+    color: #000000;
+    width: 16px;
+    height: 16px;
+}
+
+.input-field input, 
+.input-field select {
+    width: 100%;
+    flex: 1;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: white;
+}
+.input-field_cargo input,
+.input-field_cargo select {
+    width: 100%;
+    flex: 1;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: white;
+}
+
+.input-field:focus-within {
+    border: 2px solid black;
 }
 #div_mensagem {
     color: #fbff00;
     margin-top: 10px;
     text-align: center;
 }
+.possui_cadastro{
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-family: 'League Spartan', Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+    margin-top: 0.8vh;
+}
+.possui_cadastro_a{
+ 
+    text-decoration: none;
+    color: #000;
 
+}
 h2 {
     text-align: center;
     color: #ffffff;
@@ -306,11 +390,11 @@ h2 {
   transition: 0.5s;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1630px) {
     .cadastre{
         margin-top: 80px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         height: 90%;
     }

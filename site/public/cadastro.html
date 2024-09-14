@@ -11,59 +11,101 @@
 </head>
 
 <body>
-
-    <header class="header">
-        <div class="logo">
-            <a href="index.html"><img src="img/aguia2.png" alt="Logo"></a>
-        </div>
-        <nav class="menu">
-            <ul>
-                <li><a href="#">Página Inicial</a></li>
-                <li><a href="#">Para você</a></li>
-                <li><a href="demo.html">Para seu Negócio</a></li>
-                <li><a href="#">O Remote Guard </a></li>
-            </ul>
-        </nav>
-        <div class="acoes">
-            <a href="login.html" class="abrir-conta">Login</a>
-        </div>
-    </header>
-
     <div class="container">
         <div class="cadastre_esquerda">
             <img  src="img/AguiaComOnome.png" alt="">
             <h1><br><b>Potencialize</b> a produtividade no trabalho remoto</h1>
-            <h2>_________________________</h2>
+            <h2>___________________________</h2>
             <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
         <div class="cadastre">
             <div class="card">
                 <div class="titleCad">Cadastre-se</div>
-                <div class="formulario">
-                    <div class="campo">
-                        <div></div>
-                        <input type="text" id="input_nome" placeholder="Inserir Nome" >
-                        <input type="email" id="input_email" placeholder="  Inserir E-mail">
-                        <input type="password" id="input_senha" placeholder= " Inserir Senha">
+                <div class="inputs">
+                    <div class="input-grupo">
+                        <div class="input-caixa">
+                            <label for="input_nome">Nome:</label>
+                            <div class="input-field" id="nome_field">
+                                <i class="fa-solid fa-user-large"></i>
+                                <input type="text" id="input_nome" placeholder="Insira seu Nome">
+                            </div>
+                            <div id="nome-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="input_email">Email:</label>
+                            <div class="input-field" id="email_field">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="text" id="input_email" placeholder="Insira seu Email">
+                            </div>
+                            <div id="email-erro" class="mensagem-erro"></div>
+                        </div>
+                        </div>
+                        <div class="input-grupo">
+                        <div class="input-caixa">
+                            <label for="input_senha">Senha:</label>
+                            <div class="input-field" id="senha_field">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="input_senha" placeholder="Insira sua Senha">
+                                <i class="fa-solid fa-eye" id="showPassword" onclick="showPassword()"></i>
+                            </div>
+                            <div id="senha-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="input_cpf">CPF:</label>
+                            <div class="input-field" id="cpf_field">
+                                <i class="fas fa-id-card"></i>
+                                <input type="text" id="input_CPF" placeholder="Insira seu CPF">
+                            </div>
+                            <div id="CPF-erro" class="mensagem-erro"></div>
+                        </div>
+                     </div>
+                        <div class="input-grupo">
+                        <div class="input-caixa">
+                            <label for="select_empresa">Empresa:</label>
+                            <div class="input-field" id="empresa_field">
+                                <i class="fas fa-building"></i>
+                                <select id="select_empresa" class="select-empresa">
+                                    <option selected disabled value="#">Selecione a Empresa</option>
+                           
+                                </select>
+                            </div>
+                            <div id="empresa-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="select_funcao">Cargo:</label>
+                            <div class="input-field_cargo" id="funcao_field">
+                                <i class="fas fa-user-tie"></i>
+                                <select id="select_funcao" disabled>
+                                    <option value="#">Selecione seu Cargo</option>
+                                    <option value="tecnico" selected>Gerente</option>
+                                    <option value="arquiteto" disabled>tecnico</option>
+                                </select>
+                            </div>
+                        </div>
+                            <div id="funcao-erro" class="mensagem-erro"></div>
+                        </div>
+                        <button onclick="cadastrar()">Cadastrar</button>
+                        <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a"> Fazer Login</a></span>
                     </div>
-                    <div class="campo">
-                        <input type="text" id="input_cargo" placeholder=" Inserir Cargo">
-                        <input type="text" id="input_empresa" placeholder=" Inserir Empresa">
-                        <input type="password" id="input_cpf" placeholder="Inserir  CPF">
                     </div>
-                </div>
-                <div class="botao">
-                    <button onclick="cadastrar()" style="font-size: medium;">Cadastrar</button>
-                </div>
-                <div id="div_mensagem"></div>
-            </div>
-        </div>
     </div>
 </body>
 
 </html>
 <script>
 
+    function showPassword() {
+        if (document.getElementById("showPassword").classList.contains("fa-eye")) {
+            document.getElementById("showPassword").classList.remove("fa-eye");
+            document.getElementById("showPassword").classList.add("fa-eye-slash");
+            input_senha.type = "text";
+        }
+        else {
+            document.getElementById("showPassword").classList.remove("fa-eye-slash");
+            document.getElementById("showPassword").classList.add("fa-eye");
+            input_senha.type = "password";
+        }
+    }
     function alterarSidebar() {
         let menu = document.querySelector('.headerBarResp');
         // alert("Ativado")
