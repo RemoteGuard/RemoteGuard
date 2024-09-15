@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro | RemoteGuard</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login_cadastro.css">
     <link rel="icon" href="img/svg/aguia2.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -14,19 +14,20 @@
     <div class="container">
         <div class="cadastre_esquerda">
             <img  src="img/AguiaComOnome.png" alt="">
-            <h1><br><b>Potencialize</b> a produtividade no trabalho remoto</h1>
-            <h2>___________________________</h2>
+            <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
+ 
             <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
         <div class="cadastre">
             <div class="card">
-                <div class="titleCad">Bem-Vindo De Volta !</div><br><br>
-                <div class="inputs">
+                <div class="titleCad">Cadastre-se</div>
+                <div class="inputs-login">
+                    <div class="input-grupo_login">
                         <div class="input-caixa">
-                            <label for="input_email">Email:</label>
-                            <div class="input-field" id="email_field">
+                            <label for="input_nome">Email:</label>
+                            <div class="input-field" id="emial_field">
                                 <i class="fa-solid fa-envelope"></i>
-                                <input type="text" id="input_email" placeholder="Insira seu Email">
+                                <input type="text" id="input_email" placeholder="Insira seu E-mail">
                             </div>
                             <div id="email-erro" class="mensagem-erro"></div>
                         </div>
@@ -34,12 +35,10 @@
                             <label for="input_senha">Senha:</label>
                             <div class="input-field" id="senha_field">
                                 <i class="fa-solid fa-lock"></i>
-                                <input type="password" id="input_senha" placeholder="Insira sua Senha">
-                                <i class="fa-solid fa-eye" id="showPassword" onclick="showPassword()"></i>
+                                <input type="text" id="input_senha" placeholder="Insira sua Senha">
                             </div>
                             <div id="senha-erro" class="mensagem-erro"></div>
                         </div>
-                            <div id="funcao-erro" class="mensagem-erro"></div>
                         </div>
                         <button onclick="autenticar()">Entrar</button>
                     </div>

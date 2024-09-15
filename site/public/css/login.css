@@ -443,5 +443,200 @@ header {
     background-color: #FCDF3B;
     color: rgb(0, 0, 0);
 }
+@media screen and (max-width: 1751px) {
 
+    .cadastre_esquerda{
+        height: 70%;
+        width: 30%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 30%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+button{
+    margin-left: 12vh;
+    margin-top: 5vh;
+}
+}
+
+@media screen and (max-width: 1411px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 35%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 35%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+}
+         
+@media screen and (max-width: 1208px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 40%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 40%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+}
+
+@media screen and (max-width: 1057px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 45%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 45%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+}
+
+@media screen and (max-width: 940px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 50%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 50%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+
+}
+@media screen and (max-width: 846px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 70%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 70%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+
+}
+@media screen and (max-width: 822px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 150%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 150%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+}
+@media screen and (max-width: 761px) {
+    .cadastre_esquerda{
+        height: 70%;
+        width: 70%;
+        border-radius: 10px 0 0 10px;
+        background-color: black;
+        display: flex;
+        padding: 35px;
+        flex-direction: column;
+    }
+    
+    .cadastre {
+        height: 70%;
+        width: 70%;
+        border-radius: 0 10px 10px 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        padding: 0px;  
+}
+.inputs {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+button{
+    width: 150px;
+}
+}
 
