@@ -35,7 +35,8 @@ CREATE TABLE funcionario(
 
 select * from notebook;
 CREATE TABLE notebook(
-	idNotebook BIGINT primary key,
+	idNotebook int primary key,
+    nome varchar(100),
     marca VARCHAR(30) NOT NULL,
     modelo VARCHAR(45) NOT NULL,
     memoriaRAM INT NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE armazenamento(
 	idArmazenamento INT auto_increment,
     tipo VARCHAR(45) NOT NULL,
     tamanho INT NOT NULL, 
-    fkNotebook bigint,
+    fkNotebook int,
     CONSTRAINT pkArmazenamento  primary key(idArmazenamento, fkNotebook),
     CONSTRAINT fkNotebookArmazenamento foreign key (fkNotebook) references notebook(idNotebook),
     CONSTRAINT chkTipo CHECK (tipo IN ('SSD', 'HD'))
@@ -59,7 +60,7 @@ CREATE TABLE controleFluxo(
     dtInicio timestamp default current_timestamp,
     dtSaida DATE,
     fkFuncionario INT NOT NULL,
-    fkNotebook bigint NOT NULL,
+    fkNotebook int NOT NULL,
     CONSTRAINT pkControleFluxo primary key (idControleFluxo, fkFuncionario, fkNotebook),
     CONSTRAINT fkFuncionarioControleFluxo foreign key (fkFuncionario) references funcionario(idFuncionario),
     CONSTRAINT fkNotebookControleFluxo foreign key (fkNotebook) references notebook(idNotebook)
@@ -74,7 +75,7 @@ CREATE TABLE dados(
     usedRAM decimal(7,2),
     percDisc decimal(5,2),
     usedDisc decimal(7,2),
-    fkNotebook bigint,
+    fkNotebook int,
     constraint pkDados primary key (idDados, fkNotebook),
     constraint fkNotebookDados foreign key (fkNotebook) references notebook(idNotebook)
     );
@@ -83,7 +84,7 @@ CREATE TABLE processos(
 	idProcesso int auto_increment,
     dataHora timestamp default current_timestamp,
     nomeProcesso varchar(80),
-	fkNotebook bigint,
+	fkNotebook int,
     constraint pkProcessos primary key (idProcesso, fkNotebook),
     constraint fkNotebookProcessos foreign key (fkNotebook) references notebook(idNotebook)
 );
