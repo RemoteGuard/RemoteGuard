@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | RemoteGuard</title>
+    <link rel="stylesheet" href="css/login_cadastro.css">
+    <link rel="icon" href="img/svg/aguia2.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="cadastre_esquerda">
+            <img  src="img/AguiaComOnome.png" alt="">
+            <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
+ 
+            <button onclick="location.href='index.html'">Voltar ao Início</button>
+        </div>
+        <div class="cadastre">
+            <div class="card">
+                <div class="titleCad">Cadastre-se</div>
+                <div class="inputs-login">
+                    <div class="input-grupo_login">
+                        <div class="input-caixa">
+                            <label for="input_nome">Email:</label>
+                            <div class="input-field" id="emial_field">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="text" id="input_email" placeholder="Insira seu E-mail">
+                            </div>
+                            <div id="email-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="input_senha">Senha:</label>
+                            <div class="input-field" id="senha_field">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="text" id="input_senha" placeholder="Insira sua Senha">
+                            </div>
+                            <div id="senha-erro" class="mensagem-erro"></div>
+                        </div>
+                        </div>
+                        <button onclick="autenticar()">Entrar</button>
+                    </div>
+                    </div>
+    </div>
+</body>
+
+</html>
+<script>
+
+    var tentativas = 3;
+    var sendEmail = '';
+    var sendSenha = '';
+    function showPassword() {
+        if (document.getElementById("showPassword").classList.contains("fa-eye")) {
+            document.getElementById("showPassword").classList.remove("fa-eye");
+            document.getElementById("showPassword").classList.add("fa-eye-slash");
+            input_senha.type = "text";
+        }
+        else {
+            document.getElementById("showPassword").classList.remove("fa-eye-slash");
+            document.getElementById("showPassword").classList.add("fa-eye");
+            input_senha.type = "password";
+        }
+    }
+    function autenticar() {
+        // aguardar();
+
+        var email = input_email.value;
+        var senha = input_senha.value;
+        sendEmail = email;
+        sendSenha = senha;
+
+        if (email == "" || senha == "") {
+            div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            finalizarAguardar();
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", email);
+        console.log("FORM SENHA: ", senha);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: sendEmail,
+                senhaServer: sendSenha
+            })
+        }).then(function (resposta) {
+            console.log(`Resposta da requisição: ${JSON.stringify(resposta)}`);
+
+            if (resposta.ok) {
+                alert("Autenticação feita com sucesso");
+                resposta.json().then(json => {
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.data.email;
+                    sessionStorage.ID_USUARIO = json.data.id;
+                });
+
+            } else {
+                alert('Usuário não encontrado!');
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    // finalizarAguardar(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+    }
+
+    let menu = document.querySelector('#divLinksLogin');
+
+    function showMain(){
+        menu.style.display = 'flex';
+        clearTimeout(tempo_espera);
+    }
+    function hiddeMain(){
+            tempo_espera = setTimeout(function(){
+            menu.style.display = 'none';
+        }, 1000);
+    }
+</script>

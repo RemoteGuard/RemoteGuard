@@ -1,0 +1,610 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    height: 70vh;
+    background-image: url('../img/tela1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #202020;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    white-space: nowrap;
+}
+
+h2 {
+    font-size: 2.5rem;
+    color: #202020;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    white-space: nowrap;
+}
+
+h4 {
+    font-size: 1.5rem;
+    color: #202020;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 16px;
+
+}
+
+p {
+    font-size: 1rem;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* HEADER/ CABEÇARIO */
+
+header {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #eeeeee00;
+    transition: background-color 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+/* FUÇÃO PARA AO ROLAR A TELA EXIBIR UM BACKGROUD */
+header.scrolled {
+    background-color: #202020;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 5px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.menu ul li a:hover {
+    color: #FCDF3B;
+    border-bottom: 2px solid #FCDF3B;
+}
+
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.acoes a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.area-cliente {
+    color: #FCDF3B;
+    border: 1px solid transparent;
+}
+
+.area-cliente:hover {
+    border-color: #FCDF3B;
+}
+
+.fazer-login {
+    color: #FCDF3B;
+    border: 1px solid #FCDF3B;
+}
+
+.fazer-login:hover {
+    background-color: #FCDF3B;
+    color: rgb(0, 0, 0);
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 150px;
+}
+
+.promo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 100px;
+    margin-left: 3px;
+}
+
+.promo-text h1 {
+    font-size: 80px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+}
+
+.promo-text p {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+}
+
+.btn-guard {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #FCDF3B;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn-guard:hover {
+    background-color: transparent;
+    border: 1px solid #FCDF3B;
+    color: #FCDF3B;
+}
+
+.promo-image img {
+    width: 400px;
+    border-radius: 10px;
+}
+
+/* SESSÃO NOSSO LEMA */
+.sessaoLema {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 200px;
+    padding: 100px 0%;
+    white-space: nowrap;
+}
+
+.conteudo {
+    flex: 1;
+    max-width: 50%;
+    margin-bottom: 1%;
+    margin-top: 10px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    color: #EEC302;
+    border: 2px solid #EEC302;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #EEC302;
+    color: #000000;
+}
+
+.recursoss {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    width: 50%;
+    margin-top: 150px;
+    margin-right: 400px;
+}
+
+.recursos-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.recursos-icon {
+    width: 100px;
+    height: 100px;
+    overflow: visible;
+    display: block;
+}
+
+.recursos-icon img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.recursos-text h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #3b3b3b;
+    font-weight: bold;
+}
+
+.recursos-text p {
+    margin: 0;
+    color: #6d6d6d;
+}
+
+/* SESSÃO SOBRE NÓS */
+#Sobre-nos {
+    background-color: #e8e7e75a;
+    width: 100%;
+    padding-top: 4%;
+    padding-bottom: 5%;
+}
+
+.titulo-sobre-nos {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #EEC302;
+    opacity: 0;
+}
+
+.container-missao {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+    opacity: 0;
+}
+
+/* ANIMAÇÃO */
+.titulo-sobre-nos,
+.container-missao {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.titulo-sobre-nos.show,
+.container-missao.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.texto-missao {
+    max-width: 55%;
+    color: white;
+}
+
+.textoH2 {
+    color: #000000;
+    font-size: 2.5vh;
+    font-weight: bold;
+}
+
+.imagem-missao {
+    max-width: 40%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imagem-missao img {
+    width: 490px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* SESSÃO DE TITULO */
+.teste1 {
+    background-color: #e8e7e75a; 
+    padding: 20px;
+    text-align: center;
+    
+}
+
+/* SESSÃO DA DASHBOARD PARA O CLIENTE DE EXEMPLO */
+.oque-somos {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: #FCDF3B;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.teste1 h1 {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #202020;
+    text-align: center;
+    transition: transform 0.3s ease;
+    flex-direction: column;
+}
+
+.card-left {
+    background-color: #EEC302;
+}
+
+.card-right {
+    background-color: #FCDF3B;
+}
+
+.card-image {
+    width: 550px;
+    height: auto;
+    margin-bottom: 120px;
+}
+
+.content h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.content a {
+    color: #202020;
+    text-decoration: none;
+    background-color: #FFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: 000;
+    background-color: transparent;
+    border: 2px solid #202020;  
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.content a:hover {
+    background-color: #202020;
+    color: #ffffff;
+}
+
+/* SESSÃO MISSÃO, VISÃO E VALORES */
+
+.sessao-mvv {
+    width: 100%;
+    padding: 90px 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo-mvv {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.titulo-mvv h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.titulo-mvv p {
+    color: #666;
+    font-size: 18px;
+}
+
+.cards-mvv-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 100px;
+    padding: 20px;
+    max-width: 1200px;
+    flex-wrap: wrap;
+}
+
+.card-mvv {
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 320px;
+    height: 400px;
+    text-align: center;
+    padding: 60px 20px 30px 20px;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+    margin-top: 50px;
+    -webkit-box-shadow: -2px 1px 30px 0px rgba(0, 0, 0, 0.54);
+    -moz-box-shadow: -2px 1px 30px 0px rgba(0, 0, 0, 0.54);
+    box-shadow: -2px 1px 30px 0px rgba(0, 0, 0, 0.54);
+}
+
+.card-mvv {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Animação */
+.card-mvv.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Fundo Redondo dos cards*/
+.card-mvv::before {
+    content: '';
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.missao::before {
+    background-color: #202020;
+}
+
+.visao::before {
+    background-color: #202020;
+}
+
+.valores::before {
+    background-color: #202020;
+}
+
+.icone-container {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.icone {
+    width: 250px;
+    height: 250px;
+}
+
+.card-mvv h3 {
+    margin-top: 90px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-mvv p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-top: 10px;
+}
+
+.missao h3 {
+    color: #202020;
+}
+
+.visao h3 {
+    color: #202020;
+}
+
+.valores h3 {
+    color: #202020;
+}
+
+/* SESSÃO FOOTER */
+.footer {
+    background-color: #202020;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    width: 100%;
+    border-top: 2px solid #ae2d6700;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    padding: 20px 0;
+}
+
+.footer-container {
+    background-color: #202020;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+}
+
+.logo-footer {
+    width: 130px;
+    margin-left: 10%;
+}
+
+.footer-contacts {
+    font-size: 0.9rem;
+    text-align: left;
+    margin-left: 10%;
+}
+
+.Redes {
+    width: 200px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-social p {
+    color: white;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.footer-social p:hover {
+    color: #ffffff;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    width: 100%;
+    text-align: center;
+
+}
+
