@@ -1,4 +1,4 @@
-
+### SCRIPT QUE NÃO DEVE SER UTILIZADO!
 import psutil # Captura os dados da maquina
 import pandas as pd # Usamos duas funções, uma para transformar em DataFrame e outra para agrupar
 import time # Responsavel pela discretização de tempo
