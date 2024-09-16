@@ -3,29 +3,45 @@ import time # Responsavel pela discretização de tempo
 import mysql.connector #Conexao com banco de dados
 import uuid #Unique Universal ID - Placa de rede e pk da tabela notebook  
 import os # Nos fala se estamos usando Windows ou Linux
+import socket
 
-endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa de rede interna do dispositivo 
-
+# endereco = uuid.getnode() # endereço MAC do dispositivo, está ligado a placa de rede interna do dispositivo 
 conn = mysql.connector.connect( #Estabelecendo conexao com o banco de dados
         host="localhost",
-        user="server",
-        password="",
+        user="aluno",
+        password="sptech",
         database="remoteGuard"
     )
-
-
-nomeSO = os.name #Pegando o nome do SO
-if nomeSO == 'nt': #Se o sistema operacional for windows  
-    chamadaDisco = 'C:\\' #O disco vai ser chamado assim
-else: #Se for linux
-    chamadaDisco = '/'  # O disco vai ser chamado assim
-
-
-
 cursor = conn.cursor() #Criando um cursor (objeto que executa códigos)
+
+def getHostname():
+    return socket.gethostname()
+5
+def getRootDirectory():
+    return 'C:\\' if os.name == 'nt' else '/'
+
+def verifyEquipmentRegister():
+    global fkNotebook
+    hostname = getHostname()
+    # hostname = 'hostTeste'
+    sql = f"SELECT idNotebook, hostname FROM notebook WHERE hostname = %s"
+    cursor.execute(sql, (hostname,))
+    register = cursor.fetchone()
+
+    if register: 
+        fkNotebook = register[0]
+    else:
+        sql = f"INSERT INTO notebook (hostname) VALUES (%s)"
+        cursor.execute(sql, (hostname,))
+        conn.commit()
+        fkEquip = cursor.lastrowid
+
+
+
 def capturarDados(delayProcessos, delayDados):
   cont = 1
-  while True:
+  run = True
+  while run:
         # try:
           if(cont % delayProcessos == 0) or cont == 1:# Quando o contador for divisivel pelo numero escolhido pelo usuario entra nesse IF
                   
@@ -35,12 +51,10 @@ def capturarDados(delayProcessos, delayDados):
                       
                       nome = process.name()
                       if(nome not in listaProcessosIgnorados and process.status() == 'running'):
-                                      sql = "INSERT INTO processos (nomeProcesso, fkNotebook) values (%s,%s);"
-                                      valores = (nome, endereco)
-
-                                      cursor.execute(sql, valores)
-
-                                      conn.commit()
+                        sql = "INSERT INTO processos (nomeProcesso, fkNotebook) values (%s,%s);"
+                        valores = (nome, fkNotebook)
+                        cursor.execute(sql, valores)
+                        conn.commit()
                                       
       
           if cont % delayDados == 0 or cont == 1: # Quando o contador for divisivel pelo numero escolhido pelo usuario entra nesse IF
@@ -69,7 +83,7 @@ def capturarDados(delayProcessos, delayDados):
               usedDisk = usedDisk / (pow(10,9))
               
               sql = "INSERT INTO dados (percCPU,  tempoInativo, percRAM, usedRAM, percDisc, usedDisc, fkNotebook) values (%s,%s,%s, %s, %s, %s, %s);"
-              valores = (percCPU, inativo, percRAM, usedRAM, percDisk, usedDisk, endereco)
+              valores = (percCPU, inativo, percRAM, usedRAM, percDisk, usedDisk, fkNotebook)
 
               cursor.execute(sql, valores)
 
