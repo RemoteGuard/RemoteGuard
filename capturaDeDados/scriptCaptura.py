@@ -1,5 +1,4 @@
 import psutil # Captura os dados da maquina
-import pandas as pd # Usamos duas funções, uma para transformar em DataFrame e outra para agrupar
 import time # Responsavel pela discretização de tempo
 import mysql.connector #Conexao com banco de dados
 import uuid #Unique Universal ID - Placa de rede e pk da tabela notebook  
