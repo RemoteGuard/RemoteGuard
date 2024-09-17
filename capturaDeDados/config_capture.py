@@ -1,5 +1,4 @@
 import psutil # Captura de Dados de Máquina.
-import time # Funções Temporais -> Discretização.
 import pymysql # Conexão com Banco de Dados.
 import os # Identificação do Sistema Operacional da Máquina.
 import socket # Captura do Nome da Máquina (Hostname).

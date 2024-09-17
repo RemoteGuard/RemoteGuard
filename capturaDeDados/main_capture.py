@@ -1,4 +1,4 @@
-from config_capture import conn, cursor, get_hostname, get_root_directory, verify_equipment_registration, get_process_iter, get_cpu_data, get_ram_data, get_disk_data, list_ignored_processes
+from config_capture import conn, cursor, verify_equipment_registration, get_process_iter, get_cpu_data, get_ram_data, get_disk_data, list_ignored_processes
 import time
 
 def data_capture(processes_monitoring_delay, data_capture_delay):
