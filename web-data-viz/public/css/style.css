@@ -10,7 +10,7 @@ body {
     margin: 0;
     padding: 0;
     height: 70vh;
-    background-image: url('../img/tela1.png');
+    background-image: url('../assets/imgs/tela-inicial.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
