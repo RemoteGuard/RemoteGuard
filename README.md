@@ -17,9 +17,9 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 
 ## Funcionalidades
 
-- **Monitoramento do Uso do CPU**: Captura e analisa dados de padrões de uso da CPU a cada cinco minutos para identificar possíveis comportamentos de procrastinação.
+- **Monitoramento do Uso do CPU**: Captura  dados  de uso da CPU a cada 10 segundo para identificar possíveis comportamentos de procrastinação.
 - **Geração de Relatórios**: Relatórios detalhados mostrando o uso de recursos, períodos de inatividade e uso excessivo não relacionado ao trabalho.
-- **Notificações e Alertas**: Envio de notificações para administradores sobre padrões de uso que possam indicar procrastinação.
+- **Notificações e Alertas**: Envio de notificações para gestores sobre padrões de uso que possam indicar procrastinação.
 - **Interface de Visualização**: Interface web para visualização de gráficos e relatórios sobre o comportamento dos usuários em tempo real.
 - **Armazenamento de Dados**: Banco de dados para armazenar informações sobre consumo de recursos e padrões de uso ao longo do tempo.
 
@@ -33,7 +33,7 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 
 - Compatível com sistemas operacionais Windows e Linux.
 - Conexão estável com a internet durante o horário de trabalho.
-- Funcionários instruídos sobre o uso do software.
+- Funcionários instruídos sobre o uso da aplicação.
 
 ## Instalação
 
