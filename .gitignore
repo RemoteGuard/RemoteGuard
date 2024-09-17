@@ -1,6 +1,5 @@
 node_modules
 minimist
-package-lock.json
 package.json
 venv
 __pycache__/
