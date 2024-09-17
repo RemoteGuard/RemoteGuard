@@ -1,6 +1,6 @@
 node_modules
 minimist
-package.json
+
 venv
 __pycache__/
 *.bak
