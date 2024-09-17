@@ -3,3 +3,5 @@ minimist
 package-lock.json
 package.json
 venv
+__pycache__/
+*.bak
