@@ -27,7 +27,7 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 
 - **Linguagens de Programação**: JavaScript, HTML, CSS, Node.js, SQL, Java, Python
 - **Plataformas**: AWS (armazenamento na nuvem), MySQL (banco de dados)
-- **Ferramentas**: VSCode, IntelliJ
+- **Ferramentas**: VSCode, IntelliJ, AWS (EC2)
 
 ## Requisitos
 
