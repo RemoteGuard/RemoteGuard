@@ -1,11 +1,11 @@
-DROP DATABASE IF EXISTS remoteGuard;
+DROP DATABASE IF EXISTS remote_guard;
 
-CREATE DATABASE remoteGuard;
+CREATE DATABASE remote_guard;
 
-USE remoteGuard;
+USE remote_guard;
 
-CREATE TABLE empresa(
-	idEmpresa int primary key  auto_increment,
+CREATE TABLE empresa (
+	idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
     razaoSocial VARCHAR(100) NOT NULL,
     nomeFantasia VARCHAR(100),
     cep CHAR(8) NOT NULL,
@@ -13,77 +13,81 @@ CREATE TABLE empresa(
     telefone CHAR(11) NOT NULL,
     email VARCHAR(40) NOT NULL,
     cnpj CHAR(14)
-);
+) AUTO_INCREMENT = 100;
 
-CREATE TABLE funcionario(
-	idfuncionario INT auto_increment NOT NULL,
+CREATE TABLE funcionario (
+	idFuncionario INT AUTO_INCREMENT,
     cargo VARCHAR(45) NOT NULL,
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) NOT NULL,
     email VARCHAR(45) NOT NULL,
     senha VARCHAR(45) NOT NULL,
-    fotoPerfil text,
+    fotoPerfil TEXT,
     fkEmpresa INT NOT NULL,
     fkSupervisor INT,
-    CONSTRAINT pkFuncionario primary key (idFuncionario, fkEmpresa),
-    CONSTRAINT fkEmpresaSupervisor foreign key (fkEmpresa) references empresa(idEmpresa),
-    CONSTRAINT fkSupervisorFuncionario foreign key (fkSupervisor) references funcionario(idFuncionario)
-);
+    CONSTRAINT pkFuncionario PRIMARY KEY (idFuncionario, fkEmpresa),
+    CONSTRAINT fkEmpresaFuncionario FOREIGN KEY (fkEmpresa) 
+		REFERENCES empresa(idEmpresa),
+    CONSTRAINT fkSupervisorFuncionario FOREIGN KEY (fkSupervisor) 
+		REFERENCES funcionario(idFuncionario)
+) AUTO_INCREMENT = 1000;
 
 
 CREATE TABLE notebook(
-	idNotebook int primary key,
-    nome varchar(100),
-    marca VARCHAR(30) NOT NULL,
-    modelo VARCHAR(45) NOT NULL,
-    memoriaRAM INT NOT NULL,
-    processador VARCHAR(25) NOT NULL
-);
+	idNotebook INT PRIMARY KEY AUTO_INCREMENT,
+    hostname varchar(100)
+    -- marca VARCHAR(30) NOT NULL,
+    -- modelo VARCHAR(45) NOT NULL,
+    -- memoriaRAM INT NOT NULL,
+    -- processador VARCHAR(25) NOT NULL
+) AUTO_INCREMENT = 1100;
 
 CREATE TABLE armazenamento(
-	idArmazenamento INT auto_increment,
-    tipo VARCHAR(45) NOT NULL,
+	idArmazenamento INT AUTO_INCREMENT,
+    tipo ENUM('SSD', 'HD'),
     tamanho INT NOT NULL, 
-    fkNotebook int,
-    CONSTRAINT pkArmazenamento  primary key(idArmazenamento, fkNotebook),
-    CONSTRAINT fkNotebookArmazenamento foreign key (fkNotebook) references notebook(idNotebook),
-    CONSTRAINT chkTipo CHECK (tipo IN ('SSD', 'HD'))
+    fkNotebook INT,
+    CONSTRAINT pkArmazenamento  PRIMARY KEY (idArmazenamento, fkNotebook),
+    CONSTRAINT fkNotebookArmazenamento FOREIGN KEY (fkNotebook) 
+		REFERENCES notebook(idNotebook)
 );
 
-
-
 CREATE TABLE controleFluxo(
-	idControleFluxo INT NOT NULL auto_increment,
-    dtInicio timestamp default current_timestamp,
-    dtSaida DATE,
+	idControleFluxo INT AUTO_INCREMENT,
+    dtInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dtSaida DATETIME,
     fkFuncionario INT NOT NULL,
-    fkNotebook int NOT NULL,
-    CONSTRAINT pkControleFluxo primary key (idControleFluxo, fkFuncionario, fkNotebook),
-    CONSTRAINT fkFuncionarioControleFluxo foreign key (fkFuncionario) references funcionario(idFuncionario),
-    CONSTRAINT fkNotebookControleFluxo foreign key (fkNotebook) references notebook(idNotebook)
+    fkNotebook INT NOT NULL,
+    CONSTRAINT pkControleFluxo PRIMARY KEY (idControleFluxo, fkFuncionario, fkNotebook),
+    CONSTRAINT fkFuncionarioControleFluxo FOREIGN KEY (fkFuncionario) 
+		REFERENCES funcionario(idFuncionario),
+    CONSTRAINT fkNotebookControleFluxo FOREIGN KEY (fkNotebook) 
+		REFERENCES notebook(idNotebook)
 );
 
 CREATE TABLE dados(
-	idDados int auto_increment,
-	dataHora timestamp default current_timestamp,
-	percCPU decimal(5,2),
-    tempoInativo decimal(10,2),
-	percRAM decimal(5,2),
-    usedRAM decimal(7,2),
-    percDisc decimal(5,2),
-    usedDisc decimal(7,2),
-    fkNotebook int,
-    constraint pkDados primary key (idDados, fkNotebook),
-    constraint fkNotebookDados foreign key (fkNotebook) references notebook(idNotebook)
+	idDados INT AUTO_INCREMENT,
+	dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	tempoInatividade DOUBLE,
+    percCPU DECIMAL(4,1),
+    usedRAM DECIMAL(5,2),
+	percRAM DECIMAL(4,1),
+    usedDisk DECIMAL(7,2),
+    percDisk DECIMAL(4,1),
+    fkNotebook INT,
+    CONSTRAINT pkDados PRIMARY KEY (idDados, fkNotebook),
+    CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
+		REFERENCES notebook(idNotebook)
     );
 
 CREATE TABLE processos(
-	idProcesso int auto_increment,
-    dataHora timestamp default current_timestamp,
-    nomeProcesso varchar(80),
-	fkNotebook int,
-    constraint pkProcessos primary key (idProcesso, fkNotebook),
-    constraint fkNotebookProcessos foreign key (fkNotebook) references notebook(idNotebook)
+	idProcesso INT AUTO_INCREMENT,
+    dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    nomeProcesso VARCHAR(80),
+	fkNotebook INT,
+    CONSTRAINT pkProcessos PRIMARY KEY (idProcesso, fkNotebook),
+    CONSTRAINT fkNotebookProcessos FOREIGN KEY (fkNotebook) 
+		REFERENCES notebook(idNotebook)
 );
 
 
@@ -99,7 +103,10 @@ CREATE TABLE processos(
 -- SELECT * FROM notebook_quatro;
 -- SELECT * FROM notebook_cinco;
 
-select * from funcionario;
+SELECT * FROM funcionario;
+SELECT * FROM notebook;
+SELECT * FROM dados;
 
-insert into empresa values (default, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888');
+INSERT INTO empresa VALUES 
+	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888');
 
