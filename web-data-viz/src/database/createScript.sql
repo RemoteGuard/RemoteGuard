@@ -11,17 +11,17 @@ CREATE TABLE empresa (
     cep CHAR(8) NOT NULL,
     numero VARCHAR(4) NOT NULL,
     telefone CHAR(11) NOT NULL,
-    email VARCHAR(40) NOT NULL,
+    email VARCHAR(50) NOT NULL,
     cnpj CHAR(14)
 ) AUTO_INCREMENT = 100;
 
 CREATE TABLE funcionario (
 	idFuncionario INT AUTO_INCREMENT,
     cargo VARCHAR(45) NOT NULL,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(60) NOT NULL,
     cpf CHAR(11) NOT NULL,
-    email VARCHAR(45) NOT NULL,
-    senha VARCHAR(45) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    senha VARCHAR(20) NOT NULL,
     fotoPerfil TEXT,
     fkEmpresa INT NOT NULL,
     fkSupervisor INT,
@@ -39,12 +39,16 @@ CREATE TABLE notebook(
     -- marca VARCHAR(30) NOT NULL,
     -- modelo VARCHAR(45) NOT NULL,
     -- memoriaRAM INT NOT NULL,
-    -- processador VARCHAR(25) NOT NULL
+    -- processador VARCHAR(25) NOT NULL,
+    -- fkEmpresa INT,
+    -- CONSTRAINT pkNotebook PRIMARY KEY (idNotebook, fkEmpresa),
+    -- CONSTRAINT fkEmpresaNotebook FOREIGN KEY (fkEmpresa) 
+		-- REFERENCES empresa(idEmpresa)
 ) AUTO_INCREMENT = 1100;
 
 CREATE TABLE armazenamento(
 	idArmazenamento INT AUTO_INCREMENT,
-    tipo ENUM('SSD', 'HD'),
+    tipo ENUM('SSD', 'HDD'),
     tamanho INT NOT NULL, 
     fkNotebook INT,
     CONSTRAINT pkArmazenamento  PRIMARY KEY (idArmazenamento, fkNotebook),
@@ -106,6 +110,7 @@ CREATE TABLE processos(
 SELECT * FROM funcionario;
 SELECT * FROM notebook;
 SELECT * FROM dados;
+SELECT * FROM processos;
 
 INSERT INTO empresa VALUES 
 	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888');
