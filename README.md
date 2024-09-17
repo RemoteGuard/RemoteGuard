@@ -37,10 +37,3 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 
 
 
-1. Inicie o servidor:
-
-    ```bash
-    npm start
-    ```
-
-2. Acesse a interface web para visualizar os relatórios e gráficos.
