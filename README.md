@@ -1,6 +1,6 @@
 # Remote Guard
 
-**Remote Guard** é um software de monitoramento avançado, projetado para otimizar a produtividade em ambientes de trabalho remoto e híbrido. Com a capacidade de analisar o consumo de recursos dos notebooks empresariais e identificar comportamentos de procrastinação e uso inadequado, o Remote Guard oferece uma solução eficaz para melhorar a eficiência dos colaboradores.
+**Remote Guard** é uma aplicação de monitoramento avançado, projetado para otimizar a produtividade em ambientes de trabalho remoto e híbrido. Com a capacidade de analisar o consumo de recursos dos notebooks empresariais e identificar comportamentos de procrastinação e uso inadequado, o Remote Guard oferece uma solução eficaz para melhorar a eficiência dos colaboradores.
 
 ## Contexto
 
