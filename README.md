@@ -40,7 +40,7 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 1. Clone este repositório:
 
     ```bash
-    git clone https://github.com/seu_usuario/RemoteGuard.git
+    git clone https://github.com/RemoteGuard/RemoteGuard.git
     ```
 
 2. Navegue para o diretório do projeto:
