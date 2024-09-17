@@ -13,7 +13,8 @@ CREATE TABLE empresa (
     telefone CHAR(11) NOT NULL,
     email VARCHAR(50) NOT NULL,
     cnpj CHAR(14)
-) AUTO_INCREMENT = 100;
+);
+SELECT * FROM empresa;
 
 CREATE TABLE funcionario (
 	idFuncionario INT AUTO_INCREMENT,
@@ -114,4 +115,7 @@ SELECT * FROM processos;
 
 INSERT INTO empresa VALUES 
 	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888');
+
+INSERT INTO empresa VALUES 
+	(DEFAULT, 'Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888');
 
