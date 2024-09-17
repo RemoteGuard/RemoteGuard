@@ -35,29 +35,7 @@ Com o crescimento do trabalho remoto e híbrido, especialmente após a pandemia 
 - Conexão estável com a internet durante o horário de trabalho.
 - Funcionários instruídos sobre o uso da aplicação.
 
-## Instalação
 
-1. Clone este repositório:
-
-    ```bash
-    git clone https://github.com/RemoteGuard/RemoteGuard.git
-    ```
-
-2. Navegue para o diretório do projeto:
-
-    ```bash
-    cd RemoteGuard
-    ```
-
-3. Instale as dependências necessárias:
-
-    ```bash
-    npm install
-    ```
-
-4. Configure o ambiente de desenvolvimento conforme as instruções no arquivo `config.md`.
-
-## Uso
 
 1. Inicie o servidor:
 
