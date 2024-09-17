@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-<body onload="listar()">
+<body onload="listarEmpresas()">
     <div class="container">
         <div class="cadastre_esquerda">
-            <img  src="img/AguiaComOnome.png" alt="">
+            <img src="img/AguiaComOnome.png" alt="">
             <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
- 
+
             <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
         <div class="cadastre">
@@ -29,9 +29,7 @@
                                 <i class="fa-solid fa-user-large"></i>
                                 <input type="text" id="input_nome" placeholder="Insira seu Nome">
                             </div>
-                            <div id="nome-erro" class="mensagem-erro"></div>
-                        </div>
-                        <div class="input-caixa">
+                            <listarEmpresasclass="input-caixa">
                             <label for="input_email">Email:</label>
                             <div class="input-field" id="email_field">
                                 <i class="fa-solid fa-envelope"></i>
@@ -39,8 +37,8 @@
                             </div>
                             <div id="email-erro" class="mensagem-erro"></div>
                         </div>
-                        </div>
-                        <div class="input-grupo">
+                    </div>
+                    <div class="input-grupo">
                         <div class="input-caixa">
                             <label for="input_senha">Senha:</label>
                             <div class="input-field" id="senha_field">
@@ -58,15 +56,15 @@
                             </div>
                             <div id="CPF-erro" class="mensagem-erro"></div>
                         </div>
-                     </div>
-                        <div class="input-grupo">
+                    </div>
+                    <div class="input-grupo">
                         <div class="input-caixa">
                             <label for="select_empresa">Empresa:</label>
                             <div class="input-field" id="empresa_field">
                                 <i class="fas fa-building"></i>
                                 <select id="input_empresa" class="select-empresa">
                                     <option selected disabled value="#">Selecione a Empresa</option>
-                           
+
                                 </select>
                             </div>
                             <div id="empresa-erro" class="mensagem-erro"></div>
@@ -82,80 +80,84 @@
                                 </select>
                             </div>
                         </div>
-                            <div id="funcao-erro" class="mensagem-erro"></div>
-                        </div>
-                        <button onclick="cadastrar()">Cadastrar</button>
-                        <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a"> Fazer Login</a></span>
+                        <div id="funcao-erro" class="mensagem-erro"></div>
                     </div>
-                    </div>
-    </div>
+                    <button onclick="cadastrar()">Cadastrar</button>
+                    <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a">
+                            Fazer Login</a></span>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
 <script>
 
-    function showPassword() {
-        if (document.getElementById("showPassword").classList.contains("fa-eye")) {
-            document.getElementById("showPassword").classList.remove("fa-eye");
-            document.getElementById("showPassword").classList.add("fa-eye-slash");
-            input_senha.type = "text";
-        }
-        else {
-            document.getElementById("showPassword").classList.remove("fa-eye-slash");
-            document.getElementById("showPassword").classList.add("fa-eye");
-            input_senha.type = "password";
-        }
-    }
-    function alterarSidebar() {
-        let menu = document.querySelector('.headerBarResp');
-        // alert("Ativado")
-
-        if(menu.style.width == '50%'){
-            menu.style.width = '0%'
-        } else{
-            menu.style.width = '50%'
-        }
-    }
-
     var requisicaoPadrao = '';
     var empresas = [];
 
-    function listar() {
+    function listarEmpresas() {
         fetch("/empresas/listar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                requisicaoPadraoServer: requisicaoPadrao
-            })
+            body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
         }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
             if (resposta.ok) {
-                console.log(resposta);
-
                 resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    console.log(json.resultado[0].idEmpresa)
-                    for (var cont = 0; cont <= json.resultado.length - 1; cont ++){
-                    var empresa = json.resultado[cont];
-                    empresas.push(empresa.nomeFantasia)
-                }               
+                    const selectEmpresa = document.getElementById("input_empresa");
+                    json.resultado.forEach(empresa => {
+                        const option = document.createElement("option");
+                        option.value = empresa.idEmpresa; // ou outro identificador
+                        option.textContent = empresa.nomeFantasia;
+                        selectEmpresa.appendChild(option);
+                    });
                 });
-            finalizarAguardar();
-
-          } else {
-            throw "Houve um erro ao tentar realizar o cadastro!";
-          }
-        })
-        .catch(function (resposta) {
-          console.log(`#ERRO: ${resposta}`);
+            } else {
+                throw "Erro ao listar empresas!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
         });
+    }
 
-      return false; 
-}
+    // function listar() {
+    //     fetch("/empresas/listar", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             requisicaoPadraoServer: requisicaoPadrao
+    //         })
+    //     }).then(function (resposta) {
+    //         console.log("ESTOU NO THEN DO entrar()!")
+
+    //         if (resposta.ok) {
+    //             console.log(resposta);
+
+    //             resposta.json().then(json => {
+    //                 console.log(json);
+    //                 console.log(JSON.stringify(json));
+    //                 console.log(json.resultado[0].idEmpresa)
+    //                 for (var cont = 0; cont <= json.resultado.length - 1; cont++) {
+    //                     var empresa = json.resultado[cont];
+    //                     empresas.push(empresa.nomeFantasia)
+    //                 }
+    //             });
+    //             finalizarAguardar();
+
+    //         } else {
+    //             throw "Houve um erro ao tentar realizar o cadastro!";
+    //         }
+    //     })
+    //         .catch(function (resposta) {
+    //             console.log(`#ERRO: ${resposta}`);
+    //         });
+
+    //     return false;
+    // }
 
     function cadastrar() {
         var nomeVar = input_nome.value;
@@ -273,7 +275,7 @@
                         resposta.json().then(json => {
                             console.log(JSON.stringify(json));
                             // O método includes busca uma substring dentro de um string, ou seja, se o SQL retornar a mensagem "Duplicate entry" ele entra no if
-                            if(JSON.stringify(json).includes("Duplicate entry")){
+                            if (JSON.stringify(json).includes("Duplicate entry")) {
                                 alert("O email utilizado já existe no sistema");
                             }
                         });
@@ -289,17 +291,21 @@
 
     let menu = document.querySelector('#divLinksLogin');
 
-    function showMain(){
+    function showMain() {
         menu.style.display = 'flex';
         clearTimeout(tempo_espera);
     }
-    function hiddeMain(){
-            tempo_espera = setTimeout(function(){
+    function hiddeMain() {
+        tempo_espera = setTimeout(function () {
             menu.style.display = 'none';
         }, 1000);
     }
 
+    window.onload = function() {
+        listarEmpresas();
+        listar(); // Chama a função existente se necessário
+    };
 
 
-</script>
+
 </script>
