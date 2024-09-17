@@ -21,11 +21,11 @@ def data_capture(processes_monitoring_delay, data_capture_delay):
         if cont_time % data_capture_delay == 0 or cont_time == 1: # Insere os Dados no Banco de acordo com a Discretização.   
             # Chamada para Funções de Captura dos Componentes:
             cpu_idle_time, cpu_usage_percentage = get_cpu_data()
-            ram_usage_gigabytes, ram_usage_percentage = get_ram_data()
-            disk_usage_gigabytes, disk_usage_percentage = get_disk_data()
+            ram_usage_bytes, ram_usage_percentage = get_ram_data()
+            disk_usage_bytes, disk_usage_percentage = get_disk_data()
             
             sql = "INSERT INTO dados (tempoInatividade, percCPU, usedRAM, percRAM, usedDisk, percDisk, fkNotebook) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-            val = (cpu_idle_time, cpu_usage_percentage, ram_usage_gigabytes, ram_usage_percentage, disk_usage_gigabytes, disk_usage_percentage, fkNotebook)
+            val = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage, disk_usage_bytes, disk_usage_percentage, fkNotebook)
             cursor.execute(sql, val)
             conn.commit()
             

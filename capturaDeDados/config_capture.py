@@ -7,8 +7,8 @@ def create_db_connection(): # Função para Criar a Conexão com Banco de Dados.
     try:
         conn = pymysql.connect( # Conexão com o Banco de Dados.
                 host="localhost",
-                user="",
-                password="",
+                user="murillo",
+                password="D@rkKn!ght2005",
                 database="remote_guard"
             )
         cursor = conn.cursor() # Cursor (Objeto) para Executar Comandos SQL.
@@ -56,15 +56,15 @@ def get_cpu_data():
 
 def get_ram_data():
     ram_data = psutil.virtual_memory()._asdict()
-    ram_usage_gigabytes = round((ram_data['used'] / pow(10, 9)), 2) # Converte para Gigabytes e Arredonda para duas Casas Decimais.
+    ram_usage_bytes = ram_data['used'] # Captura em Bytes.
     ram_usage_percentage = ram_data['percent']
-    return ram_usage_gigabytes, ram_usage_percentage
+    return ram_usage_bytes, ram_usage_percentage
 
 def get_disk_data():
     disk_data = psutil.disk_usage(get_root_directory())._asdict()
-    disk_usage_gigabytes = round((disk_data['used'] / pow(10, 9)), 2)
+    disk_usage_bytes = disk_data['used'] # Captura em Bytes.
     disk_usage_percentage = disk_data['percent']
-    return disk_usage_gigabytes, disk_usage_percentage
+    return disk_usage_bytes, disk_usage_percentage
 
 # Lista contendo os Processos Ignorados pela Captura.
 list_ignored_processes = [
