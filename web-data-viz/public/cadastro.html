@@ -12,28 +12,31 @@
 
 <body onload="listarEmpresas()">
     <div class="container">
-        <div class="cadastre_esquerda">
-            <img src="img/AguiaComOnome.png" alt="">
+        <div class="cadastre_esquerda" >
+            <img src="./assets/imgs/AguiaComOnome.png" alt="">
             <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
 
             <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
         <div class="cadastre">
             <div class="card">
-                <div class="titleCad">Cadastre-se</div>
                 <div class="inputs">
+                <div class="titleCad">Cadastre-se</div>
                     <div class="input-grupo">
                         <div class="input-caixa">
                             <label for="input_nome">Nome:</label>
                             <div class="input-field" id="nome_field">
-                                <i class="fa-solid fa-user-large"></i>
-                                <input type="text" id="input_nome" placeholder="Insira seu Nome">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="input_senha" placeholder="Insira seu nome">
+                        
                             </div>
-                            <listarEmpresasclass="input-caixa">
-                            <label for="input_email">Email:</label>
+                            <div id="nome-erro" class="mensagem-erro"></div>
+                        </div>
+                        <div class="input-caixa">
+                            <label for="inpu_email">E-mail:</label>
                             <div class="input-field" id="email_field">
                                 <i class="fa-solid fa-envelope"></i>
-                                <input type="text" id="input_email" placeholder="Insira seu Email">
+                                <input type="text" id="input_email" placeholder="Insira seu E-mail">
                             </div>
                             <div id="email-erro" class="mensagem-erro"></div>
                         </div>
