@@ -10,13 +10,14 @@
 </head>
 
 <body>
-     <!-- HEADER/ CABEÇARIO  -->
+    <!-- HEADER/ CABEÇARIO  -->
     <header class="header">
         <div class="logo">
             <a href="index.html"><img src="./assets/imgs/logo4-amarela.svg" alt="Logo"></a>
         </div>
-        <nav class="menu">
+        <nav class="menu" id="menu-list">
             <ul>
+                <li class="menu-login"><a href="login.html">Login</a></li>
                 <li><a href="#" id="linkinicial">Página Inicial</a></li>
                 <li><a href="#" id="linkSobre-nos">Para você</a></li>
                 <li><a href="#" id="linkoque-somos">Para seu Negócio</a></li>
@@ -26,6 +27,13 @@
         <div class="acoes">
             <a href="login.html" class="fazer-login">Login</a>
         </div>
+
+        <div class="hamburguer" id="hamburguer-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
     </header>
 
     <main id="Inicial">
@@ -85,7 +93,7 @@
             </div>
         </div>
     </section>
-<!-- SESSÃO SOBRE NÓS -->
+    <!-- SESSÃO SOBRE NÓS -->
     <section id="Sobre-nos" class="sobre-nos">
         <h2 class="titulo-sobre-nos">Conheça Nosso Trabalho</h2>
         <div class="container-missao">
@@ -136,7 +144,7 @@
         </div>
     </section>
 
-<!-- /* SESSÃO MISSÃO, VISÃO E VALORES */ -->
+    <!-- /* SESSÃO MISSÃO, VISÃO E VALORES */ -->
     <section class="sessao-mvv">
         <div class="titulo-mvv">
             <h2>Nossa Missão, Visão e Valores</h2>
@@ -197,6 +205,18 @@
 </html>
 <script>
 
+
+    // FUNÇÃO PARA MENU HAMBURGUER EM TELAS MENORES
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburguerIcon = document.getElementById('hamburguer-icon');
+        const menuList = document.getElementById('menu-list');
+
+        hamburguerIcon.addEventListener('click', () => {
+            // Alternar a visibilidade do menu
+            menuList.classList.toggle('active');
+        });
+    });
+
     // FUNÇÃO PARA ROLAR PELA SESSÃO
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -218,7 +238,7 @@
         });
 
         document.getElementById('linkSobre-nos2').addEventListener('click', function (event) {
-            event.preventDefault(); 
+            event.preventDefault();
             scrollToSection('Sobre-nos');
         });
 
