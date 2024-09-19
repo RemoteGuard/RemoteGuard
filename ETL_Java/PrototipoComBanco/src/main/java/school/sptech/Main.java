@@ -1,7 +1,8 @@
-package sptech.aulaJava;
+package school.sptech;
 
 
-import sptech.aulaJava.dao.DadosDao;
+import school.sptech.dao.DadosDao;
+import school.sptech.database.ConexaoComBanco;
 
 public class Main {
     public static void main(String[] args) {

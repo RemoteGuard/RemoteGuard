@@ -1,9 +1,9 @@
-package sptech.aulaJava.dao;
+package school.sptech.dao;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import sptech.aulaJava.ConexaoComBanco;
-import sptech.aulaJava.Dados;
+import school.sptech.database.ConexaoComBanco;
+import school.sptech.entity.Dados;
 import java.util.List;
 
 public class DadosDao {

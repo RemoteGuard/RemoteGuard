@@ -1,4 +1,4 @@
-package sptech.aulaJava;
+package school.sptech.database;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;

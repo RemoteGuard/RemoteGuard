@@ -1,4 +1,4 @@
-package sptech.aulaJava;
+package school.sptech.entity;
 
 public class Dados {
     private Double percCPU;
