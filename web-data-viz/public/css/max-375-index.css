@@ -1,0 +1,326 @@
+/* Estilos para telas pequenas (até 375px) */
+@media (max-width: 375px) {
+
+    .acoes {
+        display: none;
+    }
+
+    .menu-login {
+        display: block;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background-image: url('../assets/imgs/fundo-responsivo.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .menu-toggle {
+        position: relative;
+        z-index: 3;
+    }
+
+    .header{
+        background-color: #000000;
+    }
+
+    .header .menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #000000;
+        width: 50%;
+        height: 100vh;
+        text-align: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 2; 
+    }
+
+
+
+    .menu.active {
+        transform: translateX(0); 
+    }
+
+    .btn-guard {
+        display: inline-block;
+        padding: 15px 15px;
+        background-color: #FCDF3B;
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 12px;
+        transition: 0.3s;
+    }
+    
+    .btn-guard:hover {
+        background-color: transparent;
+        border: 1px solid #FCDF3B;
+        color: #FCDF3B;
+    }
+    
+
+    .hamburguer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+    }
+
+    .hamburguer span {
+        background-color: #fff;
+        height: 3px;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .header .menu ul {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .header .menu ul li {
+        padding: 10px;
+        border-bottom: 1px solid #444;
+    }
+
+    .menu ul li a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 5px;
+        transition: color 0.3s, border-bottom 0.3s;
+    }
+    
+    .menu ul li a:hover {
+        color: #FCDF3B;
+        border-bottom: 2px solid #FCDF3B;
+    }    
+
+    .logo img {
+        height: 30px;
+    }
+
+    .acoes {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .promo {
+        margin-top: 250px;
+    }
+
+    .promo-text {
+        max-width: 100%;
+        margin: 0 auto;
+        margin-bottom: 200px;
+    }
+
+    .promo-text h1 {
+        font-size: 40px;
+    }
+
+    .promo-text p {
+        font-size: 13px;
+    }
+
+    .promo-image img {
+        width: 300px;
+    }
+
+    .sessaoLema {
+        flex-direction: column;
+        gap: 30px;
+        padding: 50px 10px;
+    }
+
+    .conteudo {
+        max-width: 100%;
+    }
+
+    .conteudo h2 {
+        font-size: 3.5vh;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .conteudo p {
+        font-size: 1.5vh;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .cta-button{
+        font-size: 1.5vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 24px;
+    }
+
+    .recursos-text h1{
+        font-size: 3.2vh;
+    }
+
+    .recursos-text p{
+        font-size: 2.2vh;
+    }
+
+    .recursos-icon{
+        width: 80px;
+        height: 80px;
+    }
+
+    .recursoss {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin: 0;
+    }
+
+    .titulo-sobre-nos {
+        text-align: center;
+        font-size: 3.5vh;
+        opacity: 0;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-logo {
+        align-items: center;
+        margin-right: 10%;
+
+    }
+
+    .footer-contacts {
+        margin-top: 40px;
+        text-align: left;
+    }
+
+    .titulo-sobre-nos {
+        font-size: 1.5rem; /* Ajuste do tamanho da fonte */
+        margin-bottom: 10px; /* Reduzir a margem */
+    }
+
+    .container-missao {
+        flex-direction: column; /* Muda para coluna */
+        align-items: center; /* Centraliza os itens */
+        gap: 10px; /* Reduz o espaço entre os itens */
+    }
+
+    .texto-missao {
+        max-width: 100%; /* Aumenta a largura em telas pequenas */
+    }
+
+    .texto-missao p {
+        margin-top: 20px;
+        font-size: 2.0vh; /* Ajusta o tamanho do texto */
+    }
+
+    .imagem-missao {
+        max-width: 100%; /* Ajusta a largura da imagem */
+        margin-top: 20px; /* Adiciona margem no topo */
+    }
+
+    .imagem-missao img {
+        height: 300px;
+        width: 300px;
+    }
+
+    .teste1 h1{
+        font-size: 3.0vh;
+    }
+
+    .container-somos {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content img{
+        margin-bottom: 4px;
+        width: 300px;
+    }
+
+    .content h2{
+        padding-top: 50px; 
+        font-size: 3.5vh;
+    }
+
+    .content p{
+
+        font-size: 2.0vh;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* centraliza os itens */
+        text-align: center; /* centraliza o texto */
+    }
+
+    .sessao-mvv{
+       margin-top: 200px;
+    }
+
+    .titulo-mvv h2{
+        font-size: 3.0vh;
+    }
+
+    .titulo-mvv p{
+        font-size: 2.0vh;
+    }
+
+    .cards-mvv-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .card-mvv {
+        width: 100%;
+        height: 90%;
+    }
+
+    .card-mvv h3 {
+        font-size: 3.0vh;
+    }
+
+    .card-mvv p {
+        font-size: 2.0vh;
+    }
+
+    .icone-container img{
+        width: 200px;
+        height: 200px;
+    }
+
+    .card-mvv::before {
+        content: '';
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        position: absolute;
+        top: -55px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 0;
+    }
+}
