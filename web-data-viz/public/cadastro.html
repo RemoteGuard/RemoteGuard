@@ -12,7 +12,7 @@
 
 <body onload="listarEmpresas()">
     <div class="container">
-        <div class="cadastre_esquerda" >
+        <div class="cadastre_esquerda">
             <img src="./assets/imgs/AguiaComOnome.png" alt="">
             <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
 
@@ -21,14 +21,14 @@
         <div class="cadastre">
             <div class="card">
                 <div class="inputs">
-                <div class="titleCad">Cadastre-se</div>
+                    <div class="titleCad">Cadastre-se</div>
                     <div class="input-grupo">
                         <div class="input-caixa">
                             <label for="input_nome">Nome:</label>
                             <div class="input-field" id="nome_field">
                                 <i class="fa-solid fa-user"></i>
-                                <input type="text" id="input_senha" placeholder="Insira seu nome">
-                        
+                                <input type="text" id="input_nome" placeholder="Insira seu nome">
+
                             </div>
                             <div id="nome-erro" class="mensagem-erro"></div>
                         </div>
@@ -83,14 +83,24 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="funcao-erro" class="mensagem-erro"></div>
                     </div>
-                    <button onclick="cadastrar()">Cadastrar</button>
-                    <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a">
-                            Fazer Login</a></span>
+                    <div class="input-grupo">
+                        <div class="input-caixa">
+                            <label for="input_token">Token:</label>
+                            <div class="input-field" id="Token">
+                                <i class="fa-solid fa-key"></i>
+                                <input type="text" id="input_token" placeholder="Insira o token">
+                            </div>
+                            <div id="token-erro" class="mensagem-erro"></div>
+                        </div>
+                    </div>
                 </div>
+                <button onclick="cadastrar()">Cadastrar</button>
+                <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a">
+                        Fazer Login</a></span>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
@@ -125,42 +135,42 @@
         });
     }
 
-    // function listar() {
-    //     fetch("/empresas/listar", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             requisicaoPadraoServer: requisicaoPadrao
-    //         })
-    //     }).then(function (resposta) {
-    //         console.log("ESTOU NO THEN DO entrar()!")
+    function listar() {
+        fetch("/empresas/listar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
 
-    //         if (resposta.ok) {
-    //             console.log(resposta);
+            if (resposta.ok) {
+                console.log(resposta);
 
-    //             resposta.json().then(json => {
-    //                 console.log(json);
-    //                 console.log(JSON.stringify(json));
-    //                 console.log(json.resultado[0].idEmpresa)
-    //                 for (var cont = 0; cont <= json.resultado.length - 1; cont++) {
-    //                     var empresa = json.resultado[cont];
-    //                     empresas.push(empresa.nomeFantasia)
-    //                 }
-    //             });
-    //             finalizarAguardar();
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    console.log(json.resultado[0].idEmpresa)
+                    for (var cont = 0; cont <= json.resultado.length - 1; cont++) {
+                        var empresa = json.resultado[cont];
+                        empresas.push(empresa.nomeFantasia)
+                    }
+                });
+                finalizarAguardar();
 
-    //         } else {
-    //             throw "Houve um erro ao tentar realizar o cadastro!";
-    //         }
-    //     })
-    //         .catch(function (resposta) {
-    //             console.log(`#ERRO: ${resposta}`);
-    //         });
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
 
-    //     return false;
-    // }
+        return false;
+    }
 
     function cadastrar() {
         var nomeVar = input_nome.value;
@@ -170,8 +180,6 @@
         var nomeEmpresaVar = input_empresa.value;
         var cpfVar = input_cpf.value;
 
-
-        // var caixaAltaNome = nome.toUperCase();
         var caixaBaixaEmail = emailVar.toLowerCase();
         var caixaBaixaEmpresa = nomeEmpresaVar.toLowerCase();
 
@@ -190,65 +198,56 @@
 
         var fazerCadastro = true;
 
-        // if (nome == "" ||
-        //     email == "" ||
-        //     senha == "" ||
-        //     cargo == "" ||
-        //     nomeEmpresa == 0 ||
-        //     cpf == ""
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
+        if (nomeVar == "" ||
+            emailVar == "" ||
+            senhaVar == "" ||
+            cargoVar == "" ||
+            nomeEmpresaVar == 0 ||
+            cpfVar == ""
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
 
-        // if (indiceArrobaSenha < 0 &&
-        //     indiceCifraoSenha < 0 &&
-        //     indiceComercialSenha < 0 &&
-        //     indiceHashtagSenha < 0
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
+        if (indiceArrobaSenha < 0 &&
+            indiceCifraoSenha < 0 &&
+            indiceComercialSenha < 0 &&
+            indiceHashtagSenha < 0
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
 
-        // if (cpfTamanho != 11
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
+        if (cpfTamanho != 11
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
 
-        // if (senha != null // Ajustar a criação de variável
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - Senha e senha de confirmação diferentes! Tente novamente</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
+        if (tamanhoSenha < 5 ||
+            tamanhoSenha > 15
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
 
-        // if (tamanhoSenha < 5 ||
-        //     tamanhoSenha > 15
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
+        if (indiceArrobaEmail < 0 ||
+            indicePontoEmail < 0
+        ) {
+            div_mensagem.innerHTML =
+                `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
+            fazerCadastro = false;
+            return false;
+        }
 
-        // if (indiceArrobaEmail < 0 ||
-        //     indicePontoEmail < 0
-        // ) {
-        //     div_mensagem.innerHTML =
-        //         `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
-        //     fazerCadastro = false;
-        //     return false;
-        // }
-
-        // O fetch só pode ser realizado se os dados inseridos não passarem em todos os ifs, validando através da variável fazerCadastro. 
         if (fazerCadastro) {
             fetch("/usuarios/cadastrar", {
                 method: "POST",
@@ -304,7 +303,7 @@
         }, 1000);
     }
 
-    window.onload = function() {
+    window.onload = function () {
         listarEmpresas();
         listar(); // Chama a função existente se necessário
     };

@@ -12,7 +12,8 @@ CREATE TABLE empresa (
     numero VARCHAR(4) NOT NULL,
     telefone CHAR(11) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    cnpj CHAR(14)
+    cnpj CHAR(14),
+    token char(9)
 );
 SELECT * FROM empresa;
 
@@ -114,8 +115,9 @@ SELECT * FROM dados;
 SELECT * FROM processos;
 
 INSERT INTO empresa VALUES 
-	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888');
+	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888', '123456789');
 
 INSERT INTO empresa VALUES 
-	(DEFAULT, 'Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888');
+	(DEFAULT, 'Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888', '987654321');
 
+select * from empresa;
