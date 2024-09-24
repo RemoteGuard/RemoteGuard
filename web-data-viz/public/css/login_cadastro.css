@@ -215,7 +215,17 @@ button:hover {
     border: 1px solid rgb(175, 175, 175);
     border-radius: 10px;
 }
-
+.input-field-email{
+    width: 100%;
+    margin-top: 5px;
+    height: 60%;
+    padding: 0 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 10px;
+}
 .input-field_cargo {
     width: 105%;
     margin-top: 5px;
@@ -239,6 +249,11 @@ button:hover {
     width: 16px;
     height: 16px;
 }
+.input-field-email i {
+    color: #000000;
+    width: 16px;
+    height: 16px;
+}
 
 .input-field input,
 .input-field select {
@@ -252,6 +267,16 @@ button:hover {
 
 .input-field_cargo input,
 .input-field_cargo select {
+    width: 100%;
+    flex: 1;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: white;
+}
+
+.input-field-email input,
+.input-field-email select {
     width: 100%;
     flex: 1;
     height: 30px;
