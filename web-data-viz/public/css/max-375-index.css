@@ -1,5 +1,5 @@
 /* Estilos para telas pequenas (até 375px) */
-@media (max-width: 375px) {
+@media (max-width: 810px) {
 
     .acoes {
         display: none;
@@ -324,3 +324,176 @@
         z-index: 0;
     }
 }
+
+@media (max-width: 1200px) {
+
+    body {
+        height: 100vh;
+    } 
+
+    .logo img {
+        height: 50px;
+    }
+
+    .acoes {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-guard{
+        padding: 10px 10px;
+        font-size: 2.3vh;
+
+    } 
+
+    main {
+        padding: 20px;
+    }
+
+    .promo {
+        margin-top: 250px;
+    }
+
+    .promo-text {
+        max-width: 100%;
+        margin: 0 auto;
+        margin-bottom: 200px;
+    }
+
+    .promo-text h1 {
+        font-size: 60px;
+    }
+
+    .promo-text p {
+        font-size: 17px;
+    }
+
+    .sessaoLema {
+        gap: 100px;
+        padding: 80px 10px;
+    }
+
+    .conteudo{
+        margin-left: 20px;}
+
+    .conteudo h2 {
+        font-size: 4.5vh;
+        max-width: 100%;
+    }
+
+    .conteudo p {
+        font-size: 2.0vh;
+        max-width: 100%;
+    }
+
+    .cta-button{
+        font-size: 1.5vh;
+        padding: 12px 24px;
+    }
+
+    .recursoss{
+        margin-top: 120px;
+    }
+
+    .recursos-text h1{
+        font-size: 3.5vh;
+    }
+
+    .recursos-text p{
+        font-size: 2.5vh;
+    }
+
+    .recursos-icon{
+        width: 80px;
+        height: 80px;
+    }
+
+
+    .footer-logo {
+        margin-right: 10%;
+
+    }
+
+    .footer-contacts {
+        margin-top: 40px;
+        text-align: left;
+    }
+
+
+    .container-missao {
+        gap: 50px; /* Reduz o espaço entre os itens */
+    }
+
+    .texto-missao {
+        max-width: 100%; /* Aumenta a largura em telas pequenas */
+    }
+
+    .texto-missao p {
+        margin-top: 20px;
+        font-size: 2.3vh; /* Ajusta o tamanho do texto */
+    }
+
+    .imagem-missao {
+        max-width: 100%; /* Ajusta a largura da imagem */
+        margin-top: 20px; /* Adiciona margem no topo */
+    }
+
+    .imagem-missao img {
+        height: 500px;
+        width: 500px;
+    }
+
+    .teste1 h1{
+        font-size: 3.0vh;
+    }
+
+    .content img{
+        margin-bottom: 4px;
+        width: 500px;
+    }
+
+    .content h2{
+        padding-top: 50px; 
+        font-size: 4.0vh;
+    }
+
+    .content p{
+        font-size: 2.6vh;
+    }
+
+
+    .cards-mvv-container {
+        gap: 40px;
+    }
+
+    .card-mvv {
+        width: 50%;
+        height: 90%;
+    }
+
+    .card-mvv h3 {
+        font-size: 5.0vh;
+    }
+
+    .card-mvv p {
+        font-size: 2.0vh;
+    }
+
+    .icone-container img{
+        width: 200px;
+        height: 200px;
+    }
+
+    .card-mvv::before {
+        content: '';
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        position: absolute;
+        top: -55px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 0;
+    }
+}
+

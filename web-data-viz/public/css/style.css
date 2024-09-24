@@ -185,9 +185,10 @@ main {
     align-items: flex-start;
     max-width: 1200px;
     margin: 0 auto;
-    gap: 200px;
-    padding: 100px 0%;
+    gap: 100px;
+    padding: 0 0%;
     white-space: nowrap;
+    height: 100vh;
 }
 
 .conteudo {
@@ -218,7 +219,7 @@ main {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     width: 50%;
-    margin-top: 150px;
+    margin-top: 160px;
     margin-right: 400px;
 }
 
@@ -372,9 +373,9 @@ main {
 }
 
 .card-image {
-    width: 550px;
+    width: 400px;
     height: auto;
-    margin-bottom: 120px;
+    margin-bottom: 100px;
 }
 
 .content h2 {
