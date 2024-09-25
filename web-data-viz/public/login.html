@@ -15,7 +15,7 @@
         <div class="cadastre_esquerda">
             <img src="./assets/imgs/AguiaComOnome.png" alt="">
             <h1><b>Potencialize</b> a produtividade no trabalho remoto</h1>
- 
+
             <button onclick="location.href='index.html'">Voltar ao Início</button>
         </div>
         <div class="cadastre">
@@ -39,16 +39,17 @@
                             </div>
                             <div id="senha-erro" class="mensagem-erro"></div>
                         </div>
-                        </div>
-                        <button onclick="autenticar()">Entrar</button>
                     </div>
-                    </div>
-    </div>
+                    <button onclick="autenticar()">Entrar</button>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
 <script>
-
+    var teste = [];
+    var cargo = "";
     var tentativas = 3;
     var sendEmail = '';
     var sendSenha = '';
@@ -64,16 +65,14 @@
             input_senha.type = "password";
         }
     }
-    function autenticar() {
-        // aguardar();
 
+
+    function autenticar() {
         var email = input_email.value;
         var senha = input_senha.value;
-        sendEmail = email;
-        sendSenha = senha;
 
         if (email == "" || senha == "") {
-            div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            // div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
             finalizarAguardar();
             return false;
         }
@@ -87,27 +86,72 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                emailServer: sendEmail,
-                senhaServer: sendSenha
+                emailServer: email,
+                senhaServer: senha
             })
         }).then(function (resposta) {
             console.log(`Resposta da requisição: ${JSON.stringify(resposta)}`);
 
             if (resposta.ok) {
+
                 alert("Autenticação feita com sucesso");
                 resposta.json().then(json => {
                     console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.data.email;
-                    sessionStorage.ID_USUARIO = json.data.id;
-                });
+                    sessionStorage.EMAIL_USUARIO = email;
+                    sessionStorage.ID_USUARIO = json.idFuncionario
+                    fetch("/usuarios/chamar_usuario", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            id_UsuarioServer: sessionStorage.ID_USUARIO //ta aqui
+                        })
+                    }).then(function (resposta) {
+                        console.log("ESTOU NO THEN DO entrar()!")
+                        if (resposta.ok) {
+                            console.log(resposta);
 
+                            resposta.json().then(json => {
+                                console.log(json);
+                                console.log(JSON.stringify(json));
+                                console.log(json.resultado[0])
+                                teste.push(json.resultado[0])
+                                cargo = json.resultado[0]
+                                var cargoCorreto = cargo.cargo
+                                if (cargoCorreto != "") {
+                                    console.log("Cargo atribuido")
+                                }
+                                if (cargoCorreto == "gerente") {
+                                    setTimeout(() => {
+                                        window.location.href = "./dashboard/dashboardGerente.html"
+                                    }, 1000);
+                                }
+                                else {
+                                    setTimeout(() => {
+                                        window.location.href = "./dashboard/dashboardAnalista.html"
+                                    }, 1000);
+                                }
+                                // finalizarAguardar();
+
+                            });
+
+                        } else {
+                            throw "Houve um erro ao tentar realizar o cadastro!";
+                        }
+                    })
+                        .catch(function (resposta) {
+                            console.log(`#ERRO: ${resposta}`);
+                        });
+
+                    return false;
+                });
             } else {
                 alert('Usuário não encontrado!');
                 console.log("Houve um erro ao tentar realizar o login!");
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    // finalizarAguardar(texto);
                 });
             }
         }).catch(function (erro) {
@@ -118,12 +162,12 @@
 
     let menu = document.querySelector('#divLinksLogin');
 
-    function showMain(){
+    function showMain() {
         menu.style.display = 'flex';
         clearTimeout(tempo_espera);
     }
-    function hiddeMain(){
-            tempo_espera = setTimeout(function(){
+    function hiddeMain() {
+        tempo_espera = setTimeout(function () {
             menu.style.display = 'none';
         }, 1000);
     }

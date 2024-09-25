@@ -20,9 +20,15 @@ function cadastrar(cargo, nome, cpf, email, senha, fkEmpresa) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
-
-
+function chamar_usuario(id_Usuario) {
+    console.log("Executando a instrução SQL: \n" + instrucaoSql3);
+    var instrucaoSql3 = `
+    SELECT cargo from funcionario WHERE idFuncionario = ${id_Usuario};
+`;
+    return database.executar(instrucaoSql3);
+}
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    chamar_usuario
 };

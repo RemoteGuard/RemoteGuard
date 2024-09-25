@@ -1,5 +1,17 @@
 var usuarioModel = require("../models/usuarioModel");
 
+function chamar_usuario(req, res) {
+    var id_Usuario = req.body.id_UsuarioServer
+    usuarioModel.chamar_usuario(id_Usuario)
+        .then(
+            function (resultado) {
+                res.json({
+                    resultado
+                });
+            }
+        )
+}
+
 function autenticar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -78,5 +90,6 @@ function cadastrar(req, res) {
 
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    chamar_usuario
 }
