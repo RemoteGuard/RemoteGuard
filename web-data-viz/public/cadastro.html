@@ -41,9 +41,9 @@
                             </div>
                             <div id="senha-erro" class="mensagem-erro"></div>
                         </div>
-                       
+
                     </div>
-                   
+
                     <div class="input-caixa">
                         <label for="inpu_email">E-mail:</label>
                         <div class="input-field-email" id="email_field">
@@ -52,7 +52,7 @@
                         </div>
                         <div id="email-erro" class="mensagem-erro"></div>
                     </div>
-                         <div class="input-grupo">
+                    <div class="input-grupo">
                         <div class="input-caixa">
                             <label for="inpu_cpf">CPF:</label>
                             <div class="input-field" id="cpf_field">
@@ -85,17 +85,17 @@
                             </div>
                             <div id="empresa-erro" class="mensagem-erro"></div>
                         </div>
-                     
-                            <div class="input-caixa">
-                                <label for="input_token">Token:</label>
-                                <div class="input-field" id="Token">
-                                    <i class="fa-solid fa-key"></i>
-                                    <input type="text" id="input_token" placeholder="Insira o token">
-                                </div>
-                                <div id="token-erro" class="mensagem-erro"></div>
+
+                        <div class="input-caixa">
+                            <label for="input_token">Token:</label>
+                            <div class="input-field" id="Token">
+                                <i class="fa-solid fa-key"></i>
+                                <input type="text" id="input_token" placeholder="Insira o token">
                             </div>
+                            <div id="token-erro" class="mensagem-erro"></div>
                         </div>
                     </div>
+                </div>
                 <button onclick="cadastrar()">Cadastrar</button>
                 <span class="possui_cadastro">Já possui Cadastro? <a href="login.html" class="possui_cadastro_a">
                         Fazer Login</a></span>
@@ -109,6 +109,8 @@
 
     var requisicaoPadrao = '';
     var empresas = [];
+    var tokens = [];
+    var id= [];
 
     function listarEmpresas() {
         fetch("/empresas/listar", {
@@ -158,6 +160,8 @@
                     for (var cont = 0; cont <= json.resultado.length - 1; cont++) {
                         var empresa = json.resultado[cont];
                         empresas.push(empresa.nomeFantasia)
+                        tokens.push(empresa.token)
+                        id.push(empresa.idEmpresa)
                     }
                 });
                 finalizarAguardar();
@@ -180,6 +184,7 @@
         var cargoVar = input_cargo.value;
         var nomeEmpresaVar = input_empresa.value;
         var cpfVar = input_cpf.value;
+        var tokenVar = input_token.value;
 
         var caixaBaixaEmail = emailVar.toLowerCase();
         var caixaBaixaEmpresa = nomeEmpresaVar.toLowerCase();
@@ -198,7 +203,19 @@
         var indicePontoEmail = emailVar.indexOf('.');
 
         var fazerCadastro = true;
+        var metricaContador = 0;
 
+        for (var cont = 0; cont <= empresas.length - 1; cont++) {
+            if (nomeEmpresaVar == id[cont]){
+                metricaContador = cont
+                console.log("if 1")
+            }  
+            }
+            if (tokenVar != tokens[metricaContador]){
+                fazerCadastro = false;
+                console.log("erro no token")
+            }
+    
         if (nomeVar == "" ||
             emailVar == "" ||
             senhaVar == "" ||
@@ -206,10 +223,11 @@
             nomeEmpresaVar == 0 ||
             cpfVar == ""
         ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
+            // div_mensagem.innerHTML =
+            //     `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
             fazerCadastro = false;
             return false;
+            console.log("campos em branco")
         }
 
         if (indiceArrobaSenha < 0 &&
@@ -217,38 +235,42 @@
             indiceComercialSenha < 0 &&
             indiceHashtagSenha < 0
         ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
+            // div_mensagem.innerHTML =
+            //     `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 1 caractere especial entre essas opções: (@ - # - $ - &))</span><br><br>`;
             fazerCadastro = false;
             return false;
+            console.log("senha zerada")
         }
 
         if (cpfTamanho != 11
         ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
+            // div_mensagem.innerHTML =
+            //     `<span style="color: yellow;"> - CPF inválido, tente novamente! (quantidade de dígitos errada)</span><br><br>`;
             fazerCadastro = false;
             return false;
+            console.log("cpf torto")
         }
 
         if (tamanhoSenha < 5 ||
             tamanhoSenha > 15
         ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
+            // div_mensagem.innerHTML =
+            //     `<span style="color: yellow;"> - Senha inválida, tente novamente! (a senha precisa ter pelo menos 5 caracteres e no máximo 15 caracteres)</span><br><br>`;
             fazerCadastro = false;
             return false;
+            console.log("senha com mais ou mneos caracteres")
         }
 
         if (indiceArrobaEmail < 0 ||
             indicePontoEmail < 0
         ) {
-            div_mensagem.innerHTML =
-                `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
+            // div_mensagem.innerHTML =
+            //     `<span style="color: yellow;"> - Email inválido, tente novamente! (o email precisa ter "@" e ".")</span><br><br>`;
             fazerCadastro = false;
             return false;
+            console.log("email sem arroba")
         }
-
+        
         if (fazerCadastro) {
             fetch("/usuarios/cadastrar", {
                 method: "POST",
@@ -271,8 +293,8 @@
                         resposta.json().then(json => {
                             console.log(JSON.stringify(json));
                         });
-                        setTimeout(() => {
-                            window.location.href = "./login.html"
+                        setTimeout(() => {              
+                           window.location.href = "./login.html"
                         }, 1000);
                     } else {
                         resposta.json().then(json => {

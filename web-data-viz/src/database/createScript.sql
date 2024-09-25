@@ -109,6 +109,7 @@ CREATE TABLE processos(
 -- SELECT * FROM notebook_quatro;
 -- SELECT * FROM notebook_cinco;
 
+
 SELECT * FROM funcionario;
 SELECT * FROM notebook;
 SELECT * FROM dados;
