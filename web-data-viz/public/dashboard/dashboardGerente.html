@@ -1,25 +1,230 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaTech | Tempo Real</title>
-
-
-    <link rel="stylesheet" href="./../css/dashboards.css">
-    <link rel="stylesheet" href="./../css/estilo.css" />
-
-    <script src="../js/sessao.js"></script>
-    <script src="../js/alerta.js"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notebook | RemoteGuard</title>
+    <link rel="stylesheet" href="./../css/areaCliente.css" />
+    <link rel="stylesheet" href="./../css/perfil.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
-    <h1>DASHBAORD GERENTEEEEEEEEEEEEEEE</h1>
+    <div class="sidebar">
+        <ul>
+            <li class="logo">
+                <a href="">
+                    <div class="icon">
+                        <img src="./../img/svg/aguia2Branca.svg" alt="" />
+                    </div>
+                    <div class="text">Remote Guard</div>
+                </a>
+            </li>
+            <div class="Menulist">
+                <li>
+                    <a href="">
+                        <div class="icon"><img src="svg/perfil.svg" alt="" /></div>
+                        <div class="text">Funcionários</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="icon"><img src="svg/grafico.svg" alt="" /></div>
+                        <div class="text atual">Dashboards</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="cadastroNote.html">
+                        <div class="icon"><img src="svg/laptop.svg" alt="" /></div>
+                        <div class="text">Notebook</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="icon"><img src="svg/chat.svg" alt="" /></div>
+                        <div class="text">Help Desk</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="perfil.html">
+                        <div class="icon"><img src="svg/config.svg" alt="" /></div>
+                        <div class="text">Configurações</div>
+                    </a>
+                </li>
+            </div>
+            <div class="bottom">
+                <li>
+                    <a href="perfil.html">
+                        <div class="imgBox">
+                            <img src="./../img/site/dashboard/perfil.png" alt="" />
+                            <div class="text">Olá, Brandão</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <div class="icon"><img src="svg/sair.svg" alt="" /></div>
+                        <div class="text">Logout</div>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </div>
+    <div class="containerSessoes">
+        <section class="sessaoUm">
+            <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+            <div class="conteudo">
+                <div class="grafico_teste">
+                    <canvas id="ramUsageChart"></canvas>
+                    <canvas id="cpuUsageChart"></canvas> 
+                    <canvas id="processUsageChart"></canvas> 
+                    <canvas id="machineAlertChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>
+        // Gráfico de Linhas para RAM (%)
+        const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
+        const ramUsageChart = new Chart(ramCtx, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],  
+                datasets: [{
+                    label: 'RAM (%)',
+                    data: [60, 62, 64, 63, 65, 66, 67, 69, 68, 70, 72, 71, 73, 75, 76, 78, 77, 79, 81, 80, 82, 84, 83, 85, 87, 86, 88, 89, 90, 91], 
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Utilização de RAM (%) por Dia',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Dias do Mês'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Linhas para CPU (%)
+        const cpuCtx = document.getElementById('cpuUsageChart').getContext('2d');
+        const cpuUsageChart = new Chart(cpuCtx, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'], 
+                datasets: [{
+                    label: 'CPU (%)',
+                    data: [50, 52, 54, 55, 57, 58, 60, 61, 63, 65, 64, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 79, 80, 82, 83, 85, 86, 88, 89, 90], 
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Utilização de CPU (%) por Dia',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Dias do Mês'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Barras para o Tempo de Utilização de Processos por Máquina
+        const processCtx = document.getElementById('processUsageChart').getContext('2d');
+        const processUsageChart = new Chart(processCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Processo 1', 'Processo 2', 'Processo 3', 'Processo 4', 'Processo 5'],
+                datasets: [{
+                    label: 'Máquina 1',
+                    data: [20, 15, 25, 10, 30],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                },
+                {
+                    label: 'Máquina 2',
+                    data: [25, 20, 15, 30, 10],
+                    backgroundColor: 'rgba(255, 206, 86, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tempo de Utilização de Processos por Máquina'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Máquinas em Estado de Alerta
+        const alertCtx = document.getElementById('machineAlertChart').getContext('2d');
+        const machineAlertChart = new Chart(alertCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Máquina 1', 'Máquina 2', 'Máquina 3'],
+                datasets: [{
+                    label: 'Alertas',
+                    data: [5, 3, 7],
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Quantidade de Máquinas em Estado de Alerta'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
+</html>

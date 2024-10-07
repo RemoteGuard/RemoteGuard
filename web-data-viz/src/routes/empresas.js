@@ -8,4 +8,4 @@ router.post("/listar", function (req, res) {
     empresaController.listar(req, res);
 })
 
-module.exports = router;
+module.exports = router;   
