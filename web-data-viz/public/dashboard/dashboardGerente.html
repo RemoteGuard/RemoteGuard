@@ -5,79 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notebook | RemoteGuard</title>
     <link rel="stylesheet" href="./../css/areaCliente.css" />
-    <link rel="stylesheet" href="./../css/perfil.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="sidebar">
-        <ul>
-            <li class="logo">
-                <a href="">
-                    <div class="icon">
-                        <img src="./../img/svg/aguia2Branca.svg" alt="" />
-                    </div>
-                    <div class="text">Remote Guard</div>
-                </a>
-            </li>
-            <div class="Menulist">
-                <li>
-                    <a href="">
-                        <div class="icon"><img src="svg/perfil.svg" alt="" /></div>
-                        <div class="text">Funcionários</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <div class="icon"><img src="svg/grafico.svg" alt="" /></div>
-                        <div class="text atual">Dashboards</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="cadastroNote.html">
-                        <div class="icon"><img src="svg/laptop.svg" alt="" /></div>
-                        <div class="text">Notebook</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <div class="icon"><img src="svg/chat.svg" alt="" /></div>
-                        <div class="text">Help Desk</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="perfil.html">
-                        <div class="icon"><img src="svg/config.svg" alt="" /></div>
-                        <div class="text">Configurações</div>
-                    </a>
-                </li>
+        <a href="">
+            <div class="logotipo">
+                <img src="../assets/imgs/AguiaComOnome.png" alt="" />
             </div>
-            <div class="bottom">
-                <li>
-                    <a href="perfil.html">
-                        <div class="imgBox">
-                            <img src="./../img/site/dashboard/perfil.png" alt="" />
-                            <div class="text">Olá, Brandão</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <div class="icon"><img src="svg/sair.svg" alt="" /></div>
-                        <div class="text">Logout</div>
-                    </a>
-                </li>
+        </a>
+        <div class="Menulist">
+         <div class="texto_bem_vindo">Seja Bem vindo</div>
+         <div  class="texto_bem_vindo"  id="b_usuario">
+         </div>
+            <a href="">
+                <div class="icones">
+                <i  class="fa-solid fa-chart-line"></i>
             </div>
-        </ul>
+                <div class="text atual">Dashboards</div>
+            </a>
+            <a href=""><div class="icones">
+                <i class="fa-solid fa-headphones"></i>
+            </div>
+                <div class="text">Help Desk</div>
+            </a>
+        </div>
+        <a href="">
+            <div class="icones">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+            <div class="text">Sair</div>
+        </a>
     </div>
     <div class="containerSessoes">
         <section class="sessaoUm">
-            <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+
             <div class="conteudo">
                 <div class="grafico_teste">
+                    <div class="grafico_formatado">
                     <canvas id="ramUsageChart"></canvas>
+                </div>
+                <div class="grafico_formatado">
                     <canvas id="cpuUsageChart"></canvas> 
+                    </div>
+                    <div class="grafico_formatado">
                     <canvas id="processUsageChart"></canvas> 
+                </div>
+                    <div class="grafico_formatado">
                     <canvas id="machineAlertChart"></canvas>
+                    </div>
                 </div>
             </div>
         </section>
@@ -94,8 +71,8 @@
                 datasets: [{
                     label: 'RAM (%)',
                     data: [60, 62, 64, 63, 65, 66, 67, 69, 68, 70, 72, 71, 73, 75, 76, 78, 77, 79, 81, 80, 82, 84, 83, 85, 87, 86, 88, 89, 90, 91], 
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1.5)',
+                    backgroundColor: 'rgba(0,0,255, 0.5)',
                     fill: true
                 }]
             },
@@ -134,7 +111,7 @@
                     label: 'CPU (%)',
                     data: [50, 52, 54, 55, 57, 58, 60, 61, 63, 65, 64, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 79, 80, 82, 83, 85, 86, 88, 89, 90], 
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     fill: true
                 }]
             },
@@ -172,12 +149,12 @@
                 datasets: [{
                     label: 'Máquina 1',
                     data: [20, 15, 25, 10, 30],
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    backgroundColor: 'rgba(54, 162, 235, 0.9)'
                 },
                 {
                     label: 'Máquina 2',
                     data: [25, 20, 15, 30, 10],
-                    backgroundColor: 'rgba(255, 206, 86, 0.6)'
+                    backgroundColor: 'rgba(255, 206, 86, 0.9)'
                 }]
             },
             options: {
@@ -206,7 +183,7 @@
                 datasets: [{
                     label: 'Alertas',
                     data: [5, 3, 7],
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                    backgroundColor: 'rgba(255, 99, 132, 0.9)'
                 }]
             },
             options: {
@@ -225,6 +202,7 @@
                 }
             }
         });
+        b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     </script>
 </body>
 </html>
