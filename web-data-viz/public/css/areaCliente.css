@@ -5,15 +5,11 @@
   font-family: Tahoma, sans-serif;
 }
 
-input:focus {
-  outline: none; /* Remove a borda de foco */
-}
-
 body {
-  background-color: #d8d8c5;
+  background-color: #3d3d39;
   display: flex;
   flex-direction: row;
-  height: 100vh; /* Ajustado para ocupar toda a altura da janela */
+  height: 100vh; /* Mantém a altura da página sempre 100% da tela */
 }
 
 .sidebar {
@@ -21,142 +17,113 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200px; /* Largura fixa para a sidebar */
-  height: 100vh; /* Altura total da janela */
-  border-right: 1px solid #ffffff;
+  width: 200px;
+  height: 100vh;
+  border-right: 1px solid #fdfd4e;
   font-family: 'Poppins';
-  transition: all 0.3s ease; /* Transição suave */
-  z-index: 100; /* Para garantir que a sidebar fique acima de outros elementos */
+  z-index: 100;
 }
 
-
-.icones{
+.icones {
   color: #fdfd4e;
   font-size: 35px;
   display: flex;
   justify-content: center;
-
-}
-.sidebar ul li a {
-  text-decoration: none;
-  color: black; /* Cor do texto */
-  display: flex;
-  align-items: center;
+  margin-top: 20px;
 }
 
-.sidebar ul li a .icon {
-  margin-right: 10px; /* Espaçamento entre ícone e texto */
-}
-.logotipo img{
+.logotipo img {
   width: 180px;
   height: 60px;
 }
-.sidebar ul li a .text {
-  font-size: 18px;
-}
-a{
+
+a {
   text-decoration: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px
+  padding: 30px;
 }
-.text{
-  text-decoration: none;
+
+.text {
   color: #fdfd4e;
 }
-.texto_bem_vindo{
+
+.texto_bem_vindo {
   font-size: 18px;
   display: flex;
   justify-content: center;
   color: #fdfd4e;
 }
-/* Estilo para o botão de hambúrguer */
-.burguer {
-  position: absolute;
-  margin-top: 10px;
-  display: flex;
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-  background-color: #ffff00;
-  border-radius: 5%;
-  justify-content: center;
-  align-items: center;
-}
-
-.burguer::before,
-.burguer::after {
-  content: '';
-  width: 30px;
-  height: 3px;
-  background: #000;
-  position: absolute;
-  transition: 0.5s;
-}
-
-.burguer::before {
-  transform: translateY(-9px);
-  box-shadow: 0 9px 0 #000;
-}
-
-.burguer::after {
-  transform: translateY(9px);
-}
-
-.ativo::before {
-  transform: translateY(0px) rotate(45deg);
-  box-shadow: 0 0 0 #000;
-}
-
-.ativo::after {
-  transform: translateY(0px) rotate(-45deg);
-}
 
 .containerSessoes {
-  margin-left: 220px; /* Deixar espaço para a sidebar */
+  margin-left: 220px; /* Espaço para a sidebar */
   padding: 20px;
-  flex-grow: 1; /* Para ocupar o restante do espaço disponível */
+  width: calc(100% - 220px); /* Faz a área de conteúdo ocupar o espaço restante */
 }
 
-/* Ajustes para os gráficos */
 .grafico_teste {
-  display: grid;
-  grid-template-columns: repeat(2, 2fr);
-  grid-template-rows: repeat(2, 290px);
-  gap: 12px;
-  width: 87%; /* Definindo uma largura para a área dos gráficos */
-  margin: auto; /* Centralizando os gráficos */
-
-}
-.grafico_formatado{
-  background-color:rgb(255, 255, 255);
-  border-radius: 3%;
-}
-.grafico_teste canvas {
-  width: 100% !important;
-  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 20px 0;
 }
 
-/* Responsividade */
+.grafico_formatado_separado {
+  width: 900px;
+  height: 350px;
+  background-color: white;
+  border-radius: 8px;
+ margin: auto;
+}
+
+.alertas {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 30px;
+}
+
+.box_alertas_1 {
+  border-radius: 8px;
+  background-color: #9b0505;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 100px;
+  padding: 10px;
+  margin-left: 50px;
+  text-align: center;
+}
+
+.box_alertas {
+  border-radius: 8px;
+  background-color: #fdfd4e;
+  color: black;
+  width: 250px;
+  height: 250px;
+  padding: 10px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .containerSessoes {
-    margin-left: 0; /* Remove a margem esquerda em telas menores */
+    margin-left: 0;
+    width: 100%;
   }
 
   .grafico_teste {
-    grid-template-columns: 1fr; /* Uma coluna em telas menores */
-    grid-template-rows: repeat(4, 300px);
+    gap: 15px;
   }
 
   .sidebar {
-    width: 100px; /* Reduz a largura da sidebar em telas menores */
+    width: 100px;
   }
-}
 
-@media (max-width: 480px) {
-  .grafico_teste {
-    grid-template-rows: repeat(4, 250px);
+  a {
+    padding: 15px;
   }
 }

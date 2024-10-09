@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notebook | RemoteGuard</title>
     <link rel="stylesheet" href="./../css/areaCliente.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <div class="sidebar">
-        <a href="">
+        <a>
             <div class="logotipo">
                 <img src="../assets/imgs/AguiaComOnome.png" alt="" />
             </div>
         </a>
         <div class="Menulist">
-         <div class="texto_bem_vindo">Seja Bem vindo</div>
-         <div  class="texto_bem_vindo"  id="b_usuario">
-         </div>
-            <a href="">
-                <div class="icones">
-                <i  class="fa-solid fa-chart-line"></i>
+            <div class="texto_bem_vindo">Seja Bem vindo</div>
+            <div class="texto_bem_vindo" id="b_usuario">
             </div>
+            <a href="dashboardAnalista.html">
+                <div class="icones">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
                 <div class="text atual">Dashboards</div>
             </a>
-            <a href=""><div class="icones">
-                <i class="fa-solid fa-headphones"></i>
-            </div>
+            <a href="">
+                <div class="icones">
+                    <i class="fa-solid fa-headphones"></i>
+                </div>
                 <div class="text">Help Desk</div>
             </a>
         </div>
-        <a href="">
+        <a href="../login.html">
             <div class="icones">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </div>
@@ -40,25 +44,31 @@
     </div>
     <div class="containerSessoes">
         <section class="sessaoUm">
-
             <div class="conteudo">
                 <div class="grafico_teste">
-                    <div class="grafico_formatado">
-                    <canvas id="ramUsageChart"></canvas>
-                </div>
-                <div class="grafico_formatado">
-                    <canvas id="cpuUsageChart"></canvas> 
+                    <div class="alertas">
+                        <div class="box_alertas_1"><p><b>Máquinas em Alerta <br> 4</p></b></div>
+            
+                    <div class="box_alertas"><p><b>Estado das Máquinas</b><br>
+                        Máquina 1 -Normal<br>Máquina 2-Alerta<br>Máquina 3 - Alerta<br>Máquina 4 -Observação<br>Máquina 5 - Normal
+                   <br> Máquina 6- Alerta<br> Máquina 7 -Alerta <br> Máquina 8- Normal<br> Máquina 9- Normal<br> Máquina 10 -Normal</p></div>
                     </div>
-                    <div class="grafico_formatado">
-                    <canvas id="processUsageChart"></canvas> 
-                </div>
-                    <div class="grafico_formatado">
-                    <canvas id="machineAlertChart"></canvas>
+                        <div class="grafico_formatado_separado">
+                            <canvas id="ramUsageChart"></canvas>
+                        </div>
+                       
+                    <div class="grafico_formatado_separado">
+                        <canvas id="cpuUsageChart"></canvas>
                     </div>
+                    <div class="grafico_formatado_separado">
+                        <canvas id="processUsageChart"></canvas>
+                    </div>
+                    <!-- <div class="grafico_formatado">
+                        <canvas id="machineAlertChart"></canvas>
+                    </div> -->
                 </div>
             </div>
-        </section>
-    </div>
+</section>
 
     <script src="js/sessao.js"></script>
     <script>
@@ -67,12 +77,12 @@
         const ramUsageChart = new Chart(ramCtx, {
             type: 'line',
             data: {
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],  
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
                 datasets: [{
                     label: 'RAM (%)',
-                    data: [60, 62, 64, 63, 65, 66, 67, 69, 68, 70, 72, 71, 73, 75, 76, 78, 77, 79, 81, 80, 82, 84, 83, 85, 87, 86, 88, 89, 90, 91], 
+                    data: [60, 62, 64, 63, 65, 66, 67, 69, 68, 70, 72, 71, 73, 75, 76, 78, 77, 79, 81, 80, 82, 84, 83, 85, 87, 86, 88, 89, 90, 91],
                     borderColor: 'rgba(75, 192, 192, 1.5)',
-                    backgroundColor: 'rgba(0,0,255, 0.5)',
+                    backgroundColor: 'rgba(0,0,255, 0.7)',
                     fill: true
                 }]
             },
@@ -106,12 +116,12 @@
         const cpuUsageChart = new Chart(cpuCtx, {
             type: 'line',
             data: {
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'], 
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
                 datasets: [{
                     label: 'CPU (%)',
-                    data: [50, 52, 54, 55, 57, 58, 60, 61, 63, 65, 64, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 79, 80, 82, 83, 85, 86, 88, 89, 90], 
+                    data: [50, 52, 54, 55, 57, 58, 60, 61, 63, 65, 64, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 79, 80, 82, 83, 85, 86, 88, 89, 90],
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)',
                     fill: true
                 }]
             },
@@ -174,6 +184,7 @@
             }
         });
 
+        /*
         // Gráfico de Máquinas em Estado de Alerta
         const alertCtx = document.getElementById('machineAlertChart').getContext('2d');
         const machineAlertChart = new Chart(alertCtx, {
@@ -202,7 +213,10 @@
                 }
             }
         });
+        */
+
         b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     </script>
 </body>
+
 </html>
