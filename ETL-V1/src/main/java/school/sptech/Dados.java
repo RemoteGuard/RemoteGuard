@@ -29,14 +29,16 @@ public class Dados {
     @JsonProperty("processos")
     private List<String> processos;
 
-    public Dados(Double tempoInatividadeCPU, Double porcentagemCPU, Double bytesRAM, Double porcentagemRAM, Double bytesDisco, Double porcentagemDisco, List<String> processos) {
+    public Dados(Double tempoInatividadeCPU, Double porcentagemCPU, Double bytesRAM, Double porcentagemRAM, Double bytesDisco, Double porcentagemDisco,  String[] processos) {
         this.tempoInatividadeCPU = tempoInatividadeCPU;
         this.porcentagemCPU = porcentagemCPU;
         this.bytesRAM = bytesRAM;
         this.porcentagemRAM = porcentagemRAM;
         this.bytesDisco = bytesDisco;
         this.porcentagemDisco = porcentagemDisco;
-        this.processos = processos;
+        for (int i = 0; i < processos.length; i++) {
+            this.processos.add(processos[i]);
+        }
     }
 
     public Dados() {
@@ -70,6 +72,22 @@ public class Dados {
         return processos;
     }
 
+    public String converterRAM() {
+        Double RAMemGB = getBytesRAM() / Math.pow(1024,3);
+        return String.format("%.2f", RAMemGB);
+    }
+
+    public String converterDisco() {
+        Double conversaoDisco = getBytesDisco() / Math.pow(1024,3);
+
+        return String.format("%.2f", conversaoDisco);
+    }
+
+    public String tempoInatividadeCpuEmMinutos() {
+        Double tempoCPUMinutos = getTempoInatividadeCPU() / 60;
+        return String.format("%.2f", tempoCPUMinutos);
+    }
+
     @Override
     public String toString() {
         return "Dados{" +
@@ -82,5 +100,7 @@ public class Dados {
                 ", processos=" + processos +
                 '}';
     }
+
+
 }
 
