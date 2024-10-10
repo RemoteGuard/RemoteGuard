@@ -104,7 +104,7 @@ a {
   background-color: #fdfd4e;
   color: black;
   width: 250px;
-  height: 250px;
+  height: fit-content;
   padding: 10px;
   text-align: center;
 }
