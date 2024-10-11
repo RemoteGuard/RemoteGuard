@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dash Teste</title>
   <link rel="stylesheet" href="../css/Dash-teste.css">
 </head>
+
 <body>
   <header id="main-header">
     <div class="menu-icon" id="menu-icon">
-        <img src="../assets/imgs/2.png" alt="Menu" class="menu-img"> 
-      </div>
+      <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+    </div>
     <div class="actions">
       <button>Ajuda</button>
       <div class="profile">
-        <img src="../assets/imgs/a.png" alt="Perfil" class="profile-img"> 
+        <img src="../assets/imgs/a.png" alt="Perfil" class="profile-img">
       </div>
     </div>
   </header>
 
   <nav id="sidebar">
     <div class="logo">
-      <img src="logo.png" alt="Logo">
+      <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
     </div>
     <ul class="menu-items">
-      <li><img src="icon1.png" alt="Ícone 1"></li>
-      <li><img src="icon2.png" alt="Ícone 2"></li>
-      <li><img src="icon3.png" alt="Ícone 3"></li>
+      <li><img src="../assets/imgs/dash.png" alt="Ícone 1"><a href="">Dashboard</a></li>
+      <li><img src="../assets/imgs/config.png" alt="Ícone 1"><a href="">Configuração</a></li>
+      <li><img src="../assets/imgs/sair.png" alt="Ícone 1"><a href="">Sair</a></li>
     </ul>
   </nav>
 
@@ -55,7 +57,7 @@
       <div class="cor-box green"></div>
     </div>
   </main>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
   <script>
@@ -72,28 +74,47 @@
         }]
       },
       options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff' // Cor das legendas
+            }
+          }
+        },
         scales: {
           x: {
-            beginAtZero: true
+            ticks: {
+              color: '#fff' 
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.25)' 
+            }
           },
           y: {
-            beginAtZero: true
+            ticks: {
+              color: '#fff' 
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.25)' 
+            }
           }
         }
       }
+
     });
 
     // Manipulação do menu hamburguer
-document.getElementById('menu-icon').addEventListener('click', function () {
-  var sidebar = document.getElementById('sidebar');
-  var mainContent = document.getElementById('main-content');
-  var header = document.getElementById('main-header');
-  
-  // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
-  sidebar.classList.toggle('open');
-  document.body.classList.toggle('menu-open');
-});
+    document.getElementById('menu-icon').addEventListener('click', function () {
+      var sidebar = document.getElementById('sidebar');
+      var mainContent = document.getElementById('main-content');
+      var header = document.getElementById('main-header');
+
+      // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+      sidebar.classList.toggle('open');
+      document.body.classList.toggle('menu-open');
+    });
 
   </script>
 </body>
+
 </html>
