@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dash Teste</title>
+  <link rel="stylesheet" href="../css/Dash-teste.css">
+</head>
+<body>
+  <header id="main-header">
+    <div class="menu-icon" id="menu-icon">
+        <img src="../assets/imgs/2.png" alt="Menu" class="menu-img"> 
+      </div>
+    <div class="actions">
+      <button>Ajuda</button>
+      <div class="profile">
+        <img src="../assets/imgs/a.png" alt="Perfil" class="profile-img"> 
+      </div>
+    </div>
+  </header>
+
+  <nav id="sidebar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo">
+    </div>
+    <ul class="menu-items">
+      <li><img src="icon1.png" alt="Ícone 1"></li>
+      <li><img src="icon2.png" alt="Ícone 2"></li>
+      <li><img src="icon3.png" alt="Ícone 3"></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <div class="controls">
+      <select>
+        <option>Selecionar Máquina</option>
+      </select>
+      <select>
+        <option>Selecionar recurso</option>
+      </select>
+    </div>
+    <div class="dashboard">
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="status-boxes">
+        <div class="status-card green"></div>
+        <div class="status-card red"></div>
+        <div class="status-card yellow"></div>
+      </div>
+    </div>
+    <div class="cor-buttons">
+      <div class="cor-box red"></div>
+      <div class="cor-box yellow"></div>
+      <div class="cor-box green"></div>
+    </div>
+  </main>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+        datasets: [{
+          label: 'Dataset',
+          data: [10, 20, 30, 25, 40],
+          borderColor: 'green',
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            beginAtZero: true
+          },
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Manipulação do menu hamburguer
+document.getElementById('menu-icon').addEventListener('click', function () {
+  var sidebar = document.getElementById('sidebar');
+  var mainContent = document.getElementById('main-content');
+  var header = document.getElementById('main-header');
+  
+  // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+  sidebar.classList.toggle('open');
+  document.body.classList.toggle('menu-open');
+});
+
+  </script>
+</body>
+</html>
