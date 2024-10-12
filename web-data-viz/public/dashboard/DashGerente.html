@@ -80,7 +80,7 @@
   <script>
     let grafico; // Variável global para armazenar a instância do gráfico
 
-    function createChart(data, label, color, backgroundColor) {
+    function criarGrafico(data, label, color, backgroundColor) {
       const ctx = document.getElementById('myChart').getContext('2d');
 
       // Destruir o gráfico anterior, se ele existir
@@ -165,8 +165,8 @@
           color = 'rgba(255, 99, 132, 1)';
           backgroundColor = 'rgba(255, 0, 0, 0.5)';
         }
-
-        createChart(data, label, color, backgroundColor);
+        label +=` Máquina - ${maquina}`
+        criarGrafico(data, label, color, backgroundColor);
       } else {
         mensagemAviso.style.display = 'block'; 
         canvas.style.display = 'none'; co
