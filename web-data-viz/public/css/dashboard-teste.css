@@ -197,12 +197,21 @@ main {
   justify-content: space-between;
   align-items: flex-start;
 }
-
+.graficos{
+  width: 300px;
+  height: 450px;
+}
+.mensagem-estilo{
+  text-align: center;
+  margin-top: 24%;
+  font-size: 18px;
+}
 .chart-container {
   background-color: #202020;
   padding: 20px;
   border-radius: 10px;
   width: 70%;
+  height: 480px;
 }
 
 .status-boxes {
