@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RemoteGuard - Visualize, analise, transforme.</title>
+  <link rel="stylesheet" href="../css/dashboard-teste.css">
+  <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+</head>
+
+<body>
+  <header id="main-header">
+    <div class="menu-icone" id="menu-icone">
+      <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+    </div>
+    <div class="perfil-wrapper">
+
+    <div class="Ativacao">
+      <button>Ajuda</button>
+    </div>
+    
+      <div class="perfil-container">
+        <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+        <div class="perfil-text">
+          <span class="nome">Analista</span>
+          <span class="legenda">perfil</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav id="menuhamburguer">
+    <div class="logo">
+      <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+    </div>
+    <ul class="menu-items">
+      <li class="ativo"><img src="../assets/imgs/dash.png" alt="Ícone 1"><a href="">Dashboard</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/config.png" alt="Ícone 1"><a href="">Configuração</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/sair.png" alt="Ícone 1"><a href="">Sair</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-Container">
+    <div class="controles">
+      <select>
+        <option>Selecionar Máquina</option>
+      </select>
+      <select>
+        <option>Selecionar recurso</option>
+      </select>
+    </div>
+    <div class="dashboard">
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="status-boxes">
+        <div class="status-card verde"></div>
+        <div class="status-card vermelho"></div>
+        <div class="status-card amarelo"></div>
+      </div>
+    </div>
+    <div class="cor-botoes">
+      <div class="cor-box vermelho"></div>
+      <div class="cor-box amarelo"></div>
+      <div class="cor-box verde"></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+        datasets: [{
+          label: 'Dataset',
+          data: [10, 20, 30, 25, 40],
+          borderColor: 'green',
+          fill: false
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff' // Cor das legendas
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#fff' 
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.25)' 
+            }
+          },
+          y: {
+            ticks: {
+              color: '#fff' 
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.25)' 
+            }
+          }
+        }
+      }
+
+    });
+
+    // Manipulação do menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+      var menuhamburguer = document.getElementById('menuhamburguer');
+      var mainContainer = document.getElementById('main-Container');
+      var header = document.getElementById('main-header');
+
+      // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+      menuhamburguer.classList.toggle('open');
+      document.body.classList.toggle('menu-open');
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+menuItems.forEach(item => {
+  item.addEventListener('click', function() {
+    // Remove a classe 'active' de todos os itens
+    menuItems.forEach(el => el.classList.remove('active'));
+    // Adiciona a classe 'active' ao item clicado
+    this.classList.add('active');
+  });
+});
+  </script>
+</body>
+
+</html>

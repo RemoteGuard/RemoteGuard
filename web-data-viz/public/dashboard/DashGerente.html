@@ -4,36 +4,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dash Teste</title>
-  <link rel="stylesheet" href="../css/Dash-teste.css">
+  <title>RemoteGuard - Visualize, analise, transforme.</title>
+  <link rel="stylesheet" href="../css/dashboard-teste.css">
+  <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
 </head>
 
 <body>
   <header id="main-header">
-    <div class="menu-icon" id="menu-icon">
+    <div class="menu-icone" id="menu-icone">
       <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
     </div>
-    <div class="actions">
+    <div class="perfil-wrapper">
+    <div class="Ativacao">
       <button>Ajuda</button>
-      <div class="profile">
-        <img src="../assets/imgs/a.png" alt="Perfil" class="profile-img">
+    </div>
+    
+      <div class="perfil-container">
+        <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+        <div class="perfil-text">
+          <span class="nome">Gerente</span>
+          <span class="legenda">perfil</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <nav id="sidebar">
+  <nav id="menuhamburguer">
     <div class="logo">
       <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
     </div>
     <ul class="menu-items">
-      <li><img src="../assets/imgs/dash.png" alt="Ícone 1"><a href="">Dashboard</a></li>
-      <li><img src="../assets/imgs/config.png" alt="Ícone 1"><a href="">Configuração</a></li>
-      <li><img src="../assets/imgs/sair.png" alt="Ícone 1"><a href="">Sair</a></li>
+      <li class="ativo"><img src="../assets/imgs/dash.png" alt="Ícone 1"><a href="">Dashboard</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/relatorio.png" alt="Ícone 1"><a href="">Relatórios</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/Maquina.png" alt="Ícone 1"><a href=""> Maquinas</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/config.png" alt="Ícone 1"><a href="">Configuração</a></li>
+      <li class="naoAtivo"><img src="../assets/imgs/sair.png" alt="Ícone 1"><a href="">Sair</a></li>
     </ul>
   </nav>
 
-  <main id="main-content">
-    <div class="controls">
+  <main id="main-Container">
+    <div class="controles">
       <select>
         <option>Selecionar Máquina</option>
       </select>
@@ -46,15 +56,15 @@
         <canvas id="myChart"></canvas>
       </div>
       <div class="status-boxes">
-        <div class="status-card green"></div>
-        <div class="status-card red"></div>
-        <div class="status-card yellow"></div>
+        <div class="status-card verde"></div>
+        <div class="status-card vermelho"></div>
+        <div class="status-card amarelo"></div>
       </div>
     </div>
-    <div class="cor-buttons">
-      <div class="cor-box red"></div>
-      <div class="cor-box yellow"></div>
-      <div class="cor-box green"></div>
+    <div class="cor-botoes">
+      <div class="cor-box vermelho"></div>
+      <div class="cor-box amarelo"></div>
+      <div class="cor-box verde"></div>
     </div>
   </main>
 
@@ -104,16 +114,26 @@
     });
 
     // Manipulação do menu hamburguer
-    document.getElementById('menu-icon').addEventListener('click', function () {
-      var sidebar = document.getElementById('sidebar');
-      var mainContent = document.getElementById('main-content');
+    document.getElementById('menu-icone').addEventListener('click', function () {
+      var menuhamburguer = document.getElementById('menuhamburguer');
+      var mainContainer = document.getElementById('main-Container');
       var header = document.getElementById('main-header');
 
       // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
-      sidebar.classList.toggle('open');
+      menuhamburguer.classList.toggle('open');
       document.body.classList.toggle('menu-open');
     });
 
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+menuItems.forEach(item => {
+  item.addEventListener('click', function() {
+    // Remove a classe 'active' de todos os itens
+    menuItems.forEach(el => el.classList.remove('active'));
+    // Adiciona a classe 'active' ao item clicado
+    this.classList.add('active');
+  });
+});
   </script>
 </body>
 
