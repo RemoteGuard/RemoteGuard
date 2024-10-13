@@ -69,7 +69,9 @@ function cadastrar(req, res) {
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else {
-        usuarioModel.cadastrar(cargo, nome, cpf, email, senha, fkEmpresa)
+
+        var cpfSemMascara = cpf.replace(/\D/g, '');
+        usuarioModel.cadastrar(cargo, nome, cpfSemMascara, email, senha, fkEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);

@@ -70,24 +70,26 @@ header {
   list-style: none;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinha os itens à esquerda */
+  align-items: flex-start; 
   padding: 20px 0;
   
 }
 
 .menu-items .naoAtivo{
-  background-color: #202020; /* Cor de fundo para o item ativo */
+  background-color: #202020; 
   padding: 10px; 
-  width: 250px;/* Para bordas arredondadas */
+  width: 250px;
 }
 
 .menu-items li {
   margin: 20px 0;
-  display: flex;
-  justify-content: flex-start; /* Alinha o conteúdo de cada item à esquerda */
-  align-items: center; /* Centraliza verticalmente o texto com a imagem */
-  flex-direction: row; /* Deixa a imagem e o texto lado a lado */
-  text-align: left; /* Alinha o texto à esquerda */
+  display: block; /* Certifica que o item ocupa toda a largura */
+  width: 100%; /* Faz o link ocupar toda a largura */
+  /* display: flex;
+  justify-content: flex-start; 
+  align-items: center;  */
+  flex-direction: row; 
+  text-align: left; 
   transition: background-color 0.3s ease;
 }
 
@@ -96,15 +98,18 @@ header {
 }
 
 .menu-items img {
-  width: 55px; /* Diminui o tamanho da imagem se necessário */
+  width: 55px; 
   height: 55px;
-  margin-right: 10px; /* Espaçamento entre a imagem e o texto */
+  margin-right: 10px;
 }
 
 .menu-items a {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: center; 
   text-decoration: none;
   color: white;
-  margin-bottom: 0; /* Remove a margem inferior do texto */
+  margin-bottom: 0;
 }
 
 .menu-items a:hover{
@@ -140,13 +145,13 @@ color: #fcdf3b;
   width: 80px;
   margin-right: 10px;
   cursor: pointer;
-  transition: all 0.3s ease; /* Adiciona uma transição suave */
+  transition: all 0.3s ease; 
 }
 
 .Ativacao button:hover {
-  transform: scale(1.05); /* Aumenta ligeiramente o tamanho do botão */
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); /* Efeito de luz */
-  text-shadow: 0 0 5px rgba(255, 215, 0, 1), 0 0 10px rgba(255, 215, 0, 0.8); /* Brilho no texto */
+  transform: scale(1.05); 
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+  text-shadow: 0 0 5px rgba(255, 215, 0, 1), 0 0 10px rgba(255, 215, 0, 0.8); 
 }
 
 #main-header {
@@ -271,9 +276,9 @@ main {
 }
 
 .menu-items .ativo {
-  background-color: #000000; /* Cor de fundo para o item ativo */
+  background-color: #000000; 
   padding: 10px; 
-  width: 250px;/* Para bordas arredondadas */
+  width: 250px;
 }
 
 .menu-items .ativo a {

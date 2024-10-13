@@ -50,7 +50,7 @@
                         </div>
                         <div id="email-erro" class="mensagem-erro"></div>
                     </div>
-                    <div class="input-grupo">
+                    <div class="input-grupo">   
                         <div class="input-caixa">
                             <label for="input_cpf">CPF:</label>
                             <div class="input-field" id="cpf_field">
@@ -169,10 +169,10 @@
                 fazerCadastro = false;
             }
 
-            if (cpfVar.length != 11) {
-                alert("CPF inválido! Deve conter 11 dígitos.");
-                fazerCadastro = false;
-            }
+            // if (cpfVar.length != 11) {
+            //     alert("CPF inválido! Deve conter 11 dígitos.");
+            //     fazerCadastro = false;
+            // }
 
             if (!emailVar.includes('@') || !emailVar.includes('.')) {
                 alert("E-mail inválido! Certifique-se de que contém '@' e '.'");
@@ -231,6 +231,24 @@
         window.onload = function () {
             listarEmpresas();
         };
+
+        const cpfInput = document.getElementById('input_cpf');
+        const cpfError = document.getElementById('CPF-erro');
+
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres que não são números
+            value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca o primeiro ponto
+            value = value.replace(/(\d{3})(\d)/, '$1.$2'); // Coloca o segundo ponto
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca o traço
+            e.target.value = value;
+
+            // Validação simples do CPF (número completo ou não)
+            if (value.length === 14) {
+                cpfError.textContent = ''; // Limpa a mensagem de erro se o CPF estiver correto
+            } else {
+                cpfError.textContent = 'CPF incompleto!';
+            }
+        });
     </script>
 
 </body>

@@ -34,11 +34,11 @@
       <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
     </div>
     <ul class="menu-items">
-      <li class="ativo"><img src="../assets/imgs/dash.png" alt="Ícone 1"><a href="">Dashboard</a></li>
-      <li class="naoAtivo"><img src="../assets/imgs/relatorio.png" alt="Ícone 1"><a href="">Relatórios</a></li>
-      <li class="naoAtivo"><img src="../assets/imgs/Maquina.png" alt="Ícone 1"><a href=""> Maquinas</a></li>
-      <li class="naoAtivo"><img src="../assets/imgs/config.png" alt="Ícone 1"><a href="">Configuração</a></li>
-      <li class="naoAtivo"><img src="../assets/imgs/sair.png" alt="Ícone 1"><a href="">Sair</a></li>
+      <li class="ativo"><a href=""><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a></li>
+      <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
+      <li class="naoAtivo"><a href=""><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Maquinas</a></li>
+      <li class="naoAtivo"><a href=""><img src="../assets/imgs/config.png" alt="Ícone 1">Configuração</a></li>
+      <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
     </ul>
   </nav>
 
@@ -97,6 +97,7 @@
             label: label,
             data: data,
             borderColor: color,
+            borderWidth: 2,
             backgroundColor: backgroundColor,
             fill: true
           }]
@@ -108,19 +109,35 @@
             title: {
               display: true,
               text: `Utilização de ${label}`,
-              font: { size: 18 }
+              font: { size: 18 },
+              color: '#fff'
             }
+            
           },
           scales: {
             y: {
+              ticks: {
+              color: 'rgba(255, 255, 255, 0.90)' 
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.15)' 
+            },
               beginAtZero: true,
-              max: 100
+              max: 100,
+              color: 'rgba(255, 255, 255, 0.90)' 
             },
             x: {
+              ticks: {
+              color: 'rgba(255, 255, 255, 0.90)' 
+            },
               title: {
                 display: true,
-                text: 'Dias'
-              }
+                text: 'Dias',
+                color: '#fff' 
+              },
+              grid: {
+              color: 'rgba(255, 255, 255, 0.15)' 
+            },
             }
           }
         }
