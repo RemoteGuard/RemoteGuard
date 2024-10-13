@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RemoteGuard - Visualize, analise, transforme.</title>
+    <link rel="stylesheet" href="../css/dashboard-teste.css">
+    <link rel="stylesheet" href="../css/cadastro-Note.css">
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+</head>
+
+<body>
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+            <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="perfil-wrapper">
+            <div class="Ativacao">
+                <button>Ajuda</button>
+            </div>
+
+            <div class="perfil-container">
+                <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+                <div class="perfil-text">
+                    <span class="nome">Gerente</span>
+                    <span class="legenda">perfil</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav id="menuhamburguer">
+        <div class="logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+            <li class="naoAtivo"><a href="dashGerente.html"><img src="../assets/imgs/dash.png"
+                        alt="Ícone 1">Dashboard</a></li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
+            <li class="ativo"><a href=""><img src="../assets/imgs/perfil.png" alt="Ícone 1">Funcionarios</a></li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Maquinas</a></li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/config.png" alt="Ícone 1">Configuração</a></li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="left-side">
+            <h2>Bem-vindo de volta!</h2>
+            <p>Cadastre os dados de um novo notebook ou funcionario no sistema.</p>
+
+            <button class="btn-entrar" onclick="window.location.href='cadastroNote.html';">Cadastrar
+                Máquina</button>
+        </div>
+        <div class="right-side">
+            <h2>Criar Cadastro</h2>
+            <div class="grid-form">
+                <div class="scroll-container">
+                    <form class="form">
+                        <div class="form-grupo">
+                            <input type="text" id="input_nome" placeholder="Insira seu nome">
+                        </div>
+
+                        <div class="form-grupo">
+                            <input type="password" id="input_senha" placeholder="Insira sua Senha">
+                        </div>
+
+                        <div class="form-grupo">
+                            <input type="text" id="input_email" placeholder="Insira seu E-mail">
+                        </div>
+
+                        <div class="form-grupo">
+                            <select id="input_cargo">
+                                <option value="#">Selecione seu Cargo</option>
+                                <option value="gerente">Gerente</option>
+                                <option value="analista">Analista</option>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <select id="input_empresa" class="select-empresa">
+                                <option selected disabled value="#">Selecione a Empresa</option>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <input type="text" id="input_token" placeholder="Insira o token">
+                        </div>
+
+                </div>
+                <button type="submit" class="btn-submit">Cadastrar</button>
+
+                </form>
+            </div>
+        </div>
+</body>
+
+</html>
+
+<script>
+
+    // Manipulação do menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('main-Container');
+        var header = document.getElementById('main-header');
+
+        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove a classe 'active' de todos os itens
+            menuItems.forEach(el => el.classList.remove('active'));
+            // Adiciona a classe 'active' ao item clicado
+            this.classList.add('active');
+        });
+    });
+</script>

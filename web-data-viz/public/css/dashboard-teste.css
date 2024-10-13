@@ -82,9 +82,9 @@ header {
 }
 
 .menu-items li {
-  margin: 20px 0;
-  display: block; /* Certifica que o item ocupa toda a largura */
-  width: 100%; /* Faz o link ocupar toda a largura */
+  margin: 10px 0;
+  display: block; 
+  width: 100%; 
   /* display: flex;
   justify-content: flex-start; 
   align-items: center;  */
@@ -116,9 +116,9 @@ header {
 color: #fcdf3b;
 }
 
-#main-Container {
-  transition: transform 0.3s ease; 
-}
+  #main-Container {
+    transition: transform 0.3s ease; 
+  }
 
 #main-header {
   transition: transform 0.3s ease; 
