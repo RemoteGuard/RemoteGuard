@@ -10,7 +10,7 @@
     <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
 </head>
 
-<body>
+<body onload="listarGerente()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -38,9 +38,9 @@
             <li class="naoAtivo"><a href="dashGerente.html"><img src="../assets/imgs/dash.png"
                         alt="Ícone 1">Dashboard</a></li>
             <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
-            <li class="ativo"><a href=""><img src="../assets/imgs/perfil.png" alt="Ícone 1">Funcionarios</a></li>
-            <li class="naoAtivo"><a href=""><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Maquinas</a></li>
-            <li class="naoAtivo"><a href=""><img src="../assets/imgs/config.png" alt="Ícone 1">Configuração</a></li>
+            <li class="ativo"><a href=""><img src="../assets/imgs/perfil.png" alt="Ícone 1">Funcionários</a></li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Máquinas</a></li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/config.png" alt="Ícone 1">Configurações</a></li>
             <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
         </ul>
     </nav>
@@ -48,7 +48,7 @@
     <div class="container">
         <div class="left-side">
             <h2>Bem-vindo de volta!</h2>
-            <p>Cadastre os dados de um novo notebook ou funcionario no sistema.</p>
+            <p>Cadastre os dados de um novo notebook ou funcionário no sistema.</p>
 
             <button class="btn-entrar" onclick="window.location.href='cadastroNote.html';">Cadastrar
                 Máquina</button>
@@ -59,36 +59,34 @@
                 <div class="scroll-container">
                     <form class="form">
                         <div class="form-grupo">
-                            <input type="text" id="input_nome" placeholder="Insira seu nome">
+                            <input type="text" id="input_nome" placeholder="Nome">
                         </div>
 
                         <div class="form-grupo">
-                            <input type="password" id="input_senha" placeholder="Insira sua Senha">
+                            <input type="text" id="input_cpf" placeholder="CPF">
                         </div>
 
                         <div class="form-grupo">
-                            <input type="text" id="input_email" placeholder="Insira seu E-mail">
+                            <input type="password" id="input_senha" placeholder="Senha">
+                        </div>
+
+                        <div class="form-grupo">
+                            <input type="text" id="input_email" placeholder="E-mail">
                         </div>
 
                         <div class="form-grupo">
                             <select id="input_cargo">
-                                <option value="#">Selecione seu Cargo</option>
-                                <option value="gerente">Gerente</option>
+                                <option value="#">Selecione o Cargo</option>
                                 <option value="analista">Analista</option>
+                                <option value="desenvolvedor">Desenvolvedor</option>
+                                <option value="qea">Q&A</option>
+                                <option value="dba">DBA</option>
+                                <option value="outros">Outros</option>
                             </select>
-                        </div>
-                        <div class="form-grupo">
-                            <select id="input_empresa" class="select-empresa">
-                                <option selected disabled value="#">Selecione a Empresa</option>
-                            </select>
-                        </div>
-                        <div class="form-grupo">
-                            <input type="text" id="input_token" placeholder="Insira o token">
                         </div>
 
                 </div>
-                <button type="submit" class="btn-submit">Cadastrar</button>
-
+                <button onclick="cadastrar()" type="submit" class="btn-submit">Cadastrar funcionário</button>
                 </form>
             </div>
         </div>
@@ -97,6 +95,11 @@
 </html>
 
 <script>
+        var requisicaoPadrao = '';
+        var empresas = [];
+        var tokens = [];
+        var id = [];
+        var empresaGerente = ""
 
     // Manipulação do menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
@@ -119,4 +122,99 @@
             this.classList.add('active');
         });
     });
+
+
+        // Função para listar a empresa que o gerente trabalha
+        function listarGerente() {
+            idUsuario = sessionStorage.ID_USUARIO
+                fetch("/usuarios/listarGerente", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    requisicaoPadraoServer: requisicaoPadrao,
+                    idUsuarioServer : idUsuario
+                })
+               }).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(json => {
+                        json.resultado.forEach(empresa => {
+                            empresaGerente = empresa.fkEmpresa
+                        });
+                    });
+                } else {
+                    throw "Erro ao listar empresas!";
+                }
+               })
+            }
+
+        
+
+
+        function cadastrar() {
+            var nomeVar = input_nome.value;
+            var emailVar = input_email.value;
+            var senhaVar = input_senha.value;
+            var cargoVar = input_cargo.value;
+            var nomeEmpresaVar = empresaGerente;
+            var cpfVar = input_cpf.value;
+
+            var fazerCadastro = true;
+
+
+            if (nomeVar === "" || emailVar === "" || senhaVar === "" || cargoVar === "" || cpfVar === "") {
+                alert("Todos os campos devem estar preenchidos!");
+                fazerCadastro = false;
+            }
+
+            if (senhaVar.length < 5 || senhaVar.length > 15) {
+                alert("A senha deve ter entre 5 e 15 caracteres!");
+                fazerCadastro = false;
+            }
+
+            if (!/[!@#$%^&*]/.test(senhaVar)) {
+                alert("A senha deve conter pelo menos um caractere especial!");
+                fazerCadastro = false;
+            }
+
+            // if (cpfVar.length != 11) {
+            //     alert("CPF inválido! Deve conter 11 dígitos.");
+            //     fazerCadastro = false;
+            // }
+
+            if (!emailVar.includes('@') || !emailVar.includes('.')) {
+                alert("E-mail inválido! Certifique-se de que contém '@' e '.'");
+                fazerCadastro = false;
+            }
+
+            if (fazerCadastro) {
+                fetch("/usuarios/cadastrar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        nomeServer: nomeVar,
+                        emailServer: emailVar,
+                        senhaServer: senhaVar,
+                        empresaServer: nomeEmpresaVar,
+                        cargoServer: cargoVar,
+                        cpfServer: cpfVar
+                    }),
+                }).then(function (resposta) {
+                    if (resposta.ok) {
+                        alert("Cadastro feito com sucesso");
+                    } else {
+                        resposta.json().then(json => {
+                            if (JSON.stringify(json).includes("Duplicate entry")) {
+                                alert("O email utilizado já existe no sistema");
+                            }
+                        });
+                    }
+                }).catch(function (erro) {
+                    console.log(erro);
+                });
+            }
+        }
 </script>

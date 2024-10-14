@@ -12,6 +12,18 @@ function chamar_usuario(req, res) {
         )
 }
 
+function listarGerente(req, res) {
+    var idUsuarioModel = req.body.idUsuarioServer
+    usuarioModel.listarGerente(idUsuarioModel)
+        .then(
+            function (resultado) {
+                res.json({
+                    resultado
+                });
+            }
+        )
+}
+
 function autenticar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -93,5 +105,6 @@ function cadastrar(req, res) {
 module.exports = {
     autenticar,
     cadastrar,
-    chamar_usuario
+    chamar_usuario,
+    listarGerente
 }

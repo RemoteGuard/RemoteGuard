@@ -105,7 +105,7 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            id_UsuarioServer: sessionStorage.ID_USUARIO //ta aqui
+                            id_UsuarioServer: sessionStorage.ID_USUARIO 
                         })
                     }).then(function (resposta) {
                         console.log("ESTOU NO THEN DO entrar()!")
@@ -124,15 +124,14 @@
                                 }
                                 if (cargoCorreto == "gerente") {
                                     setTimeout(() => {
-                                        window.location.href = "./dashboard/dashboardGerente.html"
+                                        window.location.href = "./dashboard/DashGerente.html"
                                     }, 1000);
                                 }
                                 else {
                                     setTimeout(() => {
-                                        window.location.href = "./dashboard/dashboardAnalista.html"
+                                        window.location.href = "./dashboard/DashAnalista.html"
                                     }, 1000);
                                 }
-                                // finalizarAguardar();
 
                             });
 
