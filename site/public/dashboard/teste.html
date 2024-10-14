@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Informações</title>
+    <link rel="stylesheet" href="teste.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="menu-icon"></div>
+            <img src="profile.png" alt="Perfil" class="profile-pic">
+            <button class="menu-btn">Cadastrar Notebook</button>
+            <button class="menu-btn">Cadastrar Funcionários</button>
+        </div>
+        <div class="main-content">
+            <div class="info-box">
+                <h1>Editar Informações</h1>
+                <form>
+                    <label for="emailPrincipal">Email Principal:</label>
+                    <input type="email" id="emailPrincipal" placeholder="emailPrincipal@gmail.com">
+
+                    <label for="telefoneContato">Telefone para Contato:</label>
+                    <input type="tel" id="telefoneContato" placeholder="+55 11 987129876">
+
+                    <label for="emailSecundario">Email Secundário:</label>
+                    <input type="email" id="emailSecundario" placeholder="emailSecundario@gmail.com">
+
+                    <label for="cargo">Cargo:</label>
+                    <select id="cargo">
+                        <option value="gerente">Gerente</option>
+                        <option value="analista">Analista</option>
+                        <option value="supervisor">Supervisor</option>
+                    </select>
+
+                    <label for="tolerancia">Tolerância para Inatividade:</label>
+                    <input type="time" id="tolerancia" value="18:39">
+
+                    <button type="submit" class="alterar-btn">Alterar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

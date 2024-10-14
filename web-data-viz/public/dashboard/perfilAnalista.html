@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RemoteGuard - Editar Perfil</title>
+    <link rel="stylesheet" href="./../css/perfil.css" />
+    <link rel="stylesheet" href="../css/dashboard-teste.css" />
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+</head>
+
+<body>
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+          <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="perfil-wrapper">
+    
+        <div class="Ativacao">
+          <button>Ajuda</button>
+        </div>
+        
+          <div class="perfil-container">
+            <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+            <div class="perfil-text">
+              <span class="nome">Analista</span>
+              <span class="legenda">perfil</span>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+      <nav id="menuhamburguer">
+        <div class="logo">
+          <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+          <li class="naoAtivo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a></li>
+          <li class="ativo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png" alt="Ícone 1">Configuração</a></li>
+          <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+        </ul>
+      </nav>
+
+
+
+    <div class="containerSessoes">
+        <section class="sessaoUm">
+            <div class="burguer" id="burguer" onclick="alterarSidebar()"></div>
+            <div class="conteudo">
+                <div class="containerImg">
+                    <div class="imgPerfil" onclick="alterarFoto()">
+                        <img src="../assets/imgs/edit.svg" alt="" />
+                    </div>
+                    <div class="infoImg" id="infoImagem">
+                        <h2>Escolha sua nova foto:</h3>
+                            <input placeholder="https://urldesite/imagem.jpg" type="text" name="" id="" />
+                            <div id="botaoFoto">
+                                <button class="btn-entrar">Alterar Foto</button>
+                                <img src="svg/quadradoX.svg" onclick="fecharInfoImg()" alt="">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="sessaoDois">
+            <div class="container">
+                <h1>Editar Informações</h1>
+                <div class="inputs">
+                    <div class="topoInputs2">
+                        <div class="imp">
+                            <h3>Email Cadastrado: </h3><input type="email" placeholder="emailPrincipal@gmail.com"
+                                name="" id="" />
+                        </div>
+                        <div class="imp">
+                            <h3>Telefone Cadastrado: </h3><input type="number" placeholder="+55 11 987129876" name=""
+                                id="" />
+                        </div>
+                    </div>
+                    <div class="divSelecao">
+                        <select name="" id="selCargo">
+                            <option value="analista">Analista</option>
+                        </select>
+
+
+                    </div>
+
+                </div>
+                <button class="btn-entrar">Alterar</button>
+            </div>
+
+        </section>
+    </div>
+
+</body>
+
+</html>
+<script src="js/sessao.js"></script>
+<script>
+
+    // Manipulação do menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('.containerSessoes');
+        var header = document.getElementById('main-header');
+
+        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+
+    const selectElement = document.getElementById('selCargo');
+    selectElement.addEventListener('mousedown', function (event) {
+        event.preventDefault(); // Impede a abertura do menu suspenso
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove a classe 'active' de todos os itens
+            menuItems.forEach(el => el.classList.remove('active'));
+            // Adiciona a classe 'active' ao item clicado
+            this.classList.add('active');
+        });
+    });
+    function alterarFoto() {
+        divInfoImg = document.getElementById('infoImagem')
+        divInfoImg.style.display = 'flex';
+    }
+
+    function fecharInfoImg() {
+        divInfoImg = document.getElementById('infoImagem')
+        divInfoImg.style.display = 'none';
+
+    }
+</script>

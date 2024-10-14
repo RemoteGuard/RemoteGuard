@@ -1,0 +1,261 @@
+input {
+  background-color: #212121;
+  width: 450px;
+  height: 40px;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 5px;
+
+}
+
+.containerSessoes {
+  display: flex;
+  justify-content: space-between;
+  width: 93vw;
+}
+
+.sessaoUm {
+  height: 100vh;
+  min-width: 30vw;
+}
+
+.menu-open .containerSessoes {
+  transform: translateX(250px);
+}
+
+.menu-open #main-header {
+  transform: translateX(250px);
+}
+
+.containerSessoes {
+  transition: transform 0.3s ease;
+}
+
+.sessaoUm .conteudo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100vh;
+  align-items: center;
+}
+
+.sessaoUm .conteudo .containerImg {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: 50%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.conteudo .containerImg .infoImg {
+  display: none;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 40%;
+  align-items: center;
+}
+
+.infoImg #botaoFoto {
+  width: 105%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.infoImg #botaoFoto img {
+  cursor: pointer;
+  width: 40px;
+  transition: transform 0.5s;
+}
+
+.infoImg #botaoFoto img:hover {
+  transform: scale(1.2);
+}
+
+.sessaoUm .imgPerfil {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../assets/imgs/edição.png);
+  background-position: center;
+  background-size: cover;
+  width: 240px;
+  height: 240px;
+  border-radius: 100%;
+}
+
+.sessaoUm .imgPerfil img {
+  opacity: 0;
+  width: 60%;
+  transition: opacity 0.5s;
+}
+
+.sessaoUm .imgPerfil:hover img {
+  opacity: 1;
+
+}
+
+.btn-entrar {
+  background-color: #FFD700;
+  border: none;
+  padding: 10px 30px;
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-entrar:hover {
+  transform: scale(1.05);
+}
+
+.sessaoDois {
+  width: 52vw;
+  height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sessaoDois .container {
+  background-color: #212121;
+  margin-right: 3%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sessaoDois .container h1 {
+  font-size: 35px;
+}
+
+.sessaoDois .container h3 {
+  height: 50%;
+  font-size: 15px;
+  color: #ffffff88;
+}
+
+.sessaoDois .container .inputs {
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+  width: 79%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.sessaoDois .container .inputs .imp {
+  text-align: center;
+}
+
+.sessaoDois .container .inputs .divSelecao {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 90%;
+}
+
+.topoInputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 59%;
+}
+
+.topoInputs2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 39%;
+}
+
+.sessaoDois .container .inputs .divTolerancia {
+  height: 13 0%;
+  display: flex;
+  flex-direction: row;
+  width: 220px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessaoDois .container .inputs .impTolerancia {
+  cursor: pointer;
+  width: 85px;
+  font-size: 15px;
+}
+
+.divSelecao {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+.divSelecao select {
+  font-family: monospace;
+  cursor: pointer;
+  width: 90px;
+  font-size: 16px;
+  background-color: #212121;
+  width: 250px;
+  height: 40px;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+
+  .containerSessoes {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sessaoUm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100vw;
+    height: 87vh;
+  }
+
+  .sessaoUm .conteudo .containerImg img {
+    margin-right: 2%;
+  }
+
+  .sessaoDois {
+    height: 70vh;
+  }
+
+  .sessaoDois .container {
+    height: 100%;
+    border: none;
+    text-align: center;
+  }
+}
+
+@media (max-width: 750px) {
+  .sessaoDois {
+    height: 78vh;
+  }
+
+
+  .sessaoDois .container .inputs .divSelecao {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+}
