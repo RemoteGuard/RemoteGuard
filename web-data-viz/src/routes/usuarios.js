@@ -19,4 +19,8 @@ router.post("/listarGerente", function (req, res) {
     usuarioController.listarGerente(req, res);
 });
 
+router.post("/listarUsuarios", function (req, res) {
+    usuarioController.listarUsuarios(req, res);
+});
+
 module.exports = router;

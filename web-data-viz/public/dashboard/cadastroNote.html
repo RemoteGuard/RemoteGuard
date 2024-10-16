@@ -10,7 +10,7 @@
     <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
 </head>
 
-<body>
+<body onload="timeout, listarGerente()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -35,7 +35,8 @@
             <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
         </div>
         <ul class="menu-items">
-            <li class="naoAtivo"><a href="dashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a></li>
+            <li class="naoAtivo"><a href="dashGerente.html"><img src="../assets/imgs/dash.png"
+                        alt="Ícone 1">Dashboard</a></li>
             <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
             <li class="naoAtivo"><a href=""><img src="../assets/imgs/perfil.png" alt="Ícone 1">Funcionarios</a></li>
             <li class="ativo"><a href=""><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Maquinas</a></li>
@@ -49,44 +50,46 @@
             <h2>Bem-vindo de volta!</h2>
             <p>Cadastre os dados de um novo notebook ou funcionario no sistema.</p>
 
-            <button class="btn-entrar" onclick="window.location.href='CadastroFunc.html';">Cadastrar funcionario</button>
+            <button class="btn-entrar" onclick="window.location.href='CadastroFunc.html';">Cadastrar
+                funcionario</button>
         </div>
         <div class="right-side">
             <h2>Criar Cadastro</h2>
-            <form class="form">
-                <div class="form-grupo">
-                    <input type="text" id="marca" name="marca" placeholder="Marca">
-                </div>
-
-                <div class="form-grupo">
-                    <input type="text" id="modelo" name="modelo" placeholder="Modelo">
-                </div>
-
-                <div class="form-grupo">
-                    <input type="text" id="processador" name="processador" placeholder="Processador">
-                </div>
-
-                <div class="form-grupo">
-                    <input type="number" id="ram" name="ram" placeholder="Memória RAM (GB)">
-                </div>
-
-
-                <div class="form-grupo">
-                    <input type="number" id="ram" name="ram" placeholder="Armazenamento">
-
-
-                    <div class="storage-options">
-                        <label>
-                            <input type="radio" name="armazenamento" value="HD" required> HD
-                        </label>
-                        <label>
-                            <input type="radio" name="armazenamento" value="SSD"> SSD
-                        </label>
+            <div class="scroll-container">
+                <form class="form">
+                    <div class="form-grupo">
+                        <input type="text" id="marca" name="marca" placeholder="Marca">
                     </div>
-                </div>
 
-                <button type="submit" class="btn-submit">Cadastrar</button>
+                    <div class="form-grupo">
+                        <input type="text" id="modelo" name="modelo" placeholder="Modelo">
+                    </div>
 
+                    <div class="form-grupo">
+                        <input type="text" id="processador" name="processador" placeholder="Processador">
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="number" id="ram" name="ram" placeholder="Memória RAM (GB)">
+                    </div>
+
+
+                    <div class="form-grupo">
+                        <input type="number" id="discos" name="discos" placeholder="Quantidade de discos rígidos">
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="number" id="capacidade" name="capacidade"
+                            placeholder="Capacidade de armazenamento">
+                    </div>
+
+                    <div class="form-grupo" id="funcionario_field">
+                        <select id="input_funcionario">
+                            <option selected disabled value="#">Selecione o funcionário</option>
+                        </select>
+                    </div>
+            </div>
+            <button onclick="cadastrarNote()" type="submit" class="btn-submit">Cadastrar</button>
             </form>
         </div>
     </div>
@@ -95,6 +98,37 @@
 </html>
 
 <script>
+    var requisicaoPadrao = '';
+    var empresas = [];
+    var tokens = [];
+    var id = [];
+    var empresaGerente = ""
+    var noteAtual = ""
+    // função que busca o id do ultimo notebook
+    var timeout1 = setTimeout(function buscarNotebook() {
+            fetch("/notebook/buscarNotebook", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    requisicaoPadraoServer: requisicaoPadrao
+
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(json => {
+                        json.resultado.forEach(notebook => {
+                            noteAtual = notebook.idNotebook
+                        });
+                    });
+                } else {
+                    throw "Erro ao listar notebook!";
+                }
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+        },100)
     // Manipulação do menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
         var menuhamburguer = document.getElementById('menuhamburguer');
@@ -116,4 +150,116 @@
             this.classList.add('active');
         });
     });
+
+    function listarGerente() {
+        idUsuario = sessionStorage.ID_USUARIO
+        fetch("/usuarios/listarGerente", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao,
+                idUsuarioServer: idUsuario
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(empresa => {
+                        empresaGerente = empresa.fkEmpresa
+                    });
+                });
+            } else {
+                throw "Erro ao buscar a fkEmpresa do gerente!";
+            }
+        })
+    }
+
+    var timeout = setTimeout(function listarUsuarios() {
+        fetch("/usuarios/listarUsuarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                empresaServer: empresaGerente
+
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    const selectFuncionario = document.getElementById("input_funcionario");
+                    json.resultado.forEach(funcionario => {
+                        const option = document.createElement("option");
+                        option.value = funcionario.idFuncionario;
+                        option.textContent = funcionario.nome;
+                        selectFuncionario.appendChild(option);
+                    });
+                });
+            } else {
+                throw "Erro ao listar funcionários!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+        , 200)
+
+
+
+    function cadastrarNote() {
+        var marcaVar = marca.value;
+        var modeloVar = modelo.value;
+        var processadorVar = processador.value;
+        var ramVar = ram.value;
+        var discosVar = discos.value;
+        var capacidadeVar = capacidade.value;
+        var funcionarioVar = input_funcionario.value;
+
+        var fazerCadastro = true;
+
+
+        if (marcaVar === "" || modeloVar === "" || processadorVar === "" || ramVar === "" || discosVar === "" || capacidadeVar === "" || funcionarioVar === "") {
+            alert("Todos os campos devem estar preenchidos!");
+            fazerCadastro = false;
+        }
+
+        if (fazerCadastro) {
+            fetch("/notebook/cadastrarNote", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    marcaServer: marcaVar,
+                    modeloServer: modeloVar,
+                    processadorServer: processadorVar,
+                    ramServer: ramVar,
+
+                }),
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    alert("Cadastro feito com sucesso");
+                    timeout1
+                } else {
+                    resposta.json().then(json => {
+                        if (JSON.stringify(json).includes("Duplicate entry")) {
+                            alert();
+                        }
+                    });
+                }
+            }).catch(function (erro) {
+                console.log(erro);
+            });
+        }
+        
+    }
+       
+        
+    
+
+
+
+
+
 </script>

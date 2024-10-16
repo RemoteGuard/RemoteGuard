@@ -17,6 +17,15 @@ CREATE TABLE empresa (
 );
 SELECT * FROM empresa;
 
+CREATE TABLE notebook(
+	idNotebook INT PRIMARY KEY AUTO_INCREMENT,
+    hostname varchar(100),
+    marca VARCHAR(30) NOT NULL,
+    modelo VARCHAR(45) NOT NULL,
+    memoriaRAM INT NOT NULL,
+    processador VARCHAR(25) NOT NULL
+) AUTO_INCREMENT = 1100;
+
 CREATE TABLE funcionario (
 	idFuncionario INT AUTO_INCREMENT,
     cargo VARCHAR(45) NOT NULL,
@@ -27,31 +36,21 @@ CREATE TABLE funcionario (
     fotoPerfil TEXT,
     fkEmpresa INT NOT NULL,
     fkSupervisor INT,
+    fkNotebook int,
     CONSTRAINT pkFuncionario PRIMARY KEY (idFuncionario, fkEmpresa),
     CONSTRAINT fkEmpresaFuncionario FOREIGN KEY (fkEmpresa) 
 		REFERENCES empresa(idEmpresa),
     CONSTRAINT fkSupervisorFuncionario FOREIGN KEY (fkSupervisor) 
-		REFERENCES funcionario(idFuncionario)
+		REFERENCES funcionario(idFuncionario),
+	CONSTRAINT fkNotebookFuncionario foreign key (fkNotebook)
+		REFERENCES notebook(idNotebook)
 ) AUTO_INCREMENT = 1000;
 
 
-CREATE TABLE notebook(
-	idNotebook INT PRIMARY KEY AUTO_INCREMENT,
-    hostname varchar(100)
-    -- marca VARCHAR(30) NOT NULL,
-    -- modelo VARCHAR(45) NOT NULL,
-    -- memoriaRAM INT NOT NULL,
-    -- processador VARCHAR(25) NOT NULL,
-    -- fkEmpresa INT,
-    -- CONSTRAINT pkNotebook PRIMARY KEY (idNotebook, fkEmpresa),
-    -- CONSTRAINT fkEmpresaNotebook FOREIGN KEY (fkEmpresa) 
-		-- REFERENCES empresa(idEmpresa)
-) AUTO_INCREMENT = 1100;
-
 CREATE TABLE armazenamento(
 	idArmazenamento INT AUTO_INCREMENT,
-    tipo ENUM('SSD', 'HDD'),
-    tamanho INT NOT NULL, 
+    qtdDiscos int,
+    tamanhoTotal INT NOT NULL, 
     fkNotebook INT,
     CONSTRAINT pkArmazenamento  PRIMARY KEY (idArmazenamento, fkNotebook),
     CONSTRAINT fkNotebookArmazenamento FOREIGN KEY (fkNotebook) 
@@ -109,8 +108,8 @@ CREATE TABLE processos(
 -- SELECT * FROM notebook_quatro;
 -- SELECT * FROM notebook_cinco;
 
-
 SELECT * FROM funcionario;
+
 SELECT * FROM notebook;
 SELECT * FROM dados;
 SELECT * FROM processos;

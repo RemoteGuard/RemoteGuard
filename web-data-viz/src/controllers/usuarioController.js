@@ -24,6 +24,18 @@ function listarGerente(req, res) {
         )
 }
 
+function listarUsuarios(req, res) {
+    var empresaModel = req.body.empresaServer
+    usuarioModel.listarUsuarios(empresaModel)
+        .then(
+            function (resultado) {
+                res.json({
+                    resultado
+                });
+            }
+        )
+}
+
 function autenticar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -106,5 +118,6 @@ module.exports = {
     autenticar,
     cadastrar,
     chamar_usuario,
-    listarGerente
+    listarGerente,
+    listarUsuarios
 }
