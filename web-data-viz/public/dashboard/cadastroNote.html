@@ -104,53 +104,28 @@
     var id = [];
     var empresaGerente = ""
     var noteAtual = ""
-    // função que busca o id do ultimo notebook
-    var timeout1 = setTimeout(function buscarNotebook() {
-            fetch("/notebook/buscarNotebook", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    requisicaoPadraoServer: requisicaoPadrao
+    var funcionarioAtual = ""
 
-                })
-            }).then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(json => {
-                        json.resultado.forEach(notebook => {
-                            noteAtual = notebook.idNotebook
-                        });
-                    });
-                } else {
-                    throw "Erro ao listar notebook!";
-                }
-            }).catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
-            });
-        },100)
-    // Manipulação do menu hamburguer
+// menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
         var menuhamburguer = document.getElementById('menuhamburguer');
         var mainContainer = document.getElementById('main-Container');
         var header = document.getElementById('main-header');
 
-        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
         menuhamburguer.classList.toggle('open');
         document.body.classList.toggle('menu-open');
     });
-
     const menuItems = document.querySelectorAll('.menu-items li');
 
     menuItems.forEach(item => {
         item.addEventListener('click', function () {
-            // Remove a classe 'active' de todos os itens
             menuItems.forEach(el => el.classList.remove('active'));
-            // Adiciona a classe 'active' ao item clicado
             this.classList.add('active');
         });
     });
+    
 
+//funcao que traz a fkEmpresa do funcionário que estiver logado
     function listarGerente() {
         idUsuario = sessionStorage.ID_USUARIO
         fetch("/usuarios/listarGerente", {
@@ -175,6 +150,7 @@
         })
     }
 
+//função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
     var timeout = setTimeout(function listarUsuarios() {
         fetch("/usuarios/listarUsuarios", {
             method: "POST",
@@ -203,10 +179,9 @@
             console.log(`#ERRO: ${erro}`);
         });
     }
-        , 200)
+        , 100)
 
-
-
+//função que cadastra o notebook
     function cadastrarNote() {
         var marcaVar = marca.value;
         var modeloVar = modelo.value;
@@ -215,7 +190,7 @@
         var discosVar = discos.value;
         var capacidadeVar = capacidade.value;
         var funcionarioVar = input_funcionario.value;
-
+        funcionarioAtual = funcionarioVar
         var fazerCadastro = true;
 
 
@@ -235,12 +210,14 @@
                     modeloServer: modeloVar,
                     processadorServer: processadorVar,
                     ramServer: ramVar,
+                    funcionarioServer : funcionarioVar,
+                    discosServer: discosVar,
+                    capacidadeServer: capacidadeVar
 
                 }),
             }).then(function (resposta) {
                 if (resposta.ok) {
-                    alert("Cadastro feito com sucesso");
-                    timeout1
+                   // buscarNotebook();
                 } else {
                     resposta.json().then(json => {
                         if (JSON.stringify(json).includes("Duplicate entry")) {
@@ -251,15 +228,8 @@
             }).catch(function (erro) {
                 console.log(erro);
             });
+        
         }
         
     }
-       
-        
-    
-
-
-
-
-
 </script>

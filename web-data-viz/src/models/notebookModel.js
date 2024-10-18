@@ -11,13 +11,24 @@ function cadastrarNote(marca, modelo, ram, processador) {
     return database.executar(instrucaoSql);
 }
 
-function buscarNotebook() {
-    var instrucaoSql = `SELECT * FROM notebook ORDER BY idNotebook DESC LIMIT 1`;
-  
+
+  function updateFunc(funcionario, idMaquina) {
+    var instrucaoSql = `UPDATE funcionario SET fkNotebook = '${idMaquina}' WHERE idFuncionario = '${funcionario}';`;
+    
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+  }
+
+
+  function cadastrarDisco(discos, capacidade, fkNotebook) {
+    var instrucaoSql = `INSERT INTO armazenamento (qtdDiscos, tamanhoTotal, fkNotebook) VALUES ('${discos}', '${capacidade}', '${fkNotebook}');`;
+    
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
   }
 
 module.exports = {
     cadastrarNote,
-    buscarNotebook
+    updateFunc,
+    cadastrarDisco
 };
