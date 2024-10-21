@@ -34,7 +34,7 @@
       <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
     </div>
     <ul class="menu-items">
-      <li class="ativo"><a href="dashboardGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a>
+      <li class="ativo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a>
       </li>
       <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
       <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
@@ -71,7 +71,7 @@
       <div class="status-boxes">
         <div class="status-card verde"><span></span></div>
         <div class="text-card"><span id="dia-maximo"></span></div>
-        <div class="status-card vermelho"></div>
+        <div class="status-card verde"></div>
         <div class="text-card"><span id="dia-semana"></span></div>
         <div class="status-card amarelo"></div>
 
@@ -94,12 +94,10 @@
     function criarGrafico(data, label, color, backgroundColor) {
       const ctx = document.getElementById('myChart').getContext('2d');
 
-      // Destruir o gráfico anterior, se ele existir
       if (grafico) {
         grafico.destroy();
       }
 
-      // Criar um novo gráfico
       grafico = new Chart(ctx, {
         type: 'line',
         data: {
@@ -198,11 +196,11 @@
       let color = '';
       let backgroundColor = '';
 
-      if (maquina) {
-        mensagemAviso.style.display = 'none'; // Esconder a mensagem de aviso
-        canvas.style.display = 'block'; // Mostrar o gráfico
+      if (maquina && recurso) {
+        mensagemAviso.style.display = 'none'; 
+        canvas.style.display = 'block'; 
 
-        // Valores diferentes para cada máquina
+        
         if (maquina === '1') {
           dataRAM = [59, 61, 43, 87, 12, 98, 27, 65, 76, 33, 57, 88, 41, 19, 65, 74, 30, 22, 12, 90, 77, 88, 65, 54, 21, 99, 35, 48, 26, 75];
           dataCPU = [62, 47, 77, 11, 85, 56, 92, 49, 88, 28, 71, 43, 18, 62, 97, 29, 82, 54, 71, 13, 66, 64, 41, 76, 31, 9, 96, 84, 68, 88];
@@ -220,20 +218,20 @@
 
         if (recurso === 'ram') {
           label = 'Memória RAM';
-          color = 'rgba(75, 192, 192, 1)';
+          color = 'rgba(255, 99, 132, 1)';
           backgroundColor = 'rgb(0 0 156)';
           criarGrafico(dataRAM, label, color, backgroundColor);
         } else if (recurso === 'cpu') {
           label = 'CPU';
-          color = 'rgba(255, 99, 132, 1)';
+          color = 'rgba(54, 162, 235, 1)';
           backgroundColor = 'rgb(255 ,0 , 0.8)';
           criarGrafico(dataCPU, label, color, backgroundColor);
         }
 
         calcularMediaEAtualizarCard(dataRAM, dataCPU);
       } else {
-        mensagemAviso.style.display = 'block'; // Exibe a mensagem de aviso se não houver seleção
-        canvas.style.display = 'none'; // Esconde o gráfico
+        mensagemAviso.style.display = 'block'; 
+        canvas.style.display = 'none'; 
       }
     }
     document.getElementById('select-maquina').addEventListener('change', atualizargrafico);
