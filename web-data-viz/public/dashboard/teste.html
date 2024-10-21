@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+   <link rel="shortcut icon" href="Imagens/Logo.png" type="image/x-icon">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Ranking | SeaOfTypes</title>
+
+   <!-- Estilos CSS -->
+   <link rel="stylesheet" href="teste.css">
+
+   <!-- Scripts -->
+   <script src="../js/sessao.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+   <div class="header-left">
+       <img src="Imagens/Logo.png" alt="Logo">
+       <div class="hello">
+           <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
+       </div>
+       <a class="btn-nav" href="inicio.html">
+           <i class="fas fa-home icon"></i> Início
+       </a>
+       <a class="btn-nav" href="cards.html">
+           <i class="fas fa-question-circle icon"></i> Quiz
+       </a>
+       <a class="btn-nav" href="dashboard.html">
+           <i class="fas fa-chart-bar icon"></i> Gráficos
+       </a>
+       <a class="btn-nav-white" href="ranking.html">
+           <i class="fa-solid fa-ranking-star"></i> Ranking
+       </a>
+       <a class="btn-nav" href="favoritos.html">
+           <i class="fa-solid fa-fish"></i> Peixes Favoritos
+       </a>
+       <div class="btn-logout" onclick="limparSessao()">
+           <a href="login.html">
+               <i class="fas fa-sign-out-alt icon"></i> Sair
+           </a>
+       </div>
+   </div>
+
+ <!-- Caixa de informações principal -->
+<div class="info-box">
+   <!-- Título da seção -->
+   <h1 style="margin-right:30%;" >Ranking</h1>
+   
+   <!-- Container do pódio -->
+   <div class="podium-container">
+       <!-- Posição do segundo lugar -->
+       <div class="podium segundo">
+           <div class="position">2º</div>
+           <div class="name" id="segundoName"></div> <!-- Nome do segundo lugar -->
+           <div class="score" id="segundoScore"></div> <!-- Pontuação do segundo lugar -->
+       </div>
+       
+       <!-- Posição do primeiro lugar -->
+       <div class="podium primeiro">
+           <img src="Imagens/coroa-removebg-preview.png" alt=""> <!-- Imagem da coroa -->
+           <div class="position">1º</div>
+           <div class="name" id="primeiroName"></div> <!-- Nome do primeiro lugar -->
+           <div class="score" id="primeiroScore"></div> <!-- Pontuação do primeiro lugar -->
+       </div>
+       
+       <!-- Posição do terceiro lugar -->
+       <div class="podium terceiro">
+           <div class="position">3º</div>
+           <div class="name" id="terceiroName"></div> <!-- Nome do terceiro lugar -->
+           <div class="score" id="terceiroScore"></div> <!-- Pontuação do terceiro lugar -->
+       </div>
+   </div>
+   
+   <!-- Tabela de classificação -->
+   <table id="tabelaClassificacao" class="tabela">
+       <thead>
+           <!-- Cabeçalho da tabela -->
+           <tr>
+               <th>Posição</th>
+               <th>Jogador</th>
+               <th>Pontos</th>
+           </tr>
+       </thead>
+       <tbody id="Tabela">
+           <!-- Corpo da tabela será preenchido dinamicamente -->
+       </tbody>
+   </table>
+</div>
+
+
+   <script>
+       // Função que atualiza a tabela de classificação - Feito Tudo No Dia 24/06
+       function atualizarTabelaClassificacao() {
+           // Faz uma requisição para obter os dados da classificação
+           fetch('/quiz/classificacao')
+               // Transforma a resposta em JSON
+               .then(response => response.json())
+               // Manipula os dados recebidos
+               .then(data => {
+                   // Obtém o corpo da tabela onde os dados serão exibidos
+                   var Tabela = document.getElementById("Tabela");
+                   Tabela.innerHTML = ''; // Limpa o conteúdo atual da tabela
+
+                   // Mapa para armazenar as pontuações dos jogadores
+                   var pontuacoes = new Map();
+
+                   // Processa os dados recebidos para identificar a maior pontuação de cada jogador
+                   data.forEach(({ nome, pontuacao }) => {
+                       const pontuacaoAtual = pontuacoes.get(nome);
+                       if (!pontuacaoAtual || pontuacao > pontuacaoAtual) {
+                           pontuacoes.set(nome, pontuacao);
+                       }
+                   });
+
+                   // Arrays para armazenar os jogadores no pódio e os outros jogadores
+                   var podium = [];
+                   var outros = [];
+
+                   // Adiciona os jogadores no pódio e nos outros
+                   var posicao = 1;
+                   pontuacoes.forEach((pontuacao, nome) => {
+                       if (posicao <= 3) {
+                           podium.push({ nome, pontuacao });
+                       } else {
+                           outros.push({ nome, pontuacao, posicao });
+                       }
+                       posicao++;
+                   });
+
+                   // Preenche o pódio na página
+                   preencherPodium(podium);
+
+                   // Preenche a tabela com os outros jogadores
+                   preencherTabela(Tabela, outros);
+               })
+               // Trata erros, caso ocorram, na requisição
+               .catch(error => console.error('Erro ao buscar classificação:', error));
+       }
+
+       // Função para preencher o pódio com os três primeiros colocados
+       function preencherPodium(podium) {
+           if (podium.length > 0) {
+               document.getElementById('primeiroName').innerHTML = podium[0].nome;
+               document.getElementById('primeiroScore').innerHTML = podium[0].pontuacao;
+           }
+           if (podium.length > 1) {
+               document.getElementById('segundoName').innerHTML = podium[1].nome;
+               document.getElementById('segundoScore').innerHTML = podium[1].pontuacao;
+           }
+           if (podium.length > 2) {
+               document.getElementById('terceiroName').innerHTML = podium[2].nome;
+               document.getElementById('terceiroScore').innerHTML = podium[2].pontuacao;
+           }
+       }
+
+       // Função para preencher a tabela com os jogadores que não estão no pódio
+       function preencherTabela(Tabela, outros) {
+           outros.forEach(jogador => {
+               adicionarJogadorTabela(Tabela, jogador.nome, jogador.pontuacao, jogador.posicao);
+           });
+       }
+
+       function adicionarJogadorTabela(Tabela, nomeJogador, pontuacaoJogador, posicao) {
+           // Cria a linha da tabela
+           var linha = "<tr>";
+
+           // Célula da posição
+           linha += `<td>${posicao}°</td>`;
+
+           // Célula do jogador logado
+           if (nomeJogador === sessionStorage.NOME_USUARIO) {
+               linha += `<td class="atual"> ${nomeJogador}</td>`;
+           } else {
+               linha += `<td>${nomeJogador}</td>`;
+           }
+
+           // Célula da pontuação
+           linha += `<td>${pontuacaoJogador}</td>`;
+
+           // Fecha a linha
+           linha += "</tr>";
+
+           // Adiciona a linha ao corpo da tabela
+           Tabela.innerHTML += linha;
+       }
+   </script>
+</body>
+
+</html>

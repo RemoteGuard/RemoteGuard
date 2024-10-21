@@ -35,12 +35,15 @@
             <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
         </div>
         <ul class="menu-items">
-            <li class="naoAtivo"><a href="dashGerente.html"><img src="../assets/imgs/dash.png"
+            <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png"
                         alt="Ícone 1">Dashboard</a></li>
             <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
-            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png" alt="Ícone 1">Funcionarios</a></li>
-            <li class="ativo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Maquinas</a></li>
-            <li class="naoAtivo"><a href="perfilGerente.html"><img src="../assets/imgs/config.png" alt="Ícone 1">Configuração</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                        alt="Ícone 1">Funcionarios</a></li>
+            <li class="ativo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1">
+                    Maquinas</a></li>
+            <li class="naoAtivo"><a href="perfilGerente.html"><img src="../assets/imgs/config.png"
+                        alt="Ícone 1">Configuração</a></li>
             <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
         </ul>
     </nav>
@@ -106,7 +109,7 @@
     var noteAtual = ""
     var funcionarioAtual = ""
 
-// menu hamburguer
+    // menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
         var menuhamburguer = document.getElementById('menuhamburguer');
         var mainContainer = document.getElementById('main-Container');
@@ -123,9 +126,9 @@
             this.classList.add('active');
         });
     });
-    
 
-//funcao que traz a fkEmpresa do funcionário que estiver logado
+
+    //funcao que traz a fkEmpresa do funcionário que estiver logado
     function listarGerente() {
         idUsuario = sessionStorage.ID_USUARIO
         fetch("/usuarios/listarGerente", {
@@ -150,7 +153,7 @@
         })
     }
 
-//função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
+    //função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
     var timeout = setTimeout(function listarUsuarios() {
         fetch("/usuarios/listarUsuarios", {
             method: "POST",
@@ -181,7 +184,7 @@
     }
         , 100)
 
-//função que cadastra o notebook
+    //função que cadastra o notebook
     function cadastrarNote() {
         var marcaVar = marca.value;
         var modeloVar = modelo.value;
@@ -210,14 +213,14 @@
                     modeloServer: modeloVar,
                     processadorServer: processadorVar,
                     ramServer: ramVar,
-                    funcionarioServer : funcionarioVar,
+                    funcionarioServer: funcionarioVar,
                     discosServer: discosVar,
                     capacidadeServer: capacidadeVar
 
                 }),
             }).then(function (resposta) {
                 if (resposta.ok) {
-                   // buscarNotebook();
+                    // buscarNotebook();
                 } else {
                     resposta.json().then(json => {
                         if (JSON.stringify(json).includes("Duplicate entry")) {
@@ -228,8 +231,8 @@
             }).catch(function (erro) {
                 console.log(erro);
             });
-        
+
         }
-        
+
     }
 </script>

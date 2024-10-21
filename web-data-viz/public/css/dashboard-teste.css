@@ -92,6 +92,7 @@ header {
   padding: 10px; 
   width: 250px;
 }
+
 .status-card.verde{
   
 }
@@ -216,20 +217,31 @@ main {
   justify-content: space-between;
   align-items: flex-start;
 }
+
+.dashboard1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .graficos{
   width: 300px;
   height: 450px;
 }
 .mensagem-estilo{
   text-align: center;
-  margin-top: 24%;
+  margin-top: 17%;
+  font-size: 18px;
+}
+.mensagem-estilo2{
+  text-align: center;
+  margin-top: 22%;
   font-size: 18px;
 }
 .chart-container {
   background-color: #202020;
   padding: 20px;
   border-radius: 10px;
-  width: 70%;
+  width: 100%;
   height: 480px;
 }
 .texto-card{
@@ -248,14 +260,20 @@ main {
   justify-content: center;
   font-size: 15px;
   text-align: center;
- 
-
 }
+
 .status-boxes {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-left: 10px;
+}
+
+.status-boxes2 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
+  margin-top: 20px;
 }
 
 .status-card {
@@ -264,7 +282,17 @@ main {
   margin: 20px 0;
   background-color: #202020;
   border-radius: 0px;
-  margin-right: 100px;
+  margin-left: 50px;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.status-card2 {
+  width: 400px;
+  height: 110px;
+  margin: 20px 0;
+  background-color: #202020;
+  border-radius: 0px;
+  margin-left: 50px;
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -273,7 +301,13 @@ main {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.status-card.verde {
+.status-card2:hover {
+  transform: scale(1.1); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.status-card.verde,
+.status-card2.verde {
   border-color: #00FF00;
   border-left:2px solid #FFD700;
 }
@@ -284,7 +318,13 @@ main {
   border-left: 2px solid #FF0000;
 }
 
-.status-card.amarelo {
+.status-card2.vermelho2 {
+  border-color: #FFD700;
+  border-left: 2px solid #FFD700;
+}
+
+.status-card.amarelo,
+.status-card2.amarelo {
   border-color: #FFD700;
   border-left: 2px solid #FFD700;
 }
@@ -375,3 +415,27 @@ main {
   color: #777;
 }
 
+.tabela {
+  width: 100%;
+  margin: 5% auto;
+  border-collapse: collapse;
+ }
+ 
+ .tabela thead {
+  background-color: #FFD700;
+  color: black;
+ }
+ 
+ .tabela th,
+ .tabela td {
+  padding: 1%;
+  border: 1px solid #000000;
+  text-align: center;
+ }
+  
+
+.titulo_ranking{
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+}
