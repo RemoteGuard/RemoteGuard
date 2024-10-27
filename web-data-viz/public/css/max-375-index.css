@@ -1,5 +1,5 @@
 /* Estilos para telas pequenas (até 375px) */
-@media (max-width: 810px) {
+@media (max-width: 960px) {
 
     .acoes {
         display: none;
@@ -45,8 +45,6 @@
         z-index: 2; 
     }
 
-
-
     .menu.active {
         transform: translateX(0); 
     }
@@ -68,7 +66,6 @@
         color: #FCDF3B;
     }
     
-
     .hamburguer {
         display: flex;
         flex-direction: column;
@@ -147,8 +144,10 @@
 
     .sessaoLema {
         flex-direction: column;
-        gap: 30px;
+        gap: 10px;
         padding: 50px 10px;
+        margin-top: 50vh;
+          
     }
 
     .conteudo {
@@ -188,10 +187,10 @@
         height: 80px;
     }
 
-    .recursoss {
+    .recursos {
         grid-template-columns: 1fr;
         width: 100%;
-        margin: 0;
+        margin-top: 30vh;
     }
 
     .titulo-sobre-nos {
@@ -282,6 +281,7 @@
     }
 
     .titulo-mvv h2{
+        margin-top: 250px;
         font-size: 3.0vh;
     }
 
@@ -325,7 +325,8 @@
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1356px) {
+    
 
     body {
         height: 100vh;
@@ -369,16 +370,23 @@
     }
 
     .sessaoLema {
-        gap: 100px;
-        padding: 80px 10px;
+        gap: 10px;
+        padding: 10px 10px;
+        flex-direction: column;
+        max-width: 550px; 
     }
 
     .conteudo{
-        margin-left: 20px;}
+        margin-left: 20px;
+        flex-direction: row;
+        height: 50px;
+        margin-bottom: 10px;
+    }
 
     .conteudo h2 {
         font-size: 4.5vh;
         max-width: 100%;
+        margin-top: 100px;
     }
 
     .conteudo p {
@@ -392,7 +400,7 @@
     }
 
     .recursoss{
-        margin-top: 120px;
+        margin-top: 10%;
     }
 
     .recursos-text h1{
@@ -421,7 +429,7 @@
 
 
     .container-missao {
-        gap: 50px; /* Reduz o espaço entre os itens */
+        gap: 30px; /* Reduz o espaço entre os itens */
     }
 
     .texto-missao {
@@ -430,7 +438,8 @@
 
     .texto-missao p {
         margin-top: 20px;
-        font-size: 2.3vh; /* Ajusta o tamanho do texto */
+        font-size: 2.3vh;
+         /* Ajusta o tamanho do texto */
     }
 
     .imagem-missao {
@@ -495,5 +504,8 @@
         transform: translateX(-50%);
         z-index: 0;
     }
+
+    
+        
 }
 
