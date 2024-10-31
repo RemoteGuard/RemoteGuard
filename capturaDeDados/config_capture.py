@@ -7,8 +7,8 @@ def create_db_connection(): # Função para Criar a Conexão com Banco de Dados.
     try:
         conn = pymysql.connect( # Conexão com o Banco de Dados.
                 host="localhost",
-                user="murillo",
-                password="D@rkKn!ght2005",
+                user="root",
+                password="",
                 database="remote_guard"
             )
         cursor = conn.cursor() # Cursor (Objeto) para Executar Comandos SQL.
