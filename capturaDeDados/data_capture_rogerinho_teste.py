@@ -4,11 +4,10 @@ import time
 import psutil
 import mysql.connector
 from mysql.connector import Error
-from wifi import Cell, Scheme
+from datetime import datetime
 
 def get_hostname():
     return socket.gethostname()
-
 
 def connect_to_mysql():
     try:
@@ -47,37 +46,33 @@ def get_disk_data():
     return disk_usage_bytes, disk_usage_percentage
 
 def get_network_data():
-    net_data = psutil.net_io_counters()._asdict()
-    bytes_enviados = net_data['bytes_sent']
-    bytes_recebidos = net_data['bytes_recv']
-    return bytes_enviados, bytes_recebidos
+    net_io = psutil.net_io_counters()
+    bytes_sent = net_io.bytes_sent
+    bytes_recv = net_io.bytes_recv
+    return bytes_sent, bytes_recv
 
-def obter_info_rede():
-    wifi_interface = 'wlan0' 
-    ssid = "Rede Wi-Fi não detectada"
-    
-    try:
-        connected_cell = next((cell for cell in Cell.all(wifi_interface) if cell.connected), None)
-        if connected_cell:
-            ssid = connected_cell.ssid
-    except Exception as e:
-        print(f"Erro ao obter informações da rede: {e}")
+def get_process_count():
+    process_count = sum(1 for _ in psutil.process_iter() if _.status() == 'running')
+    return process_count
 
-    rede_info = {}
-    for nome, stats in psutil.net_if_stats().items():
-        status = 'Ativo' if stats.isup else 'Inativo'
-        velocidade = f"{stats.speed} Mbps" if stats.speed else "N/A"
-        rede_info[nome] = (status, velocidade, ssid if nome == wifi_interface else 'N/A')
-    return rede_info
+def get_swap_data():
+    swap_data = psutil.swap_memory()._asdict()
+    swap_used_bytes = swap_data['used']
+    swap_usage_percentage = swap_data['percent']
+    return swap_used_bytes, swap_usage_percentage
 
+def get_boot_time():
+    return psutil.boot_time()
+
+def format_boot_time(boot_time):
+    return datetime.fromtimestamp(boot_time).strftime('%Y-%m-%d %H:%M:%S')
 
 def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
-        sql = """INSERT INTO monitoramento (hostname, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram,
-                     bytes_disco, porcentagem_disco, bytes_enviados, bytes_recebidos, processos, interface_rede, 
-                     status_rede, velocidade_rede, ssid)
-                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO monitoramento (hostname, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
+                    bytes_disco, porcentagem_disco, processos, bytes_swap, porcentagem_swap, boot_time, bytes_enviados, bytes_recebidos) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         cursor.execute(sql, dados)
         connection.commit()
         print("Dados inseridos no MySQL com sucesso.")
@@ -90,33 +85,25 @@ def data_capture(data_capture_delay, capture_count):
         print("Não foi possível conectar ao MySQL. A captura de dados será interrompida.")
         return
 
+    boot_time = get_boot_time()
+    formatted_boot_time = format_boot_time(boot_time)
+
     for i in range(capture_count):
         cpu_idle_time, cpu_usage_percentage = get_cpu_data()
         ram_usage_bytes, ram_usage_percentage = get_ram_data()
         disk_usage_bytes, disk_usage_percentage = get_disk_data()
-        bytes_enviados, bytes_recebidos = get_network_data()
+        bytes_sent, bytes_recv = get_network_data()
+        process_count = get_process_count()
+        swap_used_bytes, swap_usage_percentage = get_swap_data()
 
-        rede_info = obter_info_rede()
-        
-        interface = 'wlan0' 
-        if interface in rede_info:
-            status, velocidade, ssid = rede_info[interface]
-        else:
-            status = "Inativo"
-            velocidade = "N/A"
-            ssid = "N/A"
-
-        processos = [proc.name() for proc in psutil.process_iter() if proc.status() == 'running']
         dados = (get_hostname(), cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
-                 disk_usage_bytes, disk_usage_percentage, bytes_enviados, bytes_recebidos, str(processos),
-                 interface, status, velocidade, ssid)
+                 disk_usage_bytes, disk_usage_percentage, process_count, swap_used_bytes, swap_usage_percentage,
+                 formatted_boot_time, bytes_sent, bytes_recv)
 
- 
         insert_data_to_mysql(connection, dados)
-        
-        if i < capture_count - 1: 
-            time.sleep(data_capture_delay)
 
+        if i < capture_count - 1:
+            time.sleep(data_capture_delay)
 
 def menu():
     data_capture_delay = int(input('Deseja capturar os dados a cada quantos segundos? '))
