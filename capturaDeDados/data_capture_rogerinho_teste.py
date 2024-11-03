@@ -12,10 +12,10 @@ def get_hostname():
 def connect_to_mysql():
     try:
         connection = mysql.connector.connect(
-            host='localhost',  # Ajuste para o endereço do seu servidor MySQL
-            database='remote_guard',  # Nome do banco de dados
-            user='root',  # Seu usuário MySQL
-            password='192719'  # Sua senha MySQL
+            host='localhost',
+            database='remote_guard',
+            user='root',
+            password='192719'
         )
         if connection.is_connected():
             print("Conexão com o MySQL bem-sucedida.")
@@ -31,7 +31,8 @@ def get_cpu_data():
     cpu_data = psutil.cpu_times()._asdict()
     cpu_idle_time = cpu_data['idle']
     cpu_usage_percentage = psutil.cpu_percent(interval=1)
-    return cpu_idle_time, cpu_usage_percentage
+    cpu_usage_percentage_transform = cpu_usage_percentage*10
+    return cpu_idle_time, cpu_usage_percentage_transform
 
 def get_ram_data():
     ram_data = psutil.virtual_memory()._asdict()
@@ -67,12 +68,16 @@ def get_boot_time():
 def format_boot_time(boot_time):
     return datetime.fromtimestamp(boot_time).strftime('%Y-%m-%d %H:%M:%S')
 
+
+    
+
+
 def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
-        sql = """INSERT INTO monitoramento (hostname, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
-                    bytes_disco, porcentagem_disco, processos, bytes_swap, porcentagem_swap, boot_time, bytes_enviados, bytes_recebidos) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO dados (hostname, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
+                    bytes_disco, porcentagem_disco, processos, bytes_swap, porcentagem_swap, boot_time, fkNotebook) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         cursor.execute(sql, dados)
         connection.commit()
         print("Dados inseridos no MySQL com sucesso.")
@@ -96,9 +101,11 @@ def data_capture(data_capture_delay, capture_count):
         process_count = get_process_count()
         swap_used_bytes, swap_usage_percentage = get_swap_data()
 
+        fk_notebook = 1  
+
         dados = (get_hostname(), cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
                  disk_usage_bytes, disk_usage_percentage, process_count, swap_used_bytes, swap_usage_percentage,
-                 formatted_boot_time, bytes_sent, bytes_recv)
+                 formatted_boot_time,fk_notebook)
 
         insert_data_to_mysql(connection, dados)
 
