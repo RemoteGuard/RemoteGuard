@@ -70,20 +70,7 @@ CREATE TABLE controleFluxo(
 		REFERENCES notebook(idNotebook)
 );
 
-CREATE TABLE dados(
-	idDados INT AUTO_INCREMENT,
-	dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	tempoInatividade DOUBLE,
-    percCPU DECIMAL(4,1),
-    usedRAM FLOAT,
-	percRAM DECIMAL(4,1),
-    usedDisk FLOAT,
-    percDisk DECIMAL(4,1),
-    fkNotebook INT,
-    CONSTRAINT pkDados PRIMARY KEY (idDados, fkNotebook),
-    CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
-		REFERENCES notebook(idNotebook)
-    );
+
 
 CREATE TABLE processos(
 	idProcesso INT AUTO_INCREMENT,
@@ -93,6 +80,26 @@ CREATE TABLE processos(
     CONSTRAINT pkProcessos PRIMARY KEY (idProcesso, fkNotebook),
     CONSTRAINT fkNotebookProcessos FOREIGN KEY (fkNotebook) 
 		REFERENCES notebook(idNotebook)
+);
+
+
+CREATE TABLE IF NOT EXISTS dados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hostname VARCHAR(255) NOT NULL,
+    fkNotebook INT,
+    tempo_inatividade_cpu FLOAT,
+    porcentagem_cpu FLOAT,
+    bytes_ram BIGINT,
+    porcentagem_ram FLOAT,
+    bytes_disco BIGINT,
+    porcentagem_disco FLOAT,
+    processos INT,
+    bytes_swap BIGINT,
+    porcentagem_swap FLOAT,
+    boot_time DATETIME,
+    data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
+        REFERENCES notebook(idNotebook)
 );
 
 
@@ -108,11 +115,13 @@ CREATE TABLE processos(
 -- SELECT * FROM notebook_quatro;
 -- SELECT * FROM notebook_cinco;
 
-SELECT * FROM funcionario;
-select * from armazenamento;
-SELECT * FROM notebook;
-SELECT * FROM dados;
-SELECT * FROM processos;
+
+
+
+INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
+('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
+('notebook2', 'Apple', 'MacBook Pro', 32, 'Apple M1'),
+('notebook3', 'Lenovo', 'ThinkPad X1', 16, 'Intel Core i5');
 
 INSERT INTO empresa VALUES 
 	(DEFAULT, 'Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888', '123456789');
@@ -121,3 +130,8 @@ INSERT INTO empresa VALUES
 	(DEFAULT, 'Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888', '987654321');
 
 select * from empresa;
+SELECT * FROM funcionario;
+select * from armazenamento;
+SELECT * FROM notebook;
+SELECT * FROM dados;
+SELECT * FROM processos;
