@@ -14,8 +14,8 @@ def connect_to_mysql():
         connection = mysql.connector.connect(
             host='localhost',
             database='remote_guard',
-            user='root',
-            password='192719'
+            user='aluno',
+            password='sptech'
         )
         if connection.is_connected():
             print("Conexão com o MySQL bem-sucedida.")
@@ -31,7 +31,7 @@ def get_cpu_data():
     cpu_data = psutil.cpu_times()._asdict()
     cpu_idle_time = cpu_data['idle']
     cpu_usage_percentage = psutil.cpu_percent(interval=1)
-    cpu_usage_percentage_transform = cpu_usage_percentage*10
+    cpu_usage_percentage_transform = cpu_usage_percentage
     return cpu_idle_time, cpu_usage_percentage_transform
 
 def get_ram_data():
@@ -56,12 +56,6 @@ def get_process_count():
     process_count = sum(1 for _ in psutil.process_iter() if _.status() == 'running')
     return process_count
 
-def get_swap_data():
-    swap_data = psutil.swap_memory()._asdict()
-    swap_used_bytes = swap_data['used']
-    swap_usage_percentage = swap_data['percent']
-    return swap_used_bytes, swap_usage_percentage
-
 def get_boot_time():
     return psutil.boot_time()
 
@@ -72,17 +66,27 @@ def format_boot_time(boot_time):
     
 
 
+
 def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
-        sql = """INSERT INTO dados (hostname, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
-                    bytes_disco, porcentagem_disco, processos, bytes_swap, porcentagem_swap, boot_time, fkNotebook) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        cursor.execute(sql, dados)
-        connection.commit()
-        print("Dados inseridos no MySQL com sucesso.")
+        sql = """INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
+                    bytes_disco, porcentagem_disco, processos, boot_time, fkNotebook) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        
+        print(f"Dados a serem inseridos: {dados}")
+        
+        if len(dados) == 9:
+            cursor.execute(sql, dados)
+            connection.commit()
+            print("Dados inseridos no MySQL com sucesso.")
+        else:
+            print("Erro: A tupla de dados deve conter exatamente 9 elementos.")
     except Error as e:
         print(f"Erro ao inserir os dados: {e}")
+    finally:
+        cursor.close()
+
 
 def data_capture(data_capture_delay, capture_count):
     connection = connect_to_mysql()
@@ -99,12 +103,10 @@ def data_capture(data_capture_delay, capture_count):
         disk_usage_bytes, disk_usage_percentage = get_disk_data()
         bytes_sent, bytes_recv = get_network_data()
         process_count = get_process_count()
-        swap_used_bytes, swap_usage_percentage = get_swap_data()
-
         fk_notebook = 1  
 
-        dados = (get_hostname(), cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
-                 disk_usage_bytes, disk_usage_percentage, process_count, swap_used_bytes, swap_usage_percentage,
+        dados = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
+                 disk_usage_bytes, disk_usage_percentage, process_count,
                  formatted_boot_time,fk_notebook)
 
         insert_data_to_mysql(connection, dados)
