@@ -20,7 +20,7 @@
       <div class="perfil-container">
         <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
         <div class="perfil-text">
-          <span class="nome">Analista</span>
+          <span class="nome" id="b_usuario">Analista</span>
           <span class="legenda">perfil</span>
         </div>
       </div>
@@ -53,21 +53,26 @@
         <div class="mensagem-estilo2" id="mensagemAviso" style="color: red;">Por favor, selecione um recurso para visualizar os dados.</div>
         <div id="chart"></div>
       </div>
+      <div class="chart-container2">
+      <div  id="chart2"></div>
+      <select class="maquina" id="maquina">
+        <option value="" selected disabled>Selecionar Máquina </option>
+        <option value="2">Máquina 2</option>
+        <option value="3">Máquina 3</option>
+        <option value="4">Máquina 4</option>
+      </select>
+    </div>
+      </div>
       <div class="status-boxes">
         <div class="status-card verde"><span id="funcionario-ativo" class="text-card"></span></div>
         <div class="status-card vermelho"><span id="recurso-alerta" class="text-card"></span></div>
         <div class="status-card amarelo"><span id="processo-mais-utilizado" class="text-card"></span></div>
-      </div>
-    </div>
-
-    <div class="cor-botoes">
-      <div class="cor-box vermelho"></div>
-      <div class="cor-box amarelo"></div>
-      <div class="cor-box verde"></div>
     </div>
   </main>
 
   <script>
+
+  b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     let grafico;
 
     function definirRecurso(recursoSelecionado) {
@@ -94,10 +99,10 @@
         series: [{
           name: label,
           data: dados,
-          color: '#FFD700' // Cor amarela para a linha
+          color: '#FFD700' 
         }],
         chart: {
-          height: 350,
+          height: 400,
           type: 'line',
           zoom: { enabled: true }
         },
@@ -183,7 +188,8 @@
         const labels = [];
 
         resposta.forEach(item => {
-          dados.push(label === "Memória RAM" ? item.porcentagem_ram : item.porcentagem_cpu);
+          dados.push(label
+          === "Memória RAM" ? item.porcentagem_ram : item.porcentagem_cpu);
           labels.push(new Date(item.data_captura).toLocaleTimeString());
         });
 
@@ -202,7 +208,7 @@
       })
       .then(response => response.json())
       .then(resposta => {
-        const porcentagemDisco = resposta.porcentagem_disco; // Acesso direto ao objeto        
+        const porcentagemDisco = resposta.porcentagem_disco;       
         if (porcentagemDisco !== undefined) {
           plotarGraficoDisco(porcentagemDisco);
         } else {
@@ -213,6 +219,32 @@
         document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados. Tente novamente mais tarde.";
       });
     }
+
+    var opnt = {
+          series: [{
+          name: 'Series 1',
+          data: [80, 50, 30, 40, 100, 20],
+        }],
+          chart: {
+          height: 350,
+          type: 'radar',
+        },
+        title: {
+          text: 'Comparaçãoes de Notebook'
+        },
+        yaxis: {
+          stepSize: 20
+        },
+        xaxis: {
+          categories: ['CPU', 'RAM', 'Disco','Processos']
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart2"), opnt);
+        chart.render();
+      
+
+
 
     document.getElementById('recurso').addEventListener('change', (event) => {
       const recursoSelecionado = event.target.value;
