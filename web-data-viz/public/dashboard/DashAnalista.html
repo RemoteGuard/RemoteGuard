@@ -6,6 +6,7 @@
   <title>RemoteGuard - Visualize, analise, transforme.</title>
   <link rel="stylesheet" href="../css/dashboard-teste-analista.css">
   <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
   <header id="main-header">
@@ -50,7 +51,7 @@
     <div class="dashboard">
       <div class="chart-container">
         <div class="mensagem-estilo2" id="mensagemAviso" style="color: red;">Por favor, selecione um recurso para visualizar os dados.</div>
-        <canvas id="myChart"></canvas>
+        <div id="chart"></div>
       </div>
       <div class="status-boxes">
         <div class="status-card verde"><span id="funcionario-ativo" class="text-card"></span></div>
@@ -66,147 +67,159 @@
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      let grafico;
-    
-      function definirRecurso(recursoSelecionado) {
-        const endpoints = {
-          ram: { endpoint: "/analista/listarPorcentagemRAM", label: "Memória RAM" },
-          cpu: { endpoint: "/analista/listarPorcentagemCPU", label: "CPU" },
-          disco: { endpoint: "/analista/listarPorcentagemDisco", label: "Disco" }
-        };
-      
-        const recurso = endpoints[recursoSelecionado];
-        if (!recurso) return; 
-      
-        document.getElementById('mensagemAviso').style.display = "none";
-      
-        if (recursoSelecionado === "disco") {
-          buscarDadosDisco(recurso.endpoint);
-        } else {
-          buscarDadosGrafico(recurso.endpoint, recurso.label);
-        }
+  <script>
+    let grafico;
+
+    function definirRecurso(recursoSelecionado) {
+      const endpoints = {
+        ram: { endpoint: "/analista/listarPorcentagemRAM", label: "Memória RAM" },
+        cpu: { endpoint: "/analista/listarPorcentagemCPU", label: "CPU" },
+        disco: { endpoint: "/analista/listarPorcentagemDisco", label: "Disco" }
+      };
+
+      const recurso = endpoints[recursoSelecionado];
+      if (!recurso) return;
+
+      document.getElementById('mensagemAviso').style.display = "none";
+
+      if (recursoSelecionado === "disco") {
+        buscarDadosDisco(recurso.endpoint);
+      } else {
+        buscarDadosGrafico(recurso.endpoint, recurso.label);
       }
-    
-  
-      function plotarGrafico(dados, labels, label) {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        if (grafico) grafico.destroy(); 
-        grafico = new Chart(ctx, {
+    }
+
+    function plotarGraficoLinha(dados, labels, label) {
+      const options = {
+        series: [{
+          name: label,
+          data: dados,
+          color: '#FFD700' // Cor amarela para a linha
+        }],
+        chart: {
+          height: 350,
           type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: label,
-              data: dados,
-              borderColor: 'rgba(0, 0, 0,0.1)',
-              backgroundColor: 'rgba(255, 224, 0, 0.6)',
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              title: {
-                display: true,
-                text: `Utilização de ${label} (%)`,
-                font: { size: 18 },
-                color: '#fff'
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 100
-              }
-            }
+          zoom: { enabled: true }
+        },
+        dataLabels: { enabled: true },
+        stroke: {
+          curve: 'smooth',
+          width: 3
+        },
+        title: {
+          text: `${label} (%)`,
+          align: 'left',
+          style: { color: '#FFFFFF' }
+        },
+        grid: {
+          row: {
+            opacity: 0.5
           }
-        });
-      }
-    
-      function plotarGraficoDisco(usoDisco) {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        if (grafico) grafico.destroy();
-        const livreDisco = 100 - usoDisco;
-    
-        grafico = new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: ['Usado', 'Livre'],
-            datasets: [{
-              data: [usoDisco, livreDisco],
-              backgroundColor: ['rgba(255,0,0,0.4)', 'rgba(0,128,0,0.4)'],
-              borderColor: ['rgba(0,0,0)', 'rgba(0,0,0)'],
-              borderWidth: 1
-            }]
+        },
+        xaxis: {
+          categories: labels,
+          labels: { style: { colors: '#FFFFFF' } },
+          title: { text: 'Horário', style: { color: '#FFFFFF' } }
+        },
+        yaxis: {
+          title: { text: 'Porcentagem', style: { color: '#FFFFFF' } },
+          labels: { style: { colors: '#FFFFFF' } },
+          min: 0, 
+          max: 100 
+        },
+        legend: {
+          labels: {
+            colors: '#000000', 
+            hover: {
+              color: '#000000' 
+            }
           },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { position: 'top' },
-              title: {
-                display: true,
-                text: 'Uso de Disco (%)',
-                font: { size: 18 },
-                color: '#fff'
-              }
-            }
+        }
+      };
+    
+      if (grafico) grafico.destroy();
+      grafico = new ApexCharts(document.querySelector("#chart"), options);
+      grafico.render();
+    }
+    
+
+    function plotarGraficoDisco(usoDisco) {
+      const livreDisco = 100 - usoDisco;
+
+      const options = {
+        series: [usoDisco, livreDisco],
+        chart: {
+          type: 'donut',
+          width: '100%',
+          height: '350px'
+        },
+        labels: ['Usado', 'Livre'],
+        colors: ['rgba(255,0,0,0.4)', 'rgba(0,128,0,0.4)'],
+        title: {
+          text: 'Uso de Disco (%)',
+          style: { color: '#FFFFFF', fontSize: '18px' }
+        },
+        legend: {
+          labels: {
+            colors: '#FFFFFF'
           }
-        });
-      }
+        }
+      };
+
+      if (grafico) grafico.destroy();
+      grafico = new ApexCharts(document.querySelector("#chart"), options);
+      grafico.render();
+    }
     
-   
-      function buscarDadosGrafico(endpoint, label) {
-        fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
-        })
-        .then(response => response.json())
-        .then(resposta => {
-          const dados = [];
-          const labels = [];
-      
-          resposta.forEach(item => {
-            if (label === "Memória RAM") {
-              dados.push(item.porcentagem_ram);
-            } else {
-              dados.push(item.porcentagem_cpu);
-            }
-            labels.push(new Date(item.data_captura).toLocaleTimeString());
-          });
-      
-          plotarGrafico(dados, labels, label);
-        })
-        .catch(() => {
-          document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados. Tente novamente mais tarde.";
+    function buscarDadosGrafico(endpoint, label) {
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+      })
+      .then(response => response.json())
+      .then(resposta => {
+        const dados = [];
+        const labels = [];
+
+        resposta.forEach(item => {
+          dados.push(label === "Memória RAM" ? item.porcentagem_ram : item.porcentagem_cpu);
+          labels.push(new Date(item.data_captura).toLocaleTimeString());
         });
-      }
-      
-     
-      function buscarDadosDisco(endpoint) {
-        fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
-        })
-        .then(response => response.json())
-        .then(resposta => plotarGraficoDisco(resposta.porcentagem_disco))
-        .catch(() => {
-          document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados do disco.";
-        });
-      }
-    
-    
-      document.getElementById('recurso').addEventListener('change', (event) => {
-        const recursoSelecionado = event.target.value;
-        definirRecurso(recursoSelecionado);
+
+        plotarGraficoLinha(dados, labels, label);
+      })
+      .catch(() => {
+        document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados. Tente novamente mais tarde.";
       });
+    }
 
+    function buscarDadosDisco(endpoint) {
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+      })
+      .then(response => response.json())
+      .then(resposta => {
+        const porcentagemDisco = resposta.porcentagem_disco; // Acesso direto ao objeto        
+        if (porcentagemDisco !== undefined) {
+          plotarGraficoDisco(porcentagemDisco);
+        } else {
+          document.getElementById('mensagemAviso').textContent = "Nenhum dado de disco encontrado.";
+        }
+      })
+      .catch(error => {
+        document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados. Tente novamente mais tarde.";
+      });
+    }
 
-      // Manipulação do menu hamburguer
+    document.getElementById('recurso').addEventListener('change', (event) => {
+      const recursoSelecionado = event.target.value;
+      definirRecurso(recursoSelecionado);
+    });
+
+    // Manipulação do menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
       var menuhamburguer = document.getElementById('menuhamburguer');
       var mainContainer = document.getElementById('main-Container');
@@ -216,17 +229,6 @@
       menuhamburguer.classList.toggle('open');
       document.body.classList.toggle('menu-open');
     });
-
-    const menuItems = document.querySelectorAll('.menu-items li');
-
-    menuItems.forEach(item => {
-      item.addEventListener('click', function () {
-        // Remove a classe 'active' de todos os itens
-        menuItems.forEach(el => el.classList.remove('active'));
-        // Adiciona a classe 'active' ao item clicado
-        this.classList.add('active');
-      });
-    });
-    </script>
+  </script>
 </body>
 </html>
