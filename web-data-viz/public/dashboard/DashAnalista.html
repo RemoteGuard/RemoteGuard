@@ -46,6 +46,7 @@
         <option value="cpu">CPU</option>
         <option value="disco">Disco</option>
       </select>
+    <div class="funcionario-atual" id="funcionario-atual">Nome Funcionario do Pc</div>
     </div>
     
     <div class="dashboard">
@@ -54,9 +55,9 @@
         <div id="chart"></div>
       </div>
       <div class="chart-container2">
-      <div  id="chart2"></div>
-      <select class="maquina" id="maquina">
-        <option value="" selected disabled>Selecionar Máquina </option>
+      <div id="chartRadar"></div>
+      <select class="maquina" id="maquinaComparacao">
+        <option value="" selected disabled>Selecionar Máquina para Comparação</option>
         <option value="2">Máquina 2</option>
         <option value="3">Máquina 3</option>
         <option value="4">Máquina 4</option>
@@ -74,6 +75,7 @@
 
   b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     let grafico;
+    var graficoRadar;
 
     function definirRecurso(recursoSelecionado) {
       const endpoints = {
@@ -219,32 +221,122 @@
         document.getElementById('mensagemAviso').textContent = "Erro ao carregar os dados. Tente novamente mais tarde.";
       });
     }
-
-    var opnt = {
-          series: [{
-          name: 'Series 1',
-          data: [80, 50, 30, 40, 100, 20],
+    function plotarGraficoRadar(dados) {
+      const options = {
+        series: [{
+          name: 'Máquina Atual',
+          color: '#FFEB3B', 
+          data: [dados.base.cpu, dados.base.ram, dados.base.disco]
+        },
+        {
+          name: 'Máquina Comparação',
+          color: '#00E676',
+          data: [dados.comparacao.cpu, dados.comparacao.ram, dados.comparacao.disco],
+          backgroundColor: '#FFFFFFFF'
         }],
-          chart: {
+        chart: {
           height: 350,
           type: 'radar',
+          color: '#FFFFFF',
         },
         title: {
-          text: 'Comparaçãoes de Notebook'
-        },
-        yaxis: {
-          stepSize: 20
+          text: 'Comparação de Máquinas',
+          style: {
+            color: 'white', 
+          }
         },
         xaxis: {
-          categories: ['CPU', 'RAM', 'Disco','Processos']
-        }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#chart2"), opnt);
-        chart.render();
+          categories: ['CPU', 'RAM', 'Disco'],
+          labels: {
+            style: {
+              colors: 'white', 
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: 'white', 
+            },
+          },
+        },
+        legend: {
+          position: 'bottom',
+          horizontalAlign: 'center',
+          labels: {
+            style: {
+              color: 'white'
+            }
+          },
+          onItemClick: {
+            toggleDataSeries: true
+          },
+          onItemHover: {
+            highlightDataSeries: true
+          },
+          markers: {
+            width: 12,
+            height: 12
+          },
+        },
+        stroke: {
+          show: true, 
+          width: 2,
+          color: 'transparent', 
+        },
+        fill: {
+          opacity: 0.6, 
+        },
+        markers: {
+          size: 3,
+          colors: ['#FFEB3B', '#00E676'], 
+          strokeColors: '#FFFFFF',
+        },
+      };
+    
+      if (graficoRadar) graficoRadar.destroy();
+      graficoRadar = new ApexCharts(document.querySelector("#chartRadar"), options);
+      graficoRadar.render();
+    
+      // Adicionando comportamento de clique na legenda
+      document.querySelectorAll('.apexcharts-legend-text').forEach(function(item) {
+        item.addEventListener('click', function() {
+          item.style.color = 'white';
+        });
+      });
+    
       
-
-
+      if (graficoRadar) graficoRadar.destroy();
+      graficoRadar = new ApexCharts(document.querySelector("#chartRadar"), options);
+      graficoRadar.render();
+    }
+    
+    function buscarDadosRadar() {
+      const fkNotebookBase = 1; 
+      const fkNotebookComparacao = document.getElementById('maquinaComparacao').value;
+    
+      if (fkNotebookComparacao) {
+        fetch("/analista/listarDadosRadar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fkNotebookBase, fkNotebookComparacao })
+        })
+        .then(response => response.json())
+        .then(dados => {
+          plotarGraficoRadar(dados);
+        })
+        .catch(() => {
+          alert("Erro ao carregar os dados do gráfico de radar.");
+        });
+      }
+    }
+    
+    document.getElementById('maquinaComparacao').addEventListener('change', function() {
+      buscarDadosRadar();
+    });
+    
+  
+    buscarDadosRadar();  
 
     document.getElementById('recurso').addEventListener('change', (event) => {
       const recursoSelecionado = event.target.value;

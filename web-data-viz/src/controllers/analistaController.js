@@ -40,4 +40,42 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
     
 }
 
-module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook };
+
+function listarDadosRadar(req, res) {
+    var fkNotebookBase = req.body.fkNotebookBase; 
+    var fkNotebookComparacao = req.body.fkNotebookComparacao;
+  
+    Promise.all([
+      analistaModel.listarDadosPorNotebook(fkNotebookBase),
+      analistaModel.listarDadosPorNotebook(fkNotebookComparacao)
+    ])
+    .then(resultado => {
+      const dadosBase = resultado[0];
+      const dadosComparacao = resultado[1];
+  
+      if (dadosBase.length > 0 && dadosComparacao.length > 0) {
+        const dadosRadar = {
+          base: {
+            cpu: dadosBase[0].porcentagem_cpu,
+            ram: dadosBase[0].porcentagem_ram,
+            disco: dadosBase[0].porcentagem_disco,
+            processos: dadosBase[0].processos
+          },
+          comparacao: {
+            cpu: dadosComparacao[0].porcentagem_cpu,
+            ram: dadosComparacao[0].porcentagem_ram,
+            disco: dadosComparacao[0].porcentagem_disco,
+            processos: dadosComparacao[0].processos
+          }
+        };
+        res.json(dadosRadar);
+      } else {
+        res.status(404).json({ mensagem: "Nenhum dado encontrado para as máquinas especificadas." });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ mensagem: "Erro ao buscar dados para o gráfico de radar.", erro: err });
+    });
+  }
+  
+module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosRadar};
