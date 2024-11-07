@@ -93,7 +93,7 @@ def throw_alert(recurso, limite, prioridade):
     jira = Jira(
         url = "https://remoteguard.atlassian.net",
         username = "remoteguard@outlook.com.br",
-        password = "ATATT3xFfGF05OjoTw7VGbiMisSKtxQHRio_UM8wrIcU2rzOra0rkieO2LouB7ncJpRpRHTcjFxgUYEqIRKiEhXOExKZ2hV3uXrJTQJDkPEB-zK23yftOhgVTGSn9XFwkcgn4N7MvukL3VWW8CwqHW12AGAbipDcD5Qd-WX-KnSKjK7LuppEws0=34FDB693"
+        password = "ATATT3xFfGF0kUnGOaAZ8vKNAjZqNAGEJ-gfFRK40Tle3JEAIglLz4yZwINngET3Kqm6LALohxgUH6vcpiKO0F7sE-QLPd0lhneyobSPo3nnPMNjoJQOxiZDv3zkWS05Dd7s2tPHfsMQVyknQN-JTwEHqqrCDkmD9mjtdHpVsq4F8Z66ikVuSWk=F008B5A2"
         )
 
     chamado = jira.issue_create(fields={
