@@ -221,7 +221,7 @@
     padding: 10px;
     width: 55%;
     align-items: center;
-  margin-left: 22%;
+     margin-left: 22%;
   }
   .dashboard {
     display: flex;
@@ -261,7 +261,7 @@
     margin-left: 20px;
     padding: 20px;
     border-radius: 10px;
-    width: 45%;
+    width: 65%;
     height: 450px;
 
   

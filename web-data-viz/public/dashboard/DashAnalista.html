@@ -126,7 +126,9 @@
         xaxis: {
           categories: labels,
           labels: { style: { colors: '#FFFFFF' } },
-          title: { text: 'Horário', style: { color: '#FFFFFF' } }
+          title: { text: 'Horário', style: { color: '#FFFFFF' }
+         }
+          
         },
         yaxis: {
           title: { text: 'Porcentagem', style: { color: '#FFFFFF' } },
@@ -168,7 +170,7 @@
         },
         legend: {
           labels: {
-            colors: '#FFFFFF'
+          colors: '#FFFFFF',
           }
         }
       };
@@ -237,7 +239,7 @@
         chart: {
           height: 350,
           type: 'radar',
-          color: '#FFFFFF',
+          color: '#00000',
         },
         title: {
           text: 'Comparação de Máquinas',
@@ -264,15 +266,14 @@
           position: 'bottom',
           horizontalAlign: 'center',
           labels: {
-            style: {
-              color: 'white'
-            }
+          colors: '#FFFFFF'
           },
           onItemClick: {
             toggleDataSeries: true
           },
           onItemHover: {
-            highlightDataSeries: true
+            highlightDataSeries: true,
+             color: '#000000'
           },
           markers: {
             width: 12,
@@ -282,7 +283,8 @@
         stroke: {
           show: true, 
           width: 2,
-          color: 'transparent', 
+          color: '#FFFFFF', 
+
         },
         fill: {
           opacity: 0.6, 
@@ -290,7 +292,12 @@
         markers: {
           size: 3,
           colors: ['#FFEB3B', '#00E676'], 
-          strokeColors: '#FFFFFF',
+          strokeColors: '#FFFFFFFF',
+        },
+        dataLabels: {
+          style: {
+            colors: ['#F44336', '#E91E63', '#9C27B0']
+          }
         },
       };
     
