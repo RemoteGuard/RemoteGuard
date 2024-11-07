@@ -94,6 +94,15 @@ CREATE TABLE IF NOT EXISTS dados (
         REFERENCES notebook(idNotebook)
 );
 
+CREATE TABLE IF NOT EXISTS alerta (
+idAlerta INT AUTO_INCREMENT PRIMARY KEY,
+codigo VARCHAR(100),
+descricao VARCHAR(900),
+fkNotebook INT,
+CONSTRAINT fkNotebookAlerta FOREIGN KEY (fkNotebook)
+	REFERENCES notebook(idNotebook)
+);
+
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
 ('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
 ('notebook2', 'Apple', 'MacBook Pro', 32, 'Apple M1'),
