@@ -79,7 +79,6 @@ CREATE TABLE IF NOT EXISTS processos (
 
 CREATE TABLE IF NOT EXISTS dados (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    hostname VARCHAR(255) NOT NULL,
     fkNotebook INT,
     tempo_inatividade_cpu FLOAT,
     porcentagem_cpu FLOAT,
@@ -106,6 +105,8 @@ INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cn
 SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
 
+Insert into dados(porcentagem_cpu,porcentagem_ram,porcentagem_disco,fkNotebook) values
+(40,50,60,2);
 SELECT * FROM empresa;
 SELECT * FROM notebook;
 SELECT * FROM funcionario;
