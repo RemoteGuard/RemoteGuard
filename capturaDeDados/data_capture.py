@@ -4,14 +4,96 @@ import time
 import psutil
 import json
 import boto3
+import pymysql
 from botocore.exceptions import ClientError
 from atlassian import Jira
 from requests import HTTPError
 
+processos_indevidos = [
+    # Jogos populares
+    "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "valorant.exe", "apex_legends.exe",
+    "dota2.exe", "csgo.exe", "rocketleague.exe", "minecraft.exe", "roblox.exe",
+    "callofduty.exe", "genshinimpact.exe", "overwatch.exe", "fifa.exe", "nba2k.exe",
+    "wow.exe", "hearthstone.exe", "fallguys.exe", "rainbowsix.exe", "destiny2.exe",
+    "borderlands3.exe", "seaofthieves.exe", "tombraider.exe", "skyrim.exe", "battlefield.exe",
+    "cyberpunk2077.exe", "amongus.exe", "eldenring.exe", "horizon.exe", "spiderman.exe",
+    "thewitcher3.exe", "godofwar.exe", "reddeadredemption.exe", "gta5.exe", "assassinscreed.exe",
+    "monsterhunter.exe", "bloodborne.exe", "diablo3.exe", "starwarsbattlefront.exe", "ark_survival.exe",
+    "rust.exe", "subnautica.exe", "forzahorizon.exe", "streetfighter.exe", "tekken.exe",
+    "mortalkombat.exe", "nba2k23.exe", "nhl23.exe", "madden23.exe", "splatoon.exe",
+    "simcity.exe", "cityskylines.exe", "civilization.exe", "anb_sandbox.exe", "flight_simulator.exe",
+    "doom_eternal.exe", "halo_infinite.exe", "mario_kart.exe", "super_smash_bros.exe", "animal_crossing.exe",
+    "final_fantasy.exe", "kingdom_hearts.exe", "dragonquest.exe", "elden_ring.exe", "scarlet_nexus.exe",
+    "spiderman_milesmorales.exe", "milesmorales.exe", "shadow_of_war.exe", "farcry6.exe", "dying_light.exe",
+    "tom_clancy.exe", "rainbow_six_siege.exe", "gears_of_war.exe", "age_of_empires.exe", "fable.exe",
+    "skull_and_bones.exe", "dead_space.exe", "watch_dogs.exe", "need_for_speed.exe", "just_cause.exe",
+    "payday2.exe", "witcher2.exe", "mortal_kombat11.exe", "ninja_gaiden.exe", "bayonetta.exe",
+    "metal_gear_solid.exe", "nier_automata.exe", "devil_may_cry5.exe", "control.exe", "the_order_1886.exe",
+    "ghost_recon.exe", "biomutant.exe", "outriders.exe", "watchdogs_legion.exe", "medal_of_honor.exe",
+    "vampyr.exe", "l4d2.exe", "dying_light2.exe", "outriders.exe", "borderlands2.exe",
+    "back_4_blood.exe", "left4dead.exe", "hellblade.exe", "alan_wake.exe", "outlast.exe",
+    "dark_souls.exe", "nfs.exe", "trackmania.exe", "f1_2023.exe", "forza_motorsport.exe",
+    # Aplicativos de comunicação não corporativos
+    "whatsapp.exe", "telegram.exe", "discord.exe", "slack.exe", "zoom.exe",
+    "skype.exe", "wechat.exe", "messenger.exe", "line.exe", "viber.exe",
+    # Plataformas de streaming e entretenimento
+    "netflix.exe", "spotify.exe", "twitch.exe", "primevideo.exe", "hulu.exe",
+    "disneyplus.exe", "hbomax.exe", "youtube.exe", "vimeo.exe", "soundcloud.exe",
+    # Outros aplicativos de redes sociais e entretenimento
+    "instagram.exe", "facebook.exe", "tiktok.exe", "snapchat.exe", "pinterest.exe",
+    "twitter.exe", "reddit.exe", "tumblr.exe", "quora.exe", "wechat.exe",
+    # Jogos de cartas e casino
+    "solitaire.exe", "pokerstars.exe", "bet365.exe", "bwin.exe", "casino.exe",
+    "blackjack.exe", "slotgames.exe", "casinohalls.exe", "roulette.exe", "baccarat.exe",
+    # Processos de malwares comuns
+    "coinminer.exe", "trojanagent.exe", "malwarebytes_fake.exe", "browser_hijacker.exe", "adware_popup.exe",
+    "ransomware_lock.exe", "spyware_stealer.exe", "keylogger.exe", "rootkit_inject.exe", "worm_spread.exe",
+    "backdoor_access.exe", "fakeflashplayer.exe", "cryptolocker.exe", "fakelogin.exe", "ads_plugin.exe",
+    "malicious_popup.exe", "browser_spy.exe", "fake_antivirus.exe", "videoplayer.exe", "warning_alert.exe"
+]
+
+
+def create_db_connection(): 
+    try:
+        conn = pymysql.connect(
+                host="localhost",
+                user="root",
+                password="cco@2024",
+                database="remote_guard"
+            )
+        cursor = conn.cursor() 
+        print(f"Conexão com o Banco {conn.db.decode()} estabelecida com Sucesso!")
+        return conn, cursor
+    except pymysql.MySQLError as e:
+        print(f"Falha ao estabelecer Conexão com o Banco de Dados: {e}")
+        return None, None
+
+conn, cursor = create_db_connection()
+
+
 def get_hostname():
     return socket.gethostname()
 
+def verify_equipment_registration():
+    global fkNotebook
+    hostname = get_hostname()
+    # hostname = 'hostTeste'
+    
+    sql = "SELECT idNotebook, hostname FROM notebook WHERE hostname = %s"
+    cursor.execute(sql, (hostname,))
+    register = cursor.fetchone()
 
+    if register: 
+        fkNotebook = register[0]
+    else:
+        sql = "INSERT INTO notebook (hostname) VALUES (%s)"
+        cursor.execute(sql, (hostname))
+        conn.commit()
+        fkNotebook = cursor.lastrowid
+    
+    return fkNotebook
+
+verify_equipment_registration()
 s3 = boto3.client('s3')
 bucket_name = 'bucket-raw-rg'
 file_key = f'/{get_hostname()}.json' 
@@ -95,11 +177,12 @@ def throw_alert(recurso, limite, prioridade):
         username = "remoteguard@outlook.com.br",
         password = "ATATT3xFfGF0kUnGOaAZ8vKNAjZqNAGEJ-gfFRK40Tle3JEAIglLz4yZwINngET3Kqm6LALohxgUH6vcpiKO0F7sE-QLPd0lhneyobSPo3nnPMNjoJQOxiZDv3zkWS05Dd7s2tPHfsMQVyknQN-JTwEHqqrCDkmD9mjtdHpVsq4F8Z66ikVuSWk=F008B5A2"
         )
-
+    
+    descricao_chamado = f'Recurso: {recurso} acima da capacidade ideal na Máquina ({get_hostname()}).'
     chamado = jira.issue_create(fields={
         'project': {'key': 'CS'},
         'summary': f'ALERTA: {recurso} ACIMA DE {limite}% na Máquina: ({get_hostname()})!',
-        'description': f'Recurso: {recurso} acima da capacidade ideal na Máquina ({get_hostname()}).',
+        'description': descricao_chamado,
         'issuetype': {'name': 'Alert'},
         'priority': {'name': prioridade}
         })
@@ -110,10 +193,17 @@ def throw_alert(recurso, limite, prioridade):
         chamado
         codigo_chamado = chamado.get('key')
         print(f'Código do Chamado: {codigo_chamado}')
+        register_alert(codigo_chamado, descricao_chamado)
       
 
     except HTTPError as e:
       print(e.response.text)
+
+
+def register_alert(codigo_chamado, descricao_chamado):
+    sql = "INSERT INTO alerta (codigo, descricao, fkNotebook) VALUES (%s, %s, %s)"
+    cursor.execute(sql, (codigo_chamado, descricao_chamado, fkNotebook))
+    conn.commit()
 
 
 def data_capture(data_capture_delay):
@@ -133,8 +223,9 @@ def data_capture(data_capture_delay):
             processos = []
             for process in psutil.process_iter():
                 process_name = process.name()
-                if( process.status() == 'running'):
-                 processos.append(process_name)
+                if process.status() == 'running' :
+                    processos.append(process_name)
+
 
             dados.append ({
                 "tempoInatividadeCPU": cpu_idle_time,

@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS empresa (
 CREATE TABLE IF NOT EXISTS notebook (
     idNotebook INT PRIMARY KEY AUTO_INCREMENT,
     hostname VARCHAR(100),
-    marca VARCHAR(30) NOT NULL,
-    modelo VARCHAR(45) NOT NULL,
-    memoriaRAM INT NOT NULL,
-    processador VARCHAR(25) NOT NULL
+    marca VARCHAR(30) ,
+    modelo VARCHAR(45),
+    memoriaRAM INT,
+    processador VARCHAR(25)
 );
 
 CREATE TABLE IF NOT EXISTS funcionario (
@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS dados (
 
 CREATE TABLE IF NOT EXISTS alerta (
 idAlerta INT AUTO_INCREMENT PRIMARY KEY,
+dataHora timestamp DEFAULT CURRENT_TIMESTAMP,
 codigo VARCHAR(100),
 descricao VARCHAR(900),
 fkNotebook INT,
@@ -122,3 +123,4 @@ SELECT * FROM funcionario;
 SELECT * FROM armazenamento;
 SELECT * FROM processos;
 SELECT * FROM dados;
+SELECT * FROM alerta;
