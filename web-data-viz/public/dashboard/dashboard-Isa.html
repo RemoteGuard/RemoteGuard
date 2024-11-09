@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - alertas</title>
-    <link rel="stylesheet" href="css-dash-Isa.css">
+    <link rel="stylesheet" href="../css/css-dash-Isa.css">
     <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
 
 </head>
 
-<body>
+<body onload="timeout, buscarEmpresaDoGerenteLogado()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -65,7 +65,7 @@
         </div>
         <div class="dashboard2">
             <div class="chart-container2-5">
-                
+
             </div>
             <div class="chart-container2">
                 <select name="select-func" id="select-func" class="select-func">
@@ -73,7 +73,7 @@
                 </select>
                 <div class="metricas-funcionario">
                     <div class="grafico">
-                       
+
                     </div>
                     <div class="cards">
                         <div class="card">
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         </div>
     </main>
@@ -98,6 +98,10 @@
 
 
 <script>
+     var requisicaoPadrao = ''
+    var empresaGerente = ''
+
+
     // Manipulação do menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
         var menuhamburguer = document.getElementById('menuhamburguer');
@@ -119,4 +123,63 @@
             this.classList.add('active');
         });
     });
+
+
+    //funcao que traz a fkEmpresa do funcionário que estiver logado
+    function buscarEmpresaDoGerenteLogado() {
+        idUsuario = sessionStorage.ID_USUARIO
+
+        fetch("/alertas/buscarEmpresaDoGerenteLogado", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao,
+                idUsuarioServer: idUsuario
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(empresa => {
+                        empresaGerente = empresa.fkEmpresa
+                    });
+                });
+            } else {
+                throw "Erro ao buscar a fkEmpresa do gerente!";
+            }
+        })
+    }
+
+    //função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
+    var timeout = setTimeout(function listarFuncionarios() {
+        fetch("/alertas/listarFuncionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                empresaServer: empresaGerente
+
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    const selectFuncionario = document.getElementById("select-func");
+                    json.resultado.forEach(funcionario => {
+                        const option = document.createElement("option");
+                        option.value = funcionario.idFuncionario;
+                        option.textContent = funcionario.nome;
+                        selectFuncionario.appendChild(option);
+                    });
+                });
+            } else {
+                throw "Erro ao listar funcionários!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+        , 500)
+
 </script>
