@@ -49,7 +49,7 @@ processos_indevidos = [
     "coinminer.exe", "trojanagent.exe", "malwarebytes_fake.exe", "browser_hijacker.exe", "adware_popup.exe",
     "ransomware_lock.exe", "spyware_stealer.exe", "keylogger.exe", "rootkit_inject.exe", "worm_spread.exe",
     "backdoor_access.exe", "fakeflashplayer.exe", "cryptolocker.exe", "fakelogin.exe", "ads_plugin.exe",
-    "malicious_popup.exe", "browser_spy.exe", "fake_antivirus.exe", "videoplayer.exe", "warning_alert.exe"
+    "malicious_popup.exe", "browser_spy.exe", "fake_antivirus.exe", "videoplayer.exe", "warning_alert.exe", "rstudio.exe"
 ]
 
 
@@ -171,13 +171,15 @@ def verify_alert(recurso, uso, limites):
             throw_alert(recurso, limite, prioridade)
             break
 
-def throw_alert(recurso, limite, prioridade):
-    jira = Jira(
+
+jira = Jira(
         url = "https://remoteguard.atlassian.net",
         username = "remoteguard@outlook.com.br",
-        password = "ATATT3xFfGF0kUnGOaAZ8vKNAjZqNAGEJ-gfFRK40Tle3JEAIglLz4yZwINngET3Kqm6LALohxgUH6vcpiKO0F7sE-QLPd0lhneyobSPo3nnPMNjoJQOxiZDv3zkWS05Dd7s2tPHfsMQVyknQN-JTwEHqqrCDkmD9mjtdHpVsq4F8Z66ikVuSWk=F008B5A2"
+        password = "ATATT3xFfGF0fgxCl5zLBT2JycewlrlIAMcMnJM1AAPSjg6l6HgCLss1qWoCWNnPM6xhUHefa5nD22rZxpqu2LIszBJs064Tlj3c-ph5o7ep1VIDTJDmFioz_tlfHxi7vI0KRPsFJ4YNbkjbWjttFJpjG6s7-Bu1GPLyBxugMv4S33zZTwW9C3k=11DD1D32"
         )
-    
+
+        
+def throw_alert(recurso, limite, prioridade):
     descricao_chamado = f'Recurso: {recurso} acima da capacidade ideal na Máquina ({get_hostname()}).'
     chamado = jira.issue_create(fields={
         'project': {'key': 'CS'},
@@ -204,6 +206,30 @@ def register_alert(codigo_chamado, descricao_chamado):
     sql = "INSERT INTO alerta (codigo, descricao, fkNotebook) VALUES (%s, %s, %s)"
     cursor.execute(sql, (codigo_chamado, descricao_chamado, fkNotebook))
     conn.commit()
+
+
+def throw_process_alert():
+    descricao_chamado = f'Processo indevido rodando na máquina ({get_hostname()})!.'
+    chamado = jira.issue_create(fields={
+        'project': {'key': 'CS'},
+        'summary': f'Processo indevido rodando na máquina ({get_hostname()})!',
+        'description': descricao_chamado,
+        'issuetype': {'name': 'Alert'},
+        'priority': {'name': 'Medium'}
+        })
+    
+    codigo_chamado = ''
+
+    try:
+        chamado
+        codigo_chamado = chamado.get('key')
+        print(f'Código do Chamado: {codigo_chamado}')
+        register_alert(codigo_chamado, descricao_chamado)
+      
+
+    except HTTPError as e:
+      print(e.response.text)
+
 
 
 def data_capture(data_capture_delay):
@@ -258,7 +284,13 @@ def data_capture(data_capture_delay):
         # Atribuindo valores para testes de alerta:
         cpu_usage_percentage = 89.0
         ram_usage_percentage = 88.0
-        
+
+        verificar_processos_indevidos = bool(set(processos).intersection(processos_indevidos))
+
+        if verificar_processos_indevidos:
+            throw_process_alert()
+
+
         verify_alert('CPU', cpu_usage_percentage, limites_recursos)
         verify_alert('MEMÓRIA RAM', ram_usage_percentage, limites_recursos)
         
