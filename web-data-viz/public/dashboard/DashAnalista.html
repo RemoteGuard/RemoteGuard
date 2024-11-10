@@ -46,7 +46,9 @@
         <option value="cpu">CPU</option>
         <option value="disco">Disco</option>
       </select>
-    <div class="funcionario-atual" id="funcionario-atual">Nome Funcionario do Pc</div>
+      <div class="funcionario-atual" id="nomeResponsavel"></div>
+
+
     </div>
     
     <div class="dashboard">
@@ -55,7 +57,7 @@
         <div id="chart"></div>
       </div>
       <div class="chart-container2">
-      <div id="chartRadar"></div>
+      <div id="chartBarra"></div>
       <select class="maquina" id="maquinaComparacao">
         <option value="" selected disabled>Selecionar Máquina para Comparação</option>
         <option value="2">Máquina 2</option>
@@ -65,17 +67,41 @@
     </div>
       </div>
       <div class="status-boxes">
-        <div class="status-card verde"><span id="funcionario-ativo" class="text-card"></span></div>
-        <div class="status-card vermelho"><span id="recurso-alerta" class="text-card"></span></div>
-        <div class="status-card amarelo"><span id="processo-mais-utilizado" class="text-card"></span></div>
+        <div class="status-card "><span id="funcionario-ativo" class="text-card"></span></div>
+        <div class="status-card "><span id="recurso-alerta" class="text-card"></span></div>
+        <div class="status-card "><span id="processo-mais-utilizado" class="text-card"></span></div>
     </div>
   </main>
 
   <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     let grafico;
-    var graficoRadar;
+    var graficoBarra;
+    const fkNotebook = 1;  
+    function buscarNomeResponsavel(fkNotebook) {
+      fetch("/analista/listarNomeResponsavel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fkNotebook })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.nome_funcionario) {
+          console.log("Responsável pela máquina:", data.nome_funcionario);
+          document.getElementById('nomeResponsavel').textContent = data.nome_funcionario;
+        } else {
+          console.error("Responsável não encontrado para o notebook", fkNotebook);
+        }
+      })
+      .catch(erro => {
+        console.error("Erro ao buscar o nome do responsável:", erro);
+      });
+    }
+    
+
   
+    
+    
     function definirRecurso(recursoSelecionado) {
       const endpoints = {
         ram: { endpoint: "/analista/listarPorcentagemRAM", label: "Memória RAM" },
@@ -97,17 +123,36 @@
         series: [{
           name: label,
           data: dados,
-          color: '#FFD700'
+          color: '#FFD700',
         }],
         chart: {
           height: 400,
           type: 'line',
           zoom: { enabled: true }
         },
-        dataLabels: { enabled: true, backgroundColor: "#ffffffff" },
+        tooltip: {
+          enabled: true,
+          theme: "dark", 
+          style: {
+            fontSize: '12px',
+            colors: ['#FFFFFF']
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          style: {
+            colors: ['#FFD700'], 
+            fontWeight: 'bold'
+          },
+          background: {
+            enabled: true,
+            foreColor: '#000000',  
+            borderRadius: 2,
+            dropShadow: { enabled: false },
+          }
+        },
         stroke: { curve: 'straight', width: 3 },
         title: { text: `${label} (%)`, align: 'left', style: { color: '#FFFFFF' } },
-        grid: { row: { opacity: 0.5 } },
         xaxis: {
           categories: labels,
           labels: { style: { colors: '#FFFFFF' } },
@@ -117,16 +162,16 @@
           title: { text: 'Porcentagem', style: { color: '#FFFFFF' } },
           labels: { style: { colors: '#FFFFFF' } },
           min: 0, max: 100
-        },
-        legend: {
-          labels: { colors: '#000000', hover: { color: '#000000' } },
         }
       };
-  
+    
+      const chart = new ApexCharts(document.querySelector("#chartLine"), options);
+      chart.render();
       if (grafico) grafico.destroy();
       grafico = new ApexCharts(document.querySelector("#chart"), options);
       grafico.render();
     }
+    
   
     function plotarGraficoDisco(usoDisco) {
       const livreDisco = 100 - usoDisco;
@@ -151,23 +196,26 @@
   
     function buscarDadosGrafico(endpoint, label) {
       fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
       })
       .then(response => response.json())
       .then(resposta => {
-        const dados = [];
-        const labels = [];
+          const dados = [];
+          const labels = [];
+          resposta.forEach(item => {
+              if (label === "Memória RAM") {
+                  dados.push(item.porcentagem_ram);
+              } else {
+                  dados.push(item.porcentagem_cpu);
+              }
+              labels.push(new Date(item.data_captura).toLocaleTimeString());
+          });
   
-        resposta.forEach(item => {
-          dados.push(label === "Memória RAM" ? item.porcentagem_ram : item.porcentagem_cpu);
-          labels.push(new Date(item.data_captura).toLocaleTimeString());
-        });
-  
-        plotarGraficoLinha(dados, labels, label);
+          plotarGraficoLinha(dados, labels, label);
       });
-    }
+  }
   
     function buscarDadosDisco(endpoint) {
       fetch(endpoint, {
@@ -184,81 +232,128 @@
         }
       })
     }
-  
-    function plotarGraficoRadar(dados) {
+    function plotarGraficoBarra(dados) {
       const options = {
         series: [{
-          name: 'Máquina Atual',
-          color: '#FFEB3B',
-          data: [dados.base.cpu, dados.base.ram, dados.base.disco]
+            name: 'Máquina Atual',
+            data: [dados.base.cpu, dados.base.ram, dados.base.disco],
+            color: '#FFEB3B'
+          },
+          {
+            name: 'Máquina Comparação',
+            data: [dados.comparacao.cpu, dados.comparacao.ram, dados.comparacao.disco],
+            color: '#00E676'
+          }
+        ],
+        chart: {
+          type: 'bar',
+          height: 360,
+          stacked: false,
+          horizontal: true,
+          toolbar: {
+            show: false
+          },
         },
-        {
-          name: 'Máquina Comparação',
-          color: '#00E676',
-          data: [dados.comparacao.cpu, dados.comparacao.ram, dados.comparacao.disco],
-          backgroundColor: '#FFFFFFFF'
-        }],
-        chart: { height: 350, type: 'radar', color: '#00000' },
-        title: { text: 'Comparação de Máquinas', style: { color: 'white' } },
+        title: {
+          text: 'Comparação de Máquinas',
+          style: {
+            color: 'white'
+          }
+        },
         xaxis: {
           categories: ['CPU', 'RAM', 'Disco'],
-          labels: { style: { colors: 'white' } },
+          labels: {
+            style: {
+              colors: 'white',
+              fontSize: '15px'
+            }
+          },
+          title: {
+            text: 'Porcentagem (%)',
+            style: {
+              color: 'white'
+            }
+          },
+          min: 0,
+          max: 100,
+          tickAmount: 5,
         },
         yaxis: {
-          labels: { style: { colors: 'white' } },
+          labels: {
+            style: {
+              colors: 'white',
+              textAlign: 'center',
+              fontSize: '15px'
+            },
+          },
         },
         legend: {
           position: 'bottom',
           horizontalAlign: 'center',
-          labels: { colors: '#FFFFFF' },
-          onItemClick: { toggleDataSeries: true },
-          onItemHover: { highlightDataSeries: true, color: '#000000' },
-          markers: { width: 12, height: 12 },
+          labels: {
+            colors: '#FFFFFF'
+          },
         },
-        stroke: { show: true, width: 2, color: '#FFFFFF' },
-        fill: { opacity: 0.6 },
-        markers: { size: 3, colors: ['#FFEB3B', '#00E676'], strokeColors: '#FFFFFFFF' },
-        dataLabels: { style: { colors: ['#000000', '#E91E63', '#9C27B0'] } },
+        tooltip: {
+          enabled: true,
+          theme: "dark",
+          style: {
+            fontSize: '12px',
+            colors: ['#FFFFFF']
+          }
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            barHeight: '70%',
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          style: {
+            colors: ['#0000000'],
+            fontSize: '12px',
+          },
+          formatter: function (val) {
+            return `${val}%`; 
+          },
+        },
       };
+    
+      const chart = new ApexCharts(document.querySelector("#graficoBarra"), options);
+      chart.render();
+
   
-      if (graficoRadar) graficoRadar.destroy();
-      graficoRadar = new ApexCharts(document.querySelector("#chartRadar"), options);
-      graficoRadar.render();
-  
-      document.querySelectorAll('.apexcharts-legend-text').forEach(function(item) {
-        item.addEventListener('click', function() {
-          item.style.color = 'black';
-        });
-      });
-  
-      if (graficoRadar) graficoRadar.destroy();
-      graficoRadar = new ApexCharts(document.querySelector("#chartRadar"), options);
-      graficoRadar.render();
+      if (graficoBarra) graficoBarra.destroy();
+      graficoBarra = new ApexCharts(document.querySelector("#chartBarra"), options);
+      graficoBarra.render();
     }
-  
-    function buscarDadosRadar() {
+    
+    
+    function buscarDadosBarra() {
       const fkNotebookBase = 1;
       const fkNotebookComparacao = document.getElementById('maquinaComparacao').value;
   
       if (fkNotebookComparacao) {
-        fetch("/analista/listarDadosRadar", {
+        fetch("/analista/listarDadosBarra", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fkNotebookBase, fkNotebookComparacao })
         })
         .then(response => response.json())
         .then(dados => {
-          plotarGraficoRadar(dados);
+          plotarGraficoBarra(dados);
         })
     
       }
     }
   
     document.getElementById('maquinaComparacao').addEventListener('change', function() {
-      buscarDadosRadar();
+      buscarDadosBarra();
     });
-    buscarDadosRadar();
+    buscarDadosBarra();
     definirRecurso('ram');
+    buscarNomeResponsavel(fkNotebook); 
   
     document.getElementById('recurso').addEventListener('change', (event) => {
       const recursoSelecionado = event.target.value;

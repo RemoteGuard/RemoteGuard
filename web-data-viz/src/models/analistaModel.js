@@ -19,4 +19,15 @@ function listarDadosPorNotebook(fkNotebook) {
   var instrucaoSql = `SELECT porcentagem_cpu, porcentagem_ram, porcentagem_disco, data_captura FROM dados WHERE fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;`;
   return database.executar(instrucaoSql);
 }
-module.exports = { listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook};
+
+function listarNomeResponsavel(fkNotebook) {
+  const instrucaoSql = `
+      SELECT funcionario.nome AS nome_funcionario
+      FROM funcionario
+      JOIN notebook ON funcionario.fkNotebook = notebook.idNotebook
+      WHERE notebook.idNotebook = ${fkNotebook};
+  `;
+  return database.executar(instrucaoSql, [fkNotebook]);
+}
+
+module.exports = { listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook,listarNomeResponsavel};

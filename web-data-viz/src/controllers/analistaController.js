@@ -41,7 +41,7 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
 }
 
 
-function listarDadosRadar(req, res) {
+function listarDadosBarra(req, res) {
     var fkNotebookBase = req.body.fkNotebookBase; 
     var fkNotebookComparacao = req.body.fkNotebookComparacao;
   
@@ -54,7 +54,7 @@ function listarDadosRadar(req, res) {
       const dadosComparacao = resultado[1];
   
       if (dadosBase.length > 0 && dadosComparacao.length > 0) {
-        const dadosRadar = {
+        const dadosBarra = {
           base: {
             cpu: dadosBase[0].porcentagem_cpu,
             ram: dadosBase[0].porcentagem_ram,
@@ -68,14 +68,30 @@ function listarDadosRadar(req, res) {
             processos: dadosComparacao[0].processos
           }
         };
-        res.json(dadosRadar);
+        res.json(dadosBarra);
       } else {
         res.status(404).json({ mensagem: "Nenhum dado encontrado para as máquinas especificadas." });
       }
     })
     .catch(err => {
-      res.status(500).json({ mensagem: "Erro ao buscar dados para o gráfico de radar.", erro: err });
+      res.status(500).json({ mensagem: "Erro ao buscar dados para o gráfico de barra.", erro: err });
     });
   }
+  function listarNomeResponsavel(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarNomeResponsavel(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({ nome_funcionario: resultado[0].nome_funcionario });
+            } else {
+                res.status(404).json({ mensagem: "Nenhum responsável encontrado para o notebook especificado." });
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar o nome do responsável:", erro);
+            res.status(500).json({ mensagem: "Erro ao buscar o nome do responsável." });
+        });
+  }
   
-module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosRadar};
+  
+module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel};
