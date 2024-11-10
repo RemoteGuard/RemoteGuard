@@ -133,7 +133,6 @@
             });
         }
 
-        // Função para cadastrar usuário
         function cadastrar() {
             var nomeVar = input_nome.value;
             var emailVar = input_email.value;
@@ -142,9 +141,9 @@
             var nomeEmpresaVar = input_empresa.value;
             var cpfVar = input_cpf.value;
             var tokenVar = input_token.value;
-
+        
             var fazerCadastro = true;
-
+        
             // Validação do token da empresa
             for (var cont = 0; cont <= empresas.length - 1; cont++) {
                 if (nomeEmpresaVar == id[cont] && tokenVar != tokens[cont]) {
@@ -153,32 +152,27 @@
                     break;
                 }
             }
-
+        
             if (nomeVar === "" || emailVar === "" || senhaVar === "" || cargoVar === "" || nomeEmpresaVar === 0 || cpfVar === "") {
                 alert("Todos os campos devem estar preenchidos!");
                 fazerCadastro = false;
             }
-
+        
             if (senhaVar.length < 5 || senhaVar.length > 15) {
                 alert("A senha deve ter entre 5 e 15 caracteres!");
                 fazerCadastro = false;
             }
-
+        
             if (!/[!@#$%^&*]/.test(senhaVar)) {
                 alert("A senha deve conter pelo menos um caractere especial!");
                 fazerCadastro = false;
             }
-
-            // if (cpfVar.length != 11) {
-            //     alert("CPF inválido! Deve conter 11 dígitos.");
-            //     fazerCadastro = false;
-            // }
-
+        
             if (!emailVar.includes('@') || !emailVar.includes('.')) {
                 alert("E-mail inválido! Certifique-se de que contém '@' e '.'");
                 fazerCadastro = false;
             }
-
+        
             if (fazerCadastro) {
                 fetch("/usuarios/cadastrar", {
                     method: "POST",
@@ -195,6 +189,11 @@
                     }),
                 }).then(function (resposta) {
                     if (resposta.ok) {
+                        if (nomeVar) {
+                            sessionStorage.setItem('NOME_USUARIO', nomeVar);
+                        } else {
+                            console.error("Nome do usuário está vazio.");
+                        }
                         alert("Cadastro feito com sucesso");
                         setTimeout(() => {
                             window.location.href = "./login.html";
@@ -211,6 +210,7 @@
                 });
             }
         }
+        
 
         
         function showPassword() {

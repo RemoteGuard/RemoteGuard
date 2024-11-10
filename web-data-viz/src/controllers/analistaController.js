@@ -1,16 +1,29 @@
 var analistaModel = require("../models/analistaModel");
 
+
+
+function listarNotebooks(req, res) {
+    analistaModel.listarNotebook()
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } 
+        })
+}
+
+
+
+
+
 function listarPorcentagemRAMPorNotebook(req, res) {
     var fkNotebook = req.body.fkNotebook;
     analistaModel.listarPorcentagemRAMPorNotebook(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
-            }
+            } 
         })
-      
+
 }
 
 function listarPorcentagemCPUPorNotebook(req, res) {
@@ -19,8 +32,6 @@ function listarPorcentagemCPUPorNotebook(req, res) {
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
             }
         })
     
@@ -33,9 +44,7 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado[0]);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
-            }
+            } 
         })
     
 }
@@ -69,29 +78,76 @@ function listarDadosBarra(req, res) {
           }
         };
         res.json(dadosBarra);
-      } else {
-        res.status(404).json({ mensagem: "Nenhum dado encontrado para as máquinas especificadas." });
       }
     })
-    .catch(err => {
-      res.status(500).json({ mensagem: "Erro ao buscar dados para o gráfico de barra.", erro: err });
-    });
+  
   }
   function listarNomeResponsavel(req, res) {
     const { fkNotebook } = req.body;
     analistaModel.listarNomeResponsavel(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
-                res.json({ nome_funcionario: resultado[0].nome_funcionario });
-            } else {
-                res.status(404).json({ mensagem: "Nenhum responsável encontrado para o notebook especificado." });
-            }
+                res.json({ nome_funcionario: resultado[0].nome_funcionario })
+                ;
+            } 
         })
-        .catch(erro => {
-            console.error("Erro ao buscar o nome do responsável:", erro);
-            res.status(500).json({ mensagem: "Erro ao buscar o nome do responsável." });
-        });
+    
   }
   
+  function listarQuantidadeProcessos(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarQuantidadeProcessos(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({ processos: resultado[0].processos });
+            }
+        })
+
+}
+
+function listarInformacaoesFuncionario(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarInformacaoesFuncionario(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({
+                    nome_funcionario: resultado[0].nome_funcionario,
+                    email_funcionario: resultado[0].email_funcionario,
+                    cargo_funcionario: resultado[0].cargo_funcionario
+                });
+            } 
+        })
+        
+}
+
+function listarInformacaoesNotebook(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarInformacaoesNotebook(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({
+                    hostname: resultado[0].hostname,
+                    marca: resultado[0].marca,
+                    modelo: resultado[0].modelo,
+                    memoriaRAM: resultado[0].memoriaRAM,
+                    processador: resultado[0].processador,
+                    qtdDiscos: resultado[0].qtdDiscos,
+                    tamanhoTotal: resultado[0].tamanhoTotal
+                });
+            }
+        })
+}
+
+function listarNumeroNucleos(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarNumeroNucleos(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({numero_nucleos : resultado[0].numero_nucleos });
+            }
+        })
+
+}
   
-module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel};
+module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos};
