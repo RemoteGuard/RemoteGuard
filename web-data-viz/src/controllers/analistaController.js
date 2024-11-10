@@ -1,16 +1,29 @@
 var analistaModel = require("../models/analistaModel");
 
+
+
+function listarNotebooks(req, res) {
+    analistaModel.listarNotebook()
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } 
+        })
+}
+
+
+
+
+
 function listarPorcentagemRAMPorNotebook(req, res) {
     var fkNotebook = req.body.fkNotebook;
     analistaModel.listarPorcentagemRAMPorNotebook(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
-            }
+            } 
         })
-      
+
 }
 
 function listarPorcentagemCPUPorNotebook(req, res) {
@@ -19,8 +32,6 @@ function listarPorcentagemCPUPorNotebook(req, res) {
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
             }
         })
     
@@ -33,15 +44,13 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado[0]);
-            } else {
-                res.status(404).json({ mensagem: "Nenhum dado encontrado para o notebook especificado." });
-            }
+            } 
         })
     
 }
 
 
-function listarDadosRadar(req, res) {
+function listarDadosBarra(req, res) {
     var fkNotebookBase = req.body.fkNotebookBase; 
     var fkNotebookComparacao = req.body.fkNotebookComparacao;
   
@@ -54,7 +63,7 @@ function listarDadosRadar(req, res) {
       const dadosComparacao = resultado[1];
   
       if (dadosBase.length > 0 && dadosComparacao.length > 0) {
-        const dadosRadar = {
+        const dadosBarra = {
           base: {
             cpu: dadosBase[0].porcentagem_cpu,
             ram: dadosBase[0].porcentagem_ram,
@@ -68,14 +77,77 @@ function listarDadosRadar(req, res) {
             processos: dadosComparacao[0].processos
           }
         };
-        res.json(dadosRadar);
-      } else {
-        res.status(404).json({ mensagem: "Nenhum dado encontrado para as máquinas especificadas." });
+        res.json(dadosBarra);
       }
     })
-    .catch(err => {
-      res.status(500).json({ mensagem: "Erro ao buscar dados para o gráfico de radar.", erro: err });
-    });
+  
+  }
+  function listarNomeResponsavel(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarNomeResponsavel(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({ nome_funcionario: resultado[0].nome_funcionario })
+                ;
+            } 
+        })
+    
   }
   
-module.exports = { listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosRadar};
+  function listarQuantidadeProcessos(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarQuantidadeProcessos(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({ processos: resultado[0].processos });
+            }
+        })
+
+}
+
+function listarInformacaoesFuncionario(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarInformacaoesFuncionario(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({
+                    nome_funcionario: resultado[0].nome_funcionario,
+                    email_funcionario: resultado[0].email_funcionario,
+                    cargo_funcionario: resultado[0].cargo_funcionario
+                });
+            } 
+        })
+        
+}
+
+function listarInformacaoesNotebook(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarInformacaoesNotebook(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({
+                    hostname: resultado[0].hostname,
+                    marca: resultado[0].marca,
+                    modelo: resultado[0].modelo,
+                    memoriaRAM: resultado[0].memoriaRAM,
+                    processador: resultado[0].processador,
+                    qtdDiscos: resultado[0].qtdDiscos,
+                    tamanhoTotal: resultado[0].tamanhoTotal
+                });
+            }
+        })
+}
+
+function listarNumeroNucleos(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarNumeroNucleos(fkNotebook)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json({numero_nucleos : resultado[0].numero_nucleos });
+            }
+        })
+
+}
+  
+module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos};

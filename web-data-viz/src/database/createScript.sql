@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_disco FLOAT,
     processos INT,
     boot_time DATETIME,
-    data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
+	numero_nucleos INT, 
+	data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
         REFERENCES notebook(idNotebook)
 );
@@ -115,12 +116,38 @@ INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cn
 SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
 
-Insert into dados(porcentagem_cpu,porcentagem_ram,porcentagem_disco,fkNotebook) values
-(40,50,60,2);
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
+VALUES 
+('analista', 'João Silva', '12345678901', 'joao.silva@empresa.com', 'senha123', 1, 1);
+
+INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
+('notebook4', 'HP', 'Pavilion', 8, 'AMD Ryzen 5'),
+('notebook5', 'Acer', 'Aspire', 16, 'Intel Core i7'),
+('notebook6', 'Asus', 'ZenBook', 16, 'Intel Core i5');
+
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
+VALUES 
+('analista', 'Maria Santos', '12345678902', 'maria.santos@empresa.com', 'senha123', 1, 2),
+('supervisor', 'Carlos Oliveira', '12345678903', 'carlos.oliveira@empresa.com', 'senha123', 2, 3),
+('gerente', 'Ana Costa', '12345678904', 'ana.costa@empresa.com', 'senha123', 2, 4),
+('analista', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
+('assistente', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
+
+
+    
+       SELECT funcionario.nome AS nome_funcionario
+        FROM funcionario
+        WHERE funcionario.fkNotebook = 2;
+
+
 SELECT * FROM empresa;
 SELECT * FROM notebook;
 SELECT * FROM funcionario;
 SELECT * FROM armazenamento;
 SELECT * FROM processos;
 SELECT * FROM dados;
+
+
+
+
 SELECT * FROM alerta;
