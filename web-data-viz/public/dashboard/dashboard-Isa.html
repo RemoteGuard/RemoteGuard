@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - alertas</title>
+    <link rel="stylesheet" href="../css/css-dash-Isa.css">
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+
+</head>
+
+<body onload="timeout, buscarEmpresaDoGerenteLogado()">
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+            <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="perfil-wrapper">
+            <div class="Ativacao">
+                <button>Ajuda</button>
+            </div>
+
+            <div class="perfil-container">
+                <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+                <div class="perfil-text">
+                    <span class="nome">Gerente</span>
+                    <span class="legenda">perfil</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav id="menuhamburguer">
+        <div class="logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+            <li class="ativo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a>
+            </li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                        alt="Ícone 1">Funcionarios</a></li>
+            <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1">
+                    Maquinas</a>
+            </li>
+            <li class="naoAtivo"><a href="perfilGerente.html"><img src="../assets/imgs/config.png"
+                        alt="Ícone 1">Configuração</a></li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-Container">
+        <div class="dashboard1">
+            <div class="chart-container">
+                <div class="ranking">
+                    <h1>TOP FUNCIONÁRIOS COM MAIS ALERTAS NAS MÁQUINAS</h1>
+                    <span id="exibirNomesTopFuncionarios"></span>
+                    <span id="exibirQtdAlertasTopFuncionarios"></span>
+                </div>
+                <div class="divider-divs"></div>
+                <div class="mediaAlertas">
+                    <h1>MÉDIA DE ALERTAS POR FUNCIONÁRIO (ao longo da semana)</h1>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard2">
+            <div class="chart-container2-5">
+
+            </div>
+            <div class="chart-container2">
+                <select name="select-func" id="select-func" class="select-func">
+                    <option selected disabled value="#">Selecione um funcionário</option>
+                </select>
+                <div class="metricas-funcionario">
+                    <div class="grafico">
+
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <h1>TOTAL DE ALERTAS SEMANAIS (hardware)</h1>
+                            <span id="total-alertas-hw"></span>
+                        </div>
+                        <div class="card">
+                            <h1>TOTAL DE ALERTAS SEMANAIS (processos)</h1>
+                            <span id="total-alertas-processos"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+    </main>
+</body>
+
+</html>
+
+
+<script>
+     var requisicaoPadrao = ''
+    var empresaGerente = ''
+
+
+    // Manipulação do menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('main-Container');
+        var header = document.getElementById('main-header');
+
+        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove a classe 'active' de todos os itens
+            menuItems.forEach(el => el.classList.remove('active'));
+            // Adiciona a classe 'active' ao item clicado
+            this.classList.add('active');
+        });
+    });
+
+
+    //funcao que traz a fkEmpresa do funcionário que estiver logado
+    function buscarEmpresaDoGerenteLogado() {
+        idUsuario = sessionStorage.ID_USUARIO
+
+        fetch("/alertas/buscarEmpresaDoGerenteLogado", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao,
+                idUsuarioServer: idUsuario
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(empresa => {
+                        empresaGerente = empresa.fkEmpresa
+                    });
+                });
+            } else {
+                throw "Erro ao buscar a fkEmpresa do gerente!";
+            }
+        })
+    }
+
+    //função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
+    var timeout = setTimeout(function listarFuncionarios() {
+        fetch("/alertas/listarFuncionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                empresaServer: empresaGerente
+
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    const selectFuncionario = document.getElementById("select-func");
+                    json.resultado.forEach(funcionario => {
+                        const option = document.createElement("option");
+                        option.value = funcionario.idFuncionario;
+                        option.textContent = funcionario.nome;
+                        selectFuncionario.appendChild(option);
+                    });
+                });
+            } else {
+                throw "Erro ao listar funcionários!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+        , 500)
+
+</script>

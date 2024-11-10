@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS empresa (
 CREATE TABLE IF NOT EXISTS notebook (
     idNotebook INT PRIMARY KEY AUTO_INCREMENT,
     hostname VARCHAR(100),
-    marca VARCHAR(30) NOT NULL,
-    modelo VARCHAR(45) NOT NULL,
-    memoriaRAM INT NOT NULL,
-    processador VARCHAR(25) NOT NULL
+    marca VARCHAR(30) ,
+    modelo VARCHAR(45),
+    memoriaRAM INT,
+    processador VARCHAR(25)
 );
 
 CREATE TABLE IF NOT EXISTS funcionario (
@@ -94,6 +94,16 @@ CREATE TABLE IF NOT EXISTS dados (
         REFERENCES notebook(idNotebook)
 );
 
+CREATE TABLE IF NOT EXISTS alerta (
+idAlerta INT AUTO_INCREMENT PRIMARY KEY,
+dataHora timestamp DEFAULT CURRENT_TIMESTAMP,
+codigo VARCHAR(100),
+descricao VARCHAR(900),
+fkNotebook INT,
+CONSTRAINT fkNotebookAlerta FOREIGN KEY (fkNotebook)
+	REFERENCES notebook(idNotebook)
+);
+
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
 ('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
 ('notebook2', 'Apple', 'MacBook Pro', 32, 'Apple M1'),
@@ -138,8 +148,6 @@ SELECT * FROM processos;
 SELECT * FROM dados;
 
 
-SELECT porcentagem_ram, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY data_captura DESC LIMIT 10;
 
 
-insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,processos,fkNotebook) values
-(80,15,50,70,3);
+SELECT * FROM alerta;
