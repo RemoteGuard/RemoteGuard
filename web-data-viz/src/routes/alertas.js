@@ -11,4 +11,16 @@ router.post("/listarFuncionarios", function (req, res) {
     alertasController.listarFuncionarios(req, res);
 });
 
+router.post("/buscarNotebookDoFuncionario", function (req, res) {
+    alertasController.buscarNotebookDoFuncionario(req, res);
+});
+
+router.get("/exibirTotalAlertasHardware/:fkNotebook", function (req, res) {
+    alertasController.exibirTotalAlertasHardware(req, res);
+});
+
+router.get("/exibirTotalAlertasProcessos/:fkNotebook", function (req, res) {
+    alertasController.exibirTotalAlertasProcessos(req, res);
+});
+
 module.exports = router;

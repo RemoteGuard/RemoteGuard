@@ -24,7 +24,48 @@ function listarFuncionarios(req, res) {
         )
 }
 
+function buscarNotebookDoFuncionario(req, res) {
+    var fkNotebookModel = req.body.fkNotebookServer
+    alertasModel.buscarNotebookDoFuncionario(fkNotebookModel)
+        .then(
+            function (resultado) {
+                res.json({
+                    resultado
+                });
+            }
+        )
+}
+
+function exibirTotalAlertasHardware(req, res) {
+    const { fkNotebook } = req.params
+    alertasModel.exibirTotalAlertasHardware(fkNotebook)
+    .then(function (resultado) {
+        res.json(resultado);
+    })
+    .catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os alertas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function exibirTotalAlertasProcessos(req, res) {
+    const { fkNotebook } = req.params
+    alertasModel.exibirTotalAlertasProcessos(fkNotebook)
+    .then(function (resultado) {
+        res.json(resultado);
+    })
+    .catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os alertas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     buscarEmpresaDoGerenteLogado,
-    listarFuncionarios
+    listarFuncionarios,
+    buscarNotebookDoFuncionario,
+    exibirTotalAlertasHardware,
+    exibirTotalAlertasProcessos
 }

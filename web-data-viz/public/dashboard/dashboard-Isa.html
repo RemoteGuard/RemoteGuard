@@ -68,7 +68,7 @@
 
             </div>
             <div class="chart-container2">
-                <select name="select-func" id="select-func" class="select-func">
+                <select onchange="buscarNotebookDoFuncionario()" name="select-func" id="selectFunc" class="select-func">
                     <option selected disabled value="#">Selecione um funcionário</option>
                 </select>
                 <div class="metricas-funcionario">
@@ -78,11 +78,11 @@
                     <div class="cards">
                         <div class="card">
                             <h1>TOTAL DE ALERTAS SEMANAIS (hardware)</h1>
-                            <span id="total-alertas-hw"></span>
+                            <span id="totalAlertasHw"></span>
                         </div>
                         <div class="card">
                             <h1>TOTAL DE ALERTAS SEMANAIS (processos)</h1>
-                            <span id="total-alertas-processos"></span>
+                            <span id="totalAlertasProcessos"></span>
                         </div>
                     </div>
                 </div>
@@ -98,8 +98,10 @@
 
 
 <script>
-     var requisicaoPadrao = ''
+    var requisicaoPadrao = ''
     var empresaGerente = ''
+    var fkNote = ''
+
 
 
     // Manipulação do menu hamburguer
@@ -165,7 +167,7 @@
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(json => {
-                    const selectFuncionario = document.getElementById("select-func");
+                    const selectFuncionario = document.getElementById("selectFunc");
                     json.resultado.forEach(funcionario => {
                         const option = document.createElement("option");
                         option.value = funcionario.idFuncionario;
@@ -181,5 +183,78 @@
         });
     }
         , 500)
+
+
+    // traz a fkNotebook do funcionário que for selecionado pelo select
+    function buscarNotebookDoFuncionario() {
+        notebookDoFunc = selectFunc.value
+
+        fetch("/alertas/buscarNotebookDoFuncionario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fkNotebookServer: notebookDoFunc
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(funcionario => {
+                        fkNote = funcionario.fkNotebook
+                    });
+                    exibirTotalAlertasHardware()
+                    exibirTotalAlertasProcessos()
+                    console.log(fkNote)
+                });
+            } else {
+                throw "Erro ao buscar a fk notebook do funcionário selecionado!";
+            }
+        })
+    }
+
+    function exibirTotalAlertasHardware() {
+        fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do exibirTotalAlertasHardware")
+
+            if (resposta.ok) {
+                console.log("Função exibirTotalAlertasHardware():");
+
+                resposta.json().then(function (resposta) {
+                    var dados = resposta[0];
+
+                    totalAlertasHw.innerHTML = dados.alertas;
+                })
+            }
+        })
+    }
+
+    function exibirTotalAlertasProcessos() {
+        fetch(`/alertas/exibirTotalAlertasProcessos/${fkNote}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do exibirTotalAlertasProcessos")
+
+            if (resposta.ok) {
+                console.log("Função exibirTotalAlertasProcessos():");
+
+                resposta.json().then(function (resposta) {
+                    var dados = resposta[0];
+
+                    totalAlertasProcessos.innerHTML = dados.alertas;
+                })
+            }
+        })
+    }
 
 </script>
