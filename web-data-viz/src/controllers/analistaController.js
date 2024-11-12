@@ -146,8 +146,26 @@ function listarNumeroNucleos(req, res) {
                 res.json({numero_nucleos : resultado[0].numero_nucleos });
             }
         })
-
 }
+
+function listarMediaPonderada(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarMediaPonderada(fkNotebook)
+    .then(resultado => {
+        if (resultado.length > 0) {
+            res.json({media_ponderada : resultado[0].media_ponderada });
+            }
+            })
+            }
+ function listarLeituraeEscritaDisco(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarLeituraeEscritaDisco(fkNotebook)
+    .then(resultado => {
+        if (resultado.length > 0) {
+            res.json({leitura: resultado[0].leitura, escrita: resultado[0].escrita });  
+        }
+        })
+    }
   
 module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
-    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos};
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarLeituraeEscritaDisco};

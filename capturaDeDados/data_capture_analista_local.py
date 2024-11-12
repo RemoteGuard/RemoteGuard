@@ -159,6 +159,27 @@ def get_disk_data():
     disk_usage_percentage = disk_data['percent']
     return disk_usage_bytes, disk_usage_percentage
 
+
+def get_network_data():
+    net_io = psutil.net_io_counters()
+    bytes_sent = net_io.bytes_sent
+    bytes_recv = net_io.bytes_recv
+    return bytes_sent, bytes_recv
+
+def get_process_count():
+    process_count = sum(1 for _ in psutil.process_iter() if _.status() == 'running')
+    return process_count
+
+def get_boot_time():
+    return psutil.boot_time()
+
+def format_boot_time(boot_time):
+    return datetime.fromtimestamp(boot_time).strftime('%Y-%m-%d %H:%M:%S')
+
+def get_cpu_cores():
+    numero_nucleos = psutil.cpu_count(logical=True)
+    return numero_nucleos
+
 # def export_to_json(dados):
 #     try:
 #         with open(json_file_path, mode='w', newline='', encoding='utf-8') as file:
@@ -272,7 +293,7 @@ def data_capture(data_capture_delay):
             
             processosString = str(processos)
             
-            sql = "INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos, boot_time, fkNotebook,  numero_nucleos) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql, (cleber, cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage, disk_usage_bytes, disk_usage_percentage, processosString))
             conexao.commit()
 

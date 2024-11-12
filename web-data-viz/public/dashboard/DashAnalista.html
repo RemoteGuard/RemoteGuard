@@ -46,6 +46,7 @@
         <option value="ram"   >Memória RAM</option>
         <option value="cpu">CPU</option>
         <option value="disco">Disco</option>
+        <option value="Leitura">Leitura e Escriata Disco</option>
       </select>
       <div class="funcionario-atual" id="nomeResponsavel" style="cursor: pointer;">Clique aqui para ver o responsável</div>
       
@@ -61,16 +62,13 @@
       <div id="chartBarra"></div>
       <select class="maquina" id="maquinaComparacao">
         <option value="" selected disabled>Selecionar Máquina para Comparação</option>
-        <option value="2">Máquina 2</option>
-        <option value="3">Máquina 3</option>
-        <option value="4">Máquina 4</option>
       </select>
     </div>
       </div>
       <div class="status-boxes">
         <div class="status-card " ><span id="quantidadeProcessos"  class="text-card"></span></div>
         <div class="status-card "><span id="quantidadeNucleos" class="text-card"></span></div>
-        <div class="status-card "><span id="processo-mais-utilizado" class="text-card"></span></div>
+        <div class="status-card "><span id="mediaPonderada" class="text-card"></span></div>
         <div class="status-card "><span id="processo-mais-utilizado" class="text-card"></span></div>
     </div>
   </main>
@@ -232,14 +230,24 @@ function buscarQuantidadeNucleos(fkNotebook) {
   .then(response => response.json())
   .then(data => {
       if (data.numero_nucleos !== undefined) {
-         
-        
           document.getElementById('quantidadeNucleos').innerHTML = ` <p class= "qtdprocess">Numéro de Nucleos Ativos  </p>`+  data.numero_nucleos;
+      }
+  })
+}
+function buscarMediaPonderada(fkNotebook) {
+  fetch("/analista/listarMediaPonderada", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fkNotebook })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.media_ponderada !== undefined) {
+          document.getElementById('mediaPonderada').innerHTML = ` <p class= "qtdprocess">A Média  Ponderadas dos  Recursos  </p>`+  data.media_ponderada;
       }
   })
 
 }
-  
     
     function definirRecurso(recursoSelecionado) {
       const endpoints = {
@@ -252,8 +260,10 @@ function buscarQuantidadeNucleos(fkNotebook) {
   
       if (recursoSelecionado === "disco") {
         buscarDadosDisco(recurso.endpoint);
-      } else {
+      } else if (recursoSelecionado === "ram" || recursoSelecionado === "cpu") {
         buscarDadosGrafico(recurso.endpoint, recurso.label);
+      }else{
+        BuscarDadosGraficoLeituraEscrita();
       }
     }
   
@@ -355,7 +365,91 @@ function buscarQuantidadeNucleos(fkNotebook) {
           plotarGraficoLinha(dados, labels, label);
       });
   }
-  
+
+
+function BuscarDadosGraficoLeituraEscrita() {
+    fetch("/analista/listarPorcentagemLeituraEscrita", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+    })
+    .then(response => response.json())
+    .then(resposta => {
+        const dadosLeitura = [];
+        const dadosEscrita = [];
+        const labels = [];
+        resposta.forEach(item => {
+            dadosLeitura.push(item.porcentagem_leitura);
+            dadosEscrita.push(item.porcentagem_escrita);
+            labels.push(new Date(item.data_captura).toLocaleTimeString());
+        });
+
+        plotarGraficoLeituraEscrita(dadosLeitura, dadosEscrita, labels);
+    });
+}
+
+function plotarGraficoLeituraEscrita(dadosLeitura, dadosEscrita, labels) {
+    const options = {
+        series: [{
+            name: 'Leitura',
+            data: dadosLeitura,
+            color: '#FFEB3B'
+        },
+        {
+            name: 'Escrita',
+            data: dadosEscrita,
+            color: '#00E676'
+        }],
+        chart: {
+            type: 'line',
+            height: 350,
+            zoom: { enabled: true }
+        },
+        tooltip: {
+            enabled: true,
+            theme: "dark",
+            style: {
+                fontSize: '12px',
+                colors: ['#FFFFFF']
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            style: {
+                colors: ['#FFEB3B', '#00E676'],
+                fontWeight: 'bold'
+            },
+            background: {
+                enabled: true,
+                foreColor: '#000000',
+                borderRadius: 2,
+                dropShadow: { enabled: false },
+            }
+        },
+        stroke: { curve: 'straight', width: 3 },
+        title: { text: 'Leitura e Escrita (%)', align: 'left', style: { color: '#FFFFFF' } },
+        xaxis: {
+            categories: labels,
+            labels: { style: { colors: '#FFFFFF' } },
+            title: { text: 'Horário', style: { color: '#FFFFFF' } }
+        },
+        yaxis: {
+            title: { text: 'Porcentagem', style: { color: '#FFFFFF' } },
+            labels: { style: { colors: '#FFFFFF' } },
+            min: 0, max: 100
+        }
+    };
+
+    // Se o gráfico já foi criado, destrua-o antes de criar um novo
+    if (plotarGraficoLeituraEscrita) {
+        plotarGraficoLeituraEscrita.destroy();
+    }
+
+    // Crie um novo gráfico
+    plotarGraficoLeituraEscrita = new ApexCharts(document.querySelector("#chart"), options);
+    plotarGraficoLeituraEscrita.render();
+}
+
     function buscarDadosDisco(endpoint) {
       fetch(endpoint, {
         method: "POST",
@@ -502,6 +596,7 @@ function buscarQuantidadeNucleos(fkNotebook) {
       buscarInformacoesNotebook(fkNotebook);
       buscarQuantidadeNucleos(fkNotebook);
       BuscarNotebook();
+      buscarMediaPonderada(fkNotebook);
     }
 
     carregarDadosIniciais();
@@ -522,7 +617,20 @@ function buscarQuantidadeNucleos(fkNotebook) {
       document.body.classList.toggle('menu-open');
     });
 
-
+    setInterval(function() {
+      const recursoSelecionado = document.getElementById('recurso').value;
+      if (recursoSelecionado) {
+          definirRecurso(recursoSelecionado);
+          buscarQuantidadeNucleos(fkNotebook);
+          buscarQuantidadeProcessos(fkNotebook); 
+      }
+  }, 5000); 
+  
+  
+  const recursoInicial = document.getElementById('recurso').value;
+  if (recursoInicial) {
+      definirRecurso(recursoInicial);
+  }
 function abrirModal() {
   document.getElementById('modal').style.display = 'flex';
 }

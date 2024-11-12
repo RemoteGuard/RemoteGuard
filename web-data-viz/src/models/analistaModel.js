@@ -70,6 +70,21 @@ SELECT numero_nucleos from dados where fkNotebook =${fkNotebook} ORDER BY data_c
   return database.executar(instrucaoSql, [fkNotebook]);
 }
 
+ function listarMediaPonderada(fkNotebook) {
+  const instrucaoSql = `
+  SELECT media_ponderada FROM dados WHERE fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
+  `;
+  return database.executar(instrucaoSql, [fkNotebook]);
+  }
+
+function listarLeituraeEscritaDisco(fkNotebook) {
+  const instrucaoSql = `
+  SELECT leitura_disco, escrita_disco FROM dados WHERE fkNotebook = ${fkNotebook} ORDER
+  BY data_captura DESC LIMIT 1;
+  `;
+  return database.executar(instrucaoSql, [fkNotebook]);
+}
+
 
 module.exports = {listarNotebook, listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook,listarNomeResponsavel,listarQuantidadeProcessos,
-  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos};
+  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarLeituraeEscritaDisco};
