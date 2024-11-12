@@ -440,12 +440,11 @@ function plotarGraficoLeituraEscrita(dadosLeitura, dadosEscrita, labels) {
         }
     };
 
-    // Se o gráfico já foi criado, destrua-o antes de criar um novo
+
     if (plotarGraficoLeituraEscrita) {
         plotarGraficoLeituraEscrita.destroy();
     }
 
-    // Crie um novo gráfico
     plotarGraficoLeituraEscrita = new ApexCharts(document.querySelector("#chart"), options);
     plotarGraficoLeituraEscrita.render();
 }
