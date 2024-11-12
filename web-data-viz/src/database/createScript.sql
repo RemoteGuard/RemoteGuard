@@ -87,6 +87,10 @@ CREATE TABLE IF NOT EXISTS dados (
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
     processos INT,
+    numero_nucleos INT,
+    media_ponderada DOUBLE,
+    leitura_disco INT,
+    escrita_disco INT,
     boot_time DATETIME,
     data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
@@ -104,13 +108,51 @@ CONSTRAINT fkNotebookAlerta FOREIGN KEY (fkNotebook)
 );
 
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
-('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
-('notebook2', 'Apple', 'MacBook Pro', 32, 'Apple M1'),
-('notebook3', 'Lenovo', 'ThinkPad X1', 16, 'Intel Core i5');
+    ('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
+    ('notebook2', 'Apple', 'MacBook Pro', 32, 'Apple M1'),
+    ('notebook3', 'Lenovo', 'ThinkPad X1', 16, 'Intel Core i5'),
+    ('notebook4', 'HP', 'Spectre x360', 8, 'Intel Core i5'),
+    ('notebook5', 'Asus', 'ZenBook 14', 16, 'AMD Ryzen 7');
+
 
 INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cnpj, token) VALUES 
     ('Amazon', 'Amazon', '98765432', '2350', '11999999999', 'amazon@gmail.com', '88888888888888', '123456789'),
-    ('Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888', '987654321');
+    ('Google', 'Google', '98765432', '2390', '11956999999', 'google@gmail.com', '2882288283888', '987654321'),
+    ('Microsoft', 'MSFT', '12345678', '4567', '11911122333', 'microsoft@outlook.com', '12312312312312', '112233445'),
+    ('Facebook', 'Meta', '23456789', '7890', '11955566777', 'meta@facebook.com', '54354354354321', '998877665'),
+    ('Tesla', 'Tesla Motors', '34567890', '1357', '11988889999', 'contact@tesla.com', '77777777777777', '443322110');
+
+
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkSupervisor, fkNotebook) VALUES 
+    ('Gerente', 'Ana Silva', '12345678901', 'ana@empresa.com', 'senha123', 1, NULL, 1),
+    ('Analista', 'Carlos Souza', '23456789012', 'carlos@empresa.com', 'senha123', 1, 1, 2),
+    ('Assistente', 'Isabela Goulart', '34567890123', 'isabela@empresa.com', 'senha123', 2, NULL, 3),
+    ('Desenvolvedor', 'João Oliveira', '45678901234', 'joao@empresa.com', 'senha123', 2, 3, 4),
+    ('Coordenador', 'Roberta Costa', '56789012345', 'roberta@empresa.com', 'senha123', 3, 2, 5);
+
+INSERT INTO armazenamento (qtdDiscos, tamanhoTotal, fkNotebook) VALUES 
+    (2, 512, 1),
+    (1, 256, 2),
+    (3, 1024, 3),
+    (2, 512, 4),
+    (4, 2048, 5);
+
+INSERT INTO controleFluxo (dtInicio, dtSaida, fkFuncionario, fkNotebook) VALUES 
+    ('2024-11-12 08:00:00', '2024-11-12 17:00:00', 1, 1),
+    ('2024-11-12 08:30:00', '2024-11-12 17:30:00', 2, 2),
+    ('2024-11-12 09:00:00', '2024-11-12 18:00:00', 3, 3),
+    ('2024-11-12 09:30:00', '2024-11-12 18:30:00', 4, 4),
+    ('2024-11-12 10:00:00', '2024-11-12 19:00:00', 5, 5);
+
+
+INSERT INTO processos (nomeProcesso, fkNotebook) VALUES
+    ('Chrome', 1),
+    ('VSCode', 2),
+    ('Slack', 3),
+    ('Docker', 4),
+    ('Skype', 5);
+
+
 
 SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
@@ -124,6 +166,10 @@ SELECT * FROM armazenamento;
 SELECT * FROM processos;
 SELECT * FROM dados;
 SELECT * FROM alerta;
+
+
+
+
 
 insert into alerta (descricao, fkNotebook) values ('Processo indevido rodando na máquina (IsabelaGoulart)!.', 1);
 SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Processo indevido%";
