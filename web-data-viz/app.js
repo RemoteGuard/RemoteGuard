@@ -21,6 +21,7 @@ var empresasRouter = require("./src/routes/empresas");
 var notebookRouter = require("./src/routes/notebook");
 var analistaRouter = require("./src/routes/analista");
 var alertasRouter = require("./src/routes/alertas")
+var renanRouter = require("./src/routes/renan")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,6 +35,7 @@ app.use("/empresas", empresasRouter);
 app.use("/notebook", notebookRouter);
 app.use("/analista", analistaRouter);
 app.use("/alertas", alertasRouter);
+app.use("/renan", renanRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
