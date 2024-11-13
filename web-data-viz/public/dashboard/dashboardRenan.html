@@ -9,7 +9,10 @@
     <div id="div_alerta"></div>
 </body>
 <script>
+let contagemOrdenada;
 let vetorProcessos = []
+let contagem;
+let vetorProcessosTeste = []
 let processosSeparados = ""
 const requisicaoPadrao = "";
 function trazerProcessos() {
@@ -24,10 +27,40 @@ function trazerProcessos() {
             }).then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(json => {
+                        console.log(json)
+                        if (json[0] == json[37]){
+                            console.log("iguais")
+                        } else {
+                            console.log("Diferentes")
+                        }
+                        
+                        
                         json.resultado.forEach(processo => {
                             processosSeparados = processo.processos.split(",")
-                            vetorProcessos.push(processo.processos.split(","))
+                            for (var i = 0; i < processosSeparados.length; i ++){
+                                vetorProcessos.push(processosSeparados[i])
+                            }
+                          
                         });
+                            console.log(vetorProcessos)
+                            contagem = vetorProcessos.reduce((acc, processo) => {
+                            acc[processo] = (acc[processo] || 0) + 1;
+                            return acc;
+                            }, {})
+                            var jsonContagem = contagem
+                            var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
+                            var processosMaisUtilizadosNome = []
+                            var processosMaisUtilizadosQtd = []
+                            for( var i = 0; i < 5; i ++){
+                                processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
+                                processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
+                            }
+                            console.log(contagemOrdenada)
+                            console.log(processosMaisUtilizadosNome)
+                            for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
+                                div_alerta.innerHTML += processosMaisUtilizadosNome[i] + "  e  " + processosMaisUtilizadosQtd[i]
+                            }
+                        
                     });
                 } else {
                     throw "Erro ao listar empresas!";
