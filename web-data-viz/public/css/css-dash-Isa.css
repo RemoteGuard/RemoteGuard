@@ -210,14 +210,40 @@ main {
 }
 
 .chart-container h1 {
-    font-size: 16px;
+    font-size: 18px;
+    text-align: center;
 }
 
 .divider-divs {
     height: 100%;
     width: 3px;
     background-color: #ffffff;
-    margin: 0 10px;
+    margin: 0 20px;
+}
+
+.ranking {
+    width: 70%;
+}
+
+.tabelaRanking {
+    overflow: auto;
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.mediaAlertas {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mediaAlertas span {
+    font-size: 35px;
+    margin-bottom: 20px;
 }
 
 .dashboard2 {

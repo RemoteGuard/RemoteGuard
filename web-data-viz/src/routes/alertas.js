@@ -23,4 +23,12 @@ router.get("/exibirTotalAlertasProcessos/:fkNotebook", function (req, res) {
     alertasController.exibirTotalAlertasProcessos(req, res);
 });
 
+router.get("/exibirMediaAlertas", function (req, res) {
+    alertasController.exibirMediaAlertas(req, res);
+});
+
+router.get("/exibirRankingFuncionarios", function (req, res) {
+    alertasController.exibirRankingFuncionarios(req, res);
+});
+
 module.exports = router;
