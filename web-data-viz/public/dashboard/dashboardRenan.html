@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="trazerProcessos()">
+    <div id="div_alerta"></div>
+</body>
+<script>
+let contagemOrdenada;
+let vetorProcessos = []
+let contagem;
+let vetorProcessosTeste = []
+let processosSeparados = ""
+const requisicaoPadrao = "";
+function trazerProcessos() {
+            fetch("/renan/processos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    requisicaoPadraoServer: requisicaoPadrao 
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(json => {
+                        console.log(json)
+                        if (json[0] == json[37]){
+                            console.log("iguais")
+                        } else {
+                            console.log("Diferentes")
+                        }
+                        
+                        
+                        json.resultado.forEach(processo => {
+                            processosSeparados = processo.processos.split(",")
+                            for (var i = 0; i < processosSeparados.length; i ++){
+                                vetorProcessos.push(processosSeparados[i])
+                            }
+                          
+                        });
+                            console.log(vetorProcessos)
+                            contagem = vetorProcessos.reduce((acc, processo) => {
+                            acc[processo] = (acc[processo] || 0) + 1;
+                            return acc;
+                            }, {})
+                            var jsonContagem = contagem
+                            var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
+                            var processosMaisUtilizadosNome = []
+                            var processosMaisUtilizadosQtd = []
+                            for( var i = 0; i < 5; i ++){
+                                processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
+                                processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
+                            }
+                            console.log(contagemOrdenada)
+                            console.log(processosMaisUtilizadosNome)
+                            for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
+                                div_alerta.innerHTML += processosMaisUtilizadosNome[i] + "  e  " + processosMaisUtilizadosQtd[i]
+                            }
+                        
+                    });
+                } else {
+                    throw "Erro ao listar empresas!";
+                }
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+        }
+</script>
+</html>
