@@ -9,15 +9,12 @@
     <div id="div_alerta"></div>
 </body>
 <script>
-let contagemOrdenada;
-let vetorProcessos = []
-let contagem;
-let vetorProcessosTeste = []
-let processosSeparados = ""
-let processosSeparados2 = ""
-let processosSeparados3 = ""
 const requisicaoPadrao = "";
 function trazerProcessos() {
+    let vetorProcessos = []
+    let contagemOrdenada;
+    let contagem;
+    let vetorProcessosTeste = []
             fetch("/renan/processos", {
                 method: "POST",
                 headers: {
@@ -38,11 +35,11 @@ function trazerProcessos() {
                         
                         
                         json.resultado.forEach(processo => {
-                            var processosReplace = processo.processos.replaceAll(']', '')
-                            var processosReplace2 = processosReplace.replaceAll('[', '')
-                            var processosReplace3 = processosReplace2.replaceAll(' ', '')
-                            console.log(processosReplace3)
-                            processosSeparados = processosReplace3.split(",")
+                            var processosReplaceBarraInversa = processo.processos.replaceAll(']', '')
+                            var processosReplaceBarraComum = processosReplaceBarraInversa.replaceAll('[', '')
+                            var processosReplaceEspaco = processosReplaceBarraComum.replaceAll(' ', '')
+                            console.log(processosReplaceEspaco)
+                            processosSeparados = processosReplaceEspaco.split(",")
                             for (var i = 0; i < processosSeparados.length; i ++){
                                 vetorProcessos.push(processosSeparados[i])
                             }
@@ -57,15 +54,18 @@ function trazerProcessos() {
                             var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
                             var processosMaisUtilizadosNome = []
                             var processosMaisUtilizadosQtd = []
-                            for( var i = 0; i < 5; i ++){
+                            for( var i = 0; i < contagemOrdenada.length; i ++){
                                 processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
                                 processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
                             }
                             console.log(contagemOrdenada)
                             console.log(processosMaisUtilizadosNome)
+                            div_alerta.innerHTML = ''
                             for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
-                                div_alerta.innerHTML += processosMaisUtilizadosNome[i] + "  e  " + processosMaisUtilizadosQtd[i]
+                                div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
                             }
+                            setInterval(trazerProcessos(), 700)
+                        
                         
                     });
                 } else {
