@@ -14,6 +14,8 @@ let vetorProcessos = []
 let contagem;
 let vetorProcessosTeste = []
 let processosSeparados = ""
+let processosSeparados2 = ""
+let processosSeparados3 = ""
 const requisicaoPadrao = "";
 function trazerProcessos() {
             fetch("/renan/processos", {
@@ -36,7 +38,11 @@ function trazerProcessos() {
                         
                         
                         json.resultado.forEach(processo => {
-                            processosSeparados = processo.processos.split(",")
+                            var processosReplace = processo.processos.replaceAll(']', '')
+                            var processosReplace2 = processosReplace.replaceAll('[', '')
+                            var processosReplace3 = processosReplace2.replaceAll(' ', '')
+                            console.log(processosReplace3)
+                            processosSeparados = processosReplace3.split(",")
                             for (var i = 0; i < processosSeparados.length; i ++){
                                 vetorProcessos.push(processosSeparados[i])
                             }
