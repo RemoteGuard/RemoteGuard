@@ -10,4 +10,8 @@ router.post("/processos", function (req, res) {
 router.post("/ultimosDados", function (req, res) {
     renanController.ultimosDados(req, res);
 })
+
+router.post("/plotarGrafico", function (req, res) {
+    renanController.plotarGrafico(req, res);
+})
 module.exports = router;

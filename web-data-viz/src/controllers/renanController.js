@@ -26,8 +26,23 @@ function ultimosDados(req, res) {
       )
   }
 
+  function plotarGrafico(req, res) {
+    var requisicaoPadrao = req.body.requisicaoPadraoServer
+  
+    renanModel.plotarGrafico(requisicaoPadrao)
+      .then(
+        function (resultado) {
+          res.json({
+            resultado
+          });
+        }
+      )
+  }
+
+
   
 module.exports = {
     processos,
-    ultimosDados
+    ultimosDados,
+    plotarGrafico
 }
