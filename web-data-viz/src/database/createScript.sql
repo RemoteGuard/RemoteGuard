@@ -167,10 +167,45 @@ SELECT * FROM processos;
 SELECT * FROM dados;
 SELECT * FROM alerta;
 
-
-
-
-
-insert into alerta (descricao, fkNotebook) values ('Processo indevido rodando na máquina (IsabelaGoulart)!.', 1);
 SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Processo indevido%";
 SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 1 AND descricao LIKE "Recurso%";
+
+SELECT TRUNCATE(AVG(qtdAlertas), 2) AS mediaAlertas
+FROM (
+    SELECT COUNT(idAlerta) AS qtdAlertas
+    FROM alerta
+    WHERE dataHora >= NOW() - INTERVAL 7 DAY
+    GROUP BY fkNotebook
+) AS mediaAlertas;
+
+SELECT f.nome AS nome, COUNT(a.idAlerta) AS qtdAlertas
+FROM alerta AS a
+JOIN notebook AS n ON a.fkNotebook = n.idNotebook
+JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
+GROUP BY f.idFuncionario
+ORDER BY qtdAlertas DESC;
+
+
+
+-- Inserindo mais 5 funcionários
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
+VALUES 
+    ('Analista', 'João Silva', '11111111111', 'joao.silva@empresa.com', 'senha123', 1, 1),
+    ('Gerente', 'Maria Oliveira', '22222222222', 'maria.oliveira@empresa.com', 'senha456', 1, 2),
+    ('Desenvolvedor', 'Carlos Santos', '33333333333', 'carlos.santos@empresa.com', 'senha789', 2, 3),
+    ('Suporte', 'Ana Souza', '44444444444', 'ana.souza@empresa.com', 'senha101', 2, 1),
+    ('Coordenador', 'Pedro Lima', '55555555555', 'pedro.lima@empresa.com', 'senha202', 2, 2);
+
+-- Inserindo pelo menos um alerta para o notebook de cada funcionário
+INSERT INTO alerta (codigo, descricao, fkNotebook)
+VALUES 
+    ('A01', 'Recurso:uso de CPU acima do limite', 1),
+    ('A02', 'Recurso:uso de memória RAM alto', 2),
+    ('A03', 'Recurso:uso disco próximo da capacidade máxima', 3),
+    ('A04', 'Processo indevido em execução', 1);
+
+
+
+
+
+

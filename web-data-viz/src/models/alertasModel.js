@@ -42,11 +42,39 @@ function exibirTotalAlertasProcessos(fkNotebook) {
     return database.executar(instrucaoSql);
 }
 
+function exibirMediaAlertas() {
+    var instrucaoSql = `SELECT TRUNCATE(AVG(qtdAlertas), 0) AS mediaAlertas
+                        FROM (
+                        SELECT COUNT(idAlerta) AS qtdAlertas
+                        FROM alerta
+                        WHERE dataHora >= NOW() - INTERVAL 7 DAY
+                        GROUP BY fkNotebook
+                        ) AS mediaAlertas;`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function exibirRankingFuncionarios() {
+    var instrucaoSql = `SELECT f.nome AS nome, COUNT(a.idAlerta) AS qtdAlertas
+                        FROM alerta AS a
+                        JOIN notebook AS n ON a.fkNotebook = n.idNotebook
+                        JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
+                        GROUP BY f.idFuncionario
+                        ORDER BY qtdAlertas DESC;`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
 
 module.exports = {
     buscarEmpresaDoGerenteLogado,
     listarFuncionarios,
     buscarNotebookDoFuncionario,
     exibirTotalAlertasHardware,
-    exibirTotalAlertasProcessos
+    exibirTotalAlertasProcessos,
+    exibirMediaAlertas,
+    exibirRankingFuncionarios
 };

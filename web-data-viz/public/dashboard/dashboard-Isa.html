@@ -10,7 +10,7 @@
 
 </head>
 
-<body onload="timeout, buscarEmpresaDoGerenteLogado()">
+<body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas(), exibirRankingFuncionarios()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -53,13 +53,16 @@
         <div class="dashboard1">
             <div class="chart-container">
                 <div class="ranking">
-                    <h1>TOP FUNCIONÁRIOS COM MAIS ALERTAS NAS MÁQUINAS</h1>
-                    <span id="exibirNomesTopFuncionarios"></span>
-                    <span id="exibirQtdAlertasTopFuncionarios"></span>
+                    <h1>RANKING - FREQUÊNCIA DE ALERTAS POR FUNCIONÁRIO</h1>
+                    <div class="tabelaRanking">
+                        <span id="exibirNomesTopFuncionarios"></span>
+                        <span id="exibirQtdAlertasTopFuncionarios"></span>
+                    </div>
                 </div>
                 <div class="divider-divs"></div>
                 <div class="mediaAlertas">
-                    <h1>MÉDIA DE ALERTAS POR FUNCIONÁRIO (ao longo da semana)</h1>
+                    <h1>MÉDIA DE ALERTAS POR FUNCIONÁRIO</h1>
+                    <span id="mediaDeAlertas"></span>
                 </div>
             </div>
         </div>
@@ -224,11 +227,8 @@
             console.log("Estou no then do exibirTotalAlertasHardware")
 
             if (resposta.ok) {
-                console.log("Função exibirTotalAlertasHardware():");
-
                 resposta.json().then(function (resposta) {
                     var dados = resposta[0];
-
                     totalAlertasHw.innerHTML = dados.alertas;
                 })
             }
@@ -246,12 +246,49 @@
             console.log("Estou no then do exibirTotalAlertasProcessos")
 
             if (resposta.ok) {
-                console.log("Função exibirTotalAlertasProcessos():");
-
                 resposta.json().then(function (resposta) {
                     var dados = resposta[0];
-
                     totalAlertasProcessos.innerHTML = dados.alertas;
+                })
+            }
+        })
+    }
+
+    function exibirMediaAlertas() {
+        fetch(`/alertas/exibirMediaAlertas/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do exibirMediaAlertas")
+
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    var dados = resposta[0];
+                    mediaDeAlertas.innerHTML = dados.mediaAlertas;
+                })
+            }
+        })
+    }
+
+    function exibirRankingFuncionarios() {
+        fetch("/alertas/exibirRankingFuncionarios", {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+            console.log("Estou no then do listar")
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    for (var index = 0; index < resposta.length; index++) {
+                        var dados = resposta[index];
+                        exibirNomesTopFuncionarios.innerHTML += `${dados.nome.toUpperCase()} <br>`
+                        exibirQtdAlertasTopFuncionarios.innerHTML += ` ${dados.qtdAlertas} <br>`;
+
+                    }
                 })
             }
         })

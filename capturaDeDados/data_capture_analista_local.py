@@ -8,7 +8,7 @@ import pymysql
 # from botocore.exceptions import ClientError
 #from atlassian import Jira
 #from requests import HTTPError
-cleber = 1
+cleber = 4
 processos_indevidos = [
     # Jogos populares
     "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "valorant.exe", "apex_legends.exe",
@@ -314,6 +314,7 @@ def data_capture(data_capture_delay):
             print(f"Porcentagem de Uso da Memória: {ram_usage_percentage}")
             print(f"Uso do Disco em Bytes: {disk_usage_bytes}")
             print(f"Porcentagem de Uso do Disco: {disk_usage_percentage}")
+            print(f"Processos: {processos}")
             print()
             print(cont_registers, " Registro Inserido.") if cont_registers == 1 else print(cont_registers, "Registro Inseridos.")
 
