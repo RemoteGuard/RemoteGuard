@@ -13,7 +13,21 @@ function processos(req, res) {
       )
   }
 
+function ultimosDados(req, res) {
+    var requisicaoPadrao = req.body.requisicaoPadraoServer
+  
+    renanModel.ultimosDados(requisicaoPadrao)
+      .then(
+        function (resultado) {
+          res.json({
+            resultado
+          });
+        }
+      )
+  }
+
   
 module.exports = {
-    processos
+    processos,
+    ultimosDados
 }

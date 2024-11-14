@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body onload="trazerProcessos()">
+<body onload="trazerProcessos(), trazerDados()">
     <div id="div_alerta"></div>
+    Funcionarios com as maquinas em PERIGO: (utilização maior que 90%)
+    <div id="div_card_perigo"></div>
+    Funcionarios com as maquinas em ALERTA: (utilização maior que 95%)
+    <div id="div_card_urgencia"></div>
 </body>
 <script>
 const requisicaoPadrao = "";
@@ -26,26 +30,15 @@ function trazerProcessos() {
             }).then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(json => {
-                        console.log(json)
-                        if (json[0] == json[37]){
-                            console.log("iguais")
-                        } else {
-                            console.log("Diferentes")
-                        }
-                        
-                        
                         json.resultado.forEach(processo => {
                             var processosReplaceBarraInversa = processo.processos.replaceAll(']', '')
                             var processosReplaceBarraComum = processosReplaceBarraInversa.replaceAll('[', '')
                             var processosReplaceEspaco = processosReplaceBarraComum.replaceAll(' ', '')
-                            console.log(processosReplaceEspaco)
                             processosSeparados = processosReplaceEspaco.split(",")
                             for (var i = 0; i < processosSeparados.length; i ++){
                                 vetorProcessos.push(processosSeparados[i])
                             }
-                          
                         });
-                            console.log(vetorProcessos)
                             contagem = vetorProcessos.reduce((acc, processo) => {
                             acc[processo] = (acc[processo] || 0) + 1;
                             return acc;
@@ -54,18 +47,59 @@ function trazerProcessos() {
                             var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
                             var processosMaisUtilizadosNome = []
                             var processosMaisUtilizadosQtd = []
-                            for( var i = 0; i < contagemOrdenada.length; i ++){
+                            for( var i = 0; i < 6; i ++){
                                 processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
                                 processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
                             }
-                            console.log(contagemOrdenada)
-                            console.log(processosMaisUtilizadosNome)
                             div_alerta.innerHTML = ''
                             for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
                                 div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
                             }
-                            setInterval(trazerProcessos(), 700)
+                            setTimeout(trazerProcessos(), 7000)
                         
+                        
+                    });
+                } else {
+                    throw "Erro ao listar empresas!";
+                }
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+        }
+        function trazerDados() {    
+            let vetorUrgencia = []
+            let vetorPerigo = []
+            fetch("/renan/ultimosDados", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(json => {
+                    console.log(json.resultado)
+                    for(var i = 0; i < json.resultado.length; i++){
+                        if(json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90){
+                            if(json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95){
+                            vetorPerigo.push(json.resultado[i].nome)
+                            }
+                        }
+                        if(json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95){
+                           vetorUrgencia.push(json.resultado[i].nome)
+                        }
+                    }
+                    div_card_perigo.innerHTML = ""
+                    div_card_urgencia.innerHTML = ""
+                    for (var i = 0; i < vetorPerigo.length; i ++){
+                        div_card_perigo.innerHTML += vetorPerigo[i] + '<br>'
+                    }
+                    for (var i = 0; i < vetorUrgencia.length; i ++){
+                        div_card_urgencia.innerHTML += vetorUrgencia[i] + '<br>'
+                    }
+                    
+                    
+                    
                         
                     });
                 } else {
