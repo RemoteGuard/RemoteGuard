@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="trazerProcessos(), trazerDados()">
+<body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
     <div id="div_alerta"></div>
-    Funcionarios com as maquinas em PERIGO: (utilização maior que 90%)
+    Funcionarios com os computadores em PERIGO: (utilização maior que 90%)
     <div id="div_card_perigo"></div>
-    Funcionarios com as maquinas em ALERTA: (utilização maior que 95%)
+    Funcionarios com os computadores em ALERTA: (utilização maior que 95%)
     <div id="div_card_urgencia"></div>
+    Funcionarios em possivel inatividade: (utilização menor que 30%)
+    <div id="div_card_inatividade"></div>
+
+    <canvas id="myChart" width="600" height="400"></canvas>
 </body>
 <script>
 const requisicaoPadrao = "";
@@ -55,7 +60,7 @@ function trazerProcessos() {
                             for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
                                 div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
                             }
-                            setTimeout(trazerProcessos(), 7000)
+                            setTimeout(trazerProcessos, 2000)
                         
                         
                     });
@@ -69,6 +74,7 @@ function trazerProcessos() {
         function trazerDados() {    
             let vetorUrgencia = []
             let vetorPerigo = []
+            let vetorInatividade = []
             fetch("/renan/ultimosDados", {
                 method: "POST",
                 headers: {
@@ -78,17 +84,21 @@ function trazerProcessos() {
             }).then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(json => {
-                    console.log(json.resultado)
+                        console.log(json)
                     for(var i = 0; i < json.resultado.length; i++){
                         if(json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90){
                             if(json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95){
                             vetorPerigo.push(json.resultado[i].nome)
                             }
-                        }
+                        } 
                         if(json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95){
                            vetorUrgencia.push(json.resultado[i].nome)
                         }
+                        if(json.resultado[i].porcentagem_cpu < 30 && json.resultado[i].porcentagem_ram < 30){
+                            vetorInatividade.push(json.resultado[i].nome)
+                        }
                     }
+                    div_card_inatividade.innerHTML = ""
                     div_card_perigo.innerHTML = ""
                     div_card_urgencia.innerHTML = ""
                     for (var i = 0; i < vetorPerigo.length; i ++){
@@ -97,10 +107,11 @@ function trazerProcessos() {
                     for (var i = 0; i < vetorUrgencia.length; i ++){
                         div_card_urgencia.innerHTML += vetorUrgencia[i] + '<br>'
                     }
-                    
-                    
-                    
-                        
+                    for (var i = 0; i < vetorInatividade.length; i ++){
+                        div_card_inatividade.innerHTML += vetorInatividade[i] + '<br>'
+                    }
+                    setTimeout(trazerDados, 2000)
+                       
                     });
                 } else {
                     throw "Erro ao listar empresas!";
@@ -109,5 +120,29 @@ function trazerProcessos() {
                 console.log(`#ERRO: ${erro}`);
             });
         }
+
+        function plotarGrafico() {    
+            fetch("/renan/plotarGrafico", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(json => {
+                    
+                    });
+                } else {
+                    throw "Erro ao listar empresas!";
+                }
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+        }
+
+
+
+
 </script>
 </html>
