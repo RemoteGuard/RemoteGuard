@@ -132,7 +132,7 @@ VALUES
 ('analista', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
 ('assistente', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
 
- insert into dados values (default, 2, 100.0, 10.0, 100, 20.0, 100, 50.0, "joao", default);
+ -- insert into dados values (default, 2, 100.0, 10.0, 100, 20.0, 100, 50.0, "joao", default);
 
        SELECT funcionario.nome AS nome_funcionario
         FROM funcionario

@@ -8,7 +8,7 @@ import pymysql
 # from botocore.exceptions import ClientError
 #from atlassian import Jira
 #from requests import HTTPError
-cleber = 2
+cleber = 4
 processos_indevidos = [
     # Jogos populares
     "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "valorant.exe", "apex_legends.exe",
@@ -74,8 +74,8 @@ def create_db_connection2():
     try:
         conexao = pymysql.connect(
                 host="localhost",
-                user="aluno",
-                password="sptech",
+                user="root",
+                password="Ab12345@#",
                 database="remote_guard"
             )
         cursor = conexao.cursor() 
