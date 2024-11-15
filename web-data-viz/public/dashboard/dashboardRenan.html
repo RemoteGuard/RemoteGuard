@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
     <div id="div_alerta"></div>
     Funcionarios com os computadores em PERIGO: (utilização maior que 90%)
@@ -15,134 +17,239 @@
     Funcionarios em possivel inatividade: (utilização menor que 30%)
     <div id="div_card_inatividade"></div>
 
-    <canvas id="myChart" width="600" height="400"></canvas>
+    <canvas id="myChart" width="100" height="40"></canvas>
 </body>
 <script>
-const requisicaoPadrao = "";
-function trazerProcessos() {
-    let vetorProcessos = []
-    let contagemOrdenada;
-    let contagem;
-    let vetorProcessosTeste = []
-            fetch("/renan/processos", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ 
-                    requisicaoPadraoServer: requisicaoPadrao 
-                })
-            }).then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(json => {
-                        json.resultado.forEach(processo => {
-                            var processosReplaceBarraInversa = processo.processos.replaceAll(']', '')
-                            var processosReplaceBarraComum = processosReplaceBarraInversa.replaceAll('[', '')
-                            var processosReplaceEspaco = processosReplaceBarraComum.replaceAll(' ', '')
-                            processosSeparados = processosReplaceEspaco.split(",")
-                            for (var i = 0; i < processosSeparados.length; i ++){
-                                vetorProcessos.push(processosSeparados[i])
-                            }
-                        });
-                            contagem = vetorProcessos.reduce((acc, processo) => {
-                            acc[processo] = (acc[processo] || 0) + 1;
-                            return acc;
-                            }, {})
-                            var jsonContagem = contagem
-                            var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
-                            var processosMaisUtilizadosNome = []
-                            var processosMaisUtilizadosQtd = []
-                            for( var i = 0; i < 6; i ++){
-                                processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
-                                processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
-                            }
-                            div_alerta.innerHTML = ''
-                            for (var i = 0; i < processosMaisUtilizadosNome.length; i ++) {
-                                div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
-                            }
-                            setTimeout(trazerProcessos, 2000)
-                        
-                        
-                    });
-                } else {
-                    throw "Erro ao trazer processos!";
-                }
-            }).catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
-            });
-        }
-        function trazerDados() {    
-            let vetorUrgencia = []
-            let vetorPerigo = []
-            let vetorInatividade = []
-            fetch("/renan/ultimosDados", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
-            }).then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(json => {
-                        console.log(json)
-                    for(var i = 0; i < json.resultado.length; i++){
-                        if(json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90){
-                            if(json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95){
-                            vetorPerigo.push(json.resultado[i].nome)
-                            }
-                        } 
-                        if(json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95){
-                           vetorUrgencia.push(json.resultado[i].nome)
+    const requisicaoPadrao = "";
+    function trazerProcessos() {
+        let qtdProcessos = []
+        var myChart; // Variável global para o gráfico
+        let datasets;
+        let nomeFuncionarios = []
+        let porcentagensCpu = []
+        let porcentagensRam = []
+        let vetorProcessos = []
+        let contagemOrdenada;
+        let contagem;
+        let vetorProcessosTeste = []
+
+        fetch("/renan/processos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(processo => {
+                        var processosReplaceBarraInversa = processo.processos.replaceAll(']', '')
+                        var processosReplaceBarraComum = processosReplaceBarraInversa.replaceAll('[', '')
+                        var processosReplaceEspaco = processosReplaceBarraComum.replaceAll(' ', '')
+                        processosSeparados = processosReplaceEspaco.split(",")
+                        for (var i = 0; i < processosSeparados.length; i++) {
+                            vetorProcessos.push(processosSeparados[i])
                         }
-                        if(json.resultado[i].porcentagem_cpu < 30 && json.resultado[i].porcentagem_ram < 30){
+                    });
+                    contagem = vetorProcessos.reduce((acc, processo) => {
+                        acc[processo] = (acc[processo] || 0) + 1;
+                        return acc;
+                    }, {})
+                    var jsonContagem = contagem
+                    var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
+                    var processosMaisUtilizadosNome = []
+                    var processosMaisUtilizadosQtd = []
+                    for (var i = 0; i < 6; i++) {
+                        processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
+                        processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
+                    }
+                    div_alerta.innerHTML = ''
+                    for (var i = 0; i < processosMaisUtilizadosNome.length; i++) {
+                        div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
+                    }
+                    setTimeout(trazerProcessos, 2000)
+
+
+                });
+            } else {
+                throw "Erro ao trazer processos!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+    function trazerDados() {
+        let vetorUrgencia = []
+        let vetorPerigo = []
+        let vetorInatividade = []
+        fetch("/renan/ultimosDados", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    for (var i = 0; i < json.resultado.length; i++) {
+                        if (json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90) {
+                            if (json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95) {
+                                vetorPerigo.push(json.resultado[i].nome)
+                            }
+                        }
+                        if (json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95) {
+                            vetorUrgencia.push(json.resultado[i].nome)
+                        }
+                        if (json.resultado[i].porcentagem_cpu < 30 && json.resultado[i].porcentagem_ram < 30) {
                             vetorInatividade.push(json.resultado[i].nome)
                         }
                     }
                     div_card_inatividade.innerHTML = ""
                     div_card_perigo.innerHTML = ""
                     div_card_urgencia.innerHTML = ""
-                    for (var i = 0; i < vetorPerigo.length; i ++){
+                    for (var i = 0; i < vetorPerigo.length; i++) {
                         div_card_perigo.innerHTML += vetorPerigo[i] + '<br>'
                     }
-                    for (var i = 0; i < vetorUrgencia.length; i ++){
+                    for (var i = 0; i < vetorUrgencia.length; i++) {
                         div_card_urgencia.innerHTML += vetorUrgencia[i] + '<br>'
                     }
-                    for (var i = 0; i < vetorInatividade.length; i ++){
+                    for (var i = 0; i < vetorInatividade.length; i++) {
                         div_card_inatividade.innerHTML += vetorInatividade[i] + '<br>'
                     }
                     setTimeout(trazerDados, 2000)
-                       
-                    });
-                } else {
-                    throw "Erro ao trazer dados!";
-                }
-            }).catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
-            });
-        }
 
-        function plotarGrafico() {    
-            fetch("/renan/plotarGrafico", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
-            }).then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(json => {
-                    
-                    });
-                } else {
-                    throw "Erro ao plotar grafico!";
+                });
+            } else {
+                throw "Erro ao trazer dados!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+
+    function plotarGrafico() {
+        fetch("/renan/plotarGrafico", {
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                let nomeFuncionariosMetrica = []
+                let porcentagensCpuMetrica = []
+                let porcentagensRamMetrica = []
+                let qtdProcessosMetrica = []
+                resposta.json().then(json => {
+                    console.log(json)
+                    for (var i = 0; i < json.resultado.length; i++) {
+                        nomeFuncionariosMetrica.push(json.resultado[i].nome)
+                        porcentagensCpuMetrica.push(json.resultado[i].porcentagem_cpu)
+                        porcentagensRamMetrica.push(json.resultado[i].porcentagem_ram)
+                    }
+                    for (var i = 0; i < json.resultado.length; i++) {
+                        var metricaProcessos = 0;
+                        for (var j = 0; j < json.resultado[i].processos.length; j++) {
+                            metricaProcessos++
+                        }
+                        qtdProcessosMetrica.push(metricaProcessos)
+                    }
+                    console.log(qtdProcessosMetrica)
+                    nomeFuncionarios = nomeFuncionariosMetrica
+                    porcentagensRam = porcentagensRamMetrica
+                    porcentagensCpu = porcentagensCpuMetrica
+                    qtdProcessos = qtdProcessosMetrica
+                    setTimeout(plotarGrafico, 5000)
+                    carregarGrafico()
+
+                });
+            } else {
+                throw "Erro ao plotar grafico!";
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+        });
+    }
+
+    let myChart;
+    function carregarGrafico() {
+        const funcionarios = [...new Set(nomeFuncionarios)];
+
+        // Geração inicial dos datasets
+        const datasets = nomeFuncionarios.map((funcionario, index) => ({
+            label: ` ${funcionario}`,
+            data: [
+                {
+                    x: porcentagensCpu[index],
+                    y: porcentagensRam[index],
+                    r: qtdProcessos[index] / 200
                 }
-            }).catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
+            ],
+            backgroundColor: gerarCorAleatoria(),
+            borderColor: 'rgba(0, 123, 255, 1)'
+        }));
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        // Inicialização do gráfico
+        if (!myChart) {
+            myChart = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || '';
+                                    const x = context.raw.x;
+                                    const y = context.raw.y;
+                                    const r = context.raw.r;
+                                    return `${label}: CPU = ${x}%, RAM = ${y}%, Processos = ${r * 200}`;
+                                }
+                            }
+                        }
+                    }
+                }
             });
+            console.log("Gráfico criado:", myChart);
+        } else {
+            // Atualização do gráfico
+            atualizarGrafico(datasets);
         }
+    }
+
+    function atualizarGrafico(datasets) {
+        myChart.data.datasets.forEach((dataset, index) => {
+            dataset.data[0] = {
+                x: porcentagensCpu[index],
+                y: porcentagensRam[index],
+                r: qtdProcessos[index] / 200
+            };
+        });
+        myChart.update();
+    }
+
+    function gerarCorAleatoria() {
+        const letras = '0123456789ABCDEF';
+        let color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letras[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
 
 
 
 
 </script>
+
 </html>
