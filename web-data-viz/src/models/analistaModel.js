@@ -1,10 +1,12 @@
 var database = require("../database/config");
 
 
-function listarNotebook() {
-  const instrucaoSql = `SELECT idNotebook, hostname FROM notebook;`;
-  return database.executar(instrucaoSql);
-}
+  function listarNotebook() {
+    const instrucaoSql = `SELECT n.idNotebook, f.nome AS nomeFuncionario
+    FROM notebook n
+    JOIN funcionario f ON n.idNotebook = f.fkNotebook;`;
+    return database.executar(instrucaoSql);
+  }
 
 function listarPorcentagemRAMPorNotebook(fkNotebook) {
   var instrucaoSql = `SELECT porcentagem_ram, data_captura FROM dados WHERE fkNotebook =  ${fkNotebook} ORDER BY data_captura DESC LIMIT 10;
@@ -70,6 +72,15 @@ SELECT numero_nucleos from dados where fkNotebook =${fkNotebook} ORDER BY data_c
   return database.executar(instrucaoSql, [fkNotebook]);
 }
 
+ function listarMediaPonderada(fkNotebook) {
+  const instrucaoSql = `
+  SELECT media_ponderada FROM dados WHERE fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
+  `;
+  return database.executar(instrucaoSql, [fkNotebook]);
+  }
+
+
+
 
 module.exports = {listarNotebook, listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook,listarNomeResponsavel,listarQuantidadeProcessos,
-  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos};
+  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,};

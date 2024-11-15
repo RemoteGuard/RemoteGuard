@@ -146,8 +146,18 @@ function listarNumeroNucleos(req, res) {
                 res.json({numero_nucleos : resultado[0].numero_nucleos });
             }
         })
-
 }
+
+function listarMediaPonderada(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarMediaPonderada(fkNotebook)
+    .then(resultado => {
+        if (resultado.length > 0) {
+            res.json({media_ponderada : resultado[0].media_ponderada });
+            }
+            })
+            }
+
   
 module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
-    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos};
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada};

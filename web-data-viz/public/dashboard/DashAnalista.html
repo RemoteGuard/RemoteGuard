@@ -61,17 +61,14 @@
       <div id="chartBarra"></div>
       <select class="maquina" id="maquinaComparacao">
         <option value="" selected disabled>Selecionar Máquina para Comparação</option>
-        <option value="2">Máquina 2</option>
-        <option value="3">Máquina 3</option>
-        <option value="4">Máquina 4</option>
       </select>
     </div>
       </div>
       <div class="status-boxes">
         <div class="status-card " ><span id="quantidadeProcessos"  class="text-card"></span></div>
         <div class="status-card "><span id="quantidadeNucleos" class="text-card"></span></div>
-        <div class="status-card "><span id="processo-mais-utilizado" class="text-card"></span></div>
-        <div class="status-card "><span id="processo-mais-utilizado" class="text-card"></span></div>
+        <div class="status-card "><span id="mediaPonderada" class="text-card"></span></div>
+      
     </div>
   </main>
   <div class="modal" id="modal">
@@ -144,7 +141,7 @@
           var listaNotebook = document.getElementById('listaNotebook');
           maquinaComparacao.innerHTML = "";  
           notebooks.forEach((notebook) => {
-            maquinaComparacao.innerHTML += `<option value="${notebook.idNotebook}">${notebook.hostname}</option>`;
+            maquinaComparacao.innerHTML += `<option value="${notebook.idNotebook}">${notebook.nomeFuncionario}</option>`;
           });
       })
       .catch(function (erro) {
@@ -232,14 +229,24 @@ function buscarQuantidadeNucleos(fkNotebook) {
   .then(response => response.json())
   .then(data => {
       if (data.numero_nucleos !== undefined) {
-         
-        
           document.getElementById('quantidadeNucleos').innerHTML = ` <p class= "qtdprocess">Numéro de Nucleos Ativos  </p>`+  data.numero_nucleos;
+      }
+  })
+}
+function buscarMediaPonderada(fkNotebook) {
+  fetch("/analista/listarMediaPonderada", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fkNotebook })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.media_ponderada !== undefined) {
+          document.getElementById('mediaPonderada').innerHTML = ` <p class= "qtdprocess">A Média  Ponderadas dos  Recursos  </p>`+  data.media_ponderada;
       }
   })
 
 }
-  
     
     function definirRecurso(recursoSelecionado) {
       const endpoints = {
@@ -252,7 +259,7 @@ function buscarQuantidadeNucleos(fkNotebook) {
   
       if (recursoSelecionado === "disco") {
         buscarDadosDisco(recurso.endpoint);
-      } else {
+      } else if (recursoSelecionado === "ram" || recursoSelecionado === "cpu") {
         buscarDadosGrafico(recurso.endpoint, recurso.label);
       }
     }
@@ -355,7 +362,12 @@ function buscarQuantidadeNucleos(fkNotebook) {
           plotarGraficoLinha(dados, labels, label);
       });
   }
-  
+
+
+
+
+
+
     function buscarDadosDisco(endpoint) {
       fetch(endpoint, {
         method: "POST",
@@ -365,7 +377,6 @@ function buscarQuantidadeNucleos(fkNotebook) {
       .then(response => response.json())
       .then(resposta => {
         const porcentagemDisco = resposta.porcentagem_disco;
-  
         if (porcentagemDisco !== undefined) {
           plotarGraficoDisco(porcentagemDisco);
         }
@@ -470,24 +481,28 @@ function buscarQuantidadeNucleos(fkNotebook) {
     
     
     function buscarDadosBarra() {
-      const fkNotebookBase = 1;
-      const fkNotebookComparacao = document.getElementById('maquinaComparacao').value;
+      const fkNotebookBase = 1; // ID da máquina base
+      const fkNotebookComparacao = document.getElementById('maquinaComparacao').value || null;
   
+      // Verifique se a máquina de comparação foi selecionada
       if (fkNotebookComparacao) {
-        fetch("/analista/listarDadosBarra", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fkNotebookBase, fkNotebookComparacao })
-        })
-        .then(response => response.json())
-        .then(dados => {
-          plotarGraficoBarra(dados);
-        })
-    
+          fetch("/analista/listarDadosBarra", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ fkNotebookBase, fkNotebookComparacao })
+          })
+          .then(response => response.json())
+          .then(dados => {
+              plotarGraficoBarra(dados);
+          })
+          .catch(error => {
+              console.error("Erro ao buscar dados para o gráfico de barras:", error);
+          });
       }
-    }
+  }
+    
   
-    document.getElementById('maquinaComparacao').value = 2;
+    document.getElementById('maquinaComparacao').value = 3;
     document.getElementById('maquinaComparacao').addEventListener('change', function() {
       buscarDadosBarra();
     });
@@ -495,22 +510,51 @@ function buscarQuantidadeNucleos(fkNotebook) {
 
     function carregarDadosIniciais() {
       definirRecurso('ram');
-      buscarNomeResponsavel(fkNotebook); 
-      buscarDadosBarra();
-      buscarQuantidadeProcessos(fkNotebook); 
+      buscarInformacoesNotebook(fkNotebook); // Buscar dados da máquina base
       buscarInformacoesFuncionario(fkNotebook);
-      buscarInformacoesNotebook(fkNotebook);
+      buscarNomeResponsavel(fkNotebook); 
+      buscarQuantidadeProcessos(fkNotebook); 
       buscarQuantidadeNucleos(fkNotebook);
+      buscarMediaPonderada(fkNotebook);
       BuscarNotebook();
-    }
-
+  }
+ 
     carregarDadosIniciais();
      
+
+    
    
     document.getElementById('recurso').addEventListener('change', (event) => {
       const recursoSelecionado = event.target.value;
       definirRecurso(recursoSelecionado);
     });
+
+
+
+    setInterval(function() {
+      const recursoSelecionado = document.getElementById('recurso').value;
+      if (recursoSelecionado) {
+        carregarDadosIniciais();
+      }
+  }, 5000); 
+
+
+
+ 
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('modal').style.display = 'none';
+    });
+
+    document.getElementById('nomeResponsavel').addEventListener('click', function() {
+      document.getElementById('modal').style.display = 'block';
+
+      document.getElementById('nomeFuncionario').textContent = 'João Silva';
+      document.getElementById('cargoFuncionario').textContent = 'Analista de Sistemas';
+      document.getElementById('contatoFuncionario').textContent = 'joao.silva@email.com';
+    });
+
+
   
     // Manipulação do menu hamburguer
     document.getElementById('menu-icone').addEventListener('click', function () {
@@ -522,7 +566,20 @@ function buscarQuantidadeNucleos(fkNotebook) {
       document.body.classList.toggle('menu-open');
     });
 
-
+    setInterval(function() {
+      const recursoSelecionado = document.getElementById('recurso').value;
+      if (recursoSelecionado) {
+          definirRecurso(recursoSelecionado);
+          buscarQuantidadeNucleos(fkNotebook);
+          buscarQuantidadeProcessos(fkNotebook); 
+      }
+  }, 5000); 
+  
+  
+  const recursoInicial = document.getElementById('recurso').value;
+  if (recursoInicial) {
+      definirRecurso(recursoInicial);
+  }
 function abrirModal() {
   document.getElementById('modal').style.display = 'flex';
 }
@@ -541,7 +598,10 @@ window.onclick = function(event) {
     fecharModal();
   }
 };
+
+
+
+
   </script>
-  
 </body>
 </html>
