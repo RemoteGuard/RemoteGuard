@@ -3,8 +3,11 @@ var database = require("../database/config");
 
   function listarNotebook() {
     const instrucaoSql = `SELECT n.idNotebook, f.nome AS nomeFuncionario
-    FROM notebook n
-    JOIN funcionario f ON n.idNotebook = f.fkNotebook;`;
+FROM notebook n
+JOIN funcionario f ON n.idNotebook = f.fkNotebook
+WHERE f.cargo NOT IN ('analista', 'gerente');
+;
+`;
     return database.executar(instrucaoSql);
   }
 
@@ -79,8 +82,13 @@ SELECT numero_nucleos from dados where fkNotebook =${fkNotebook} ORDER BY data_c
   return database.executar(instrucaoSql, [fkNotebook]);
   }
 
-
+ function listarRecursoAlerta(fkNotebook){
+  const instrucaoSql = `
+Select porcentagem_cpu,porcentagem_ram,porcentagem_disco,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco from dados where fkNotebook =1 order by data_captura desc limit 1;
+  `;
+  return database.executar(instrucaoSql, [fkNotebook]);
+ }
 
 
 module.exports = {listarNotebook, listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook,listarNomeResponsavel,listarQuantidadeProcessos,
-  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,};
+  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarRecursoAlerta};

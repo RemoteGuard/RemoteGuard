@@ -65,11 +65,26 @@
     </div>
       </div>
       <div class="status-boxes">
+        <div class="status-card "><span id="mediaPonderada" class="text-card"></span></div>
         <div class="status-card " ><span id="quantidadeProcessos"  class="text-card"></span></div>
         <div class="status-card "><span id="quantidadeNucleos" class="text-card"></span></div>
-        <div class="status-card "><span id="mediaPonderada" class="text-card"></span></div>
-      
     </div>
+    <div class="alerta-container">
+      <h2>Alertas de Recursos</h2>
+      <table class="alerta-tabela" id="tabelaAlertas">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>Porcentagem</th>
+            <th>Tempo em Alerta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- As linhas da tabela serão preenchidas dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+    
   </main>
   <div class="modal" id="modal">
     <div class="modal-content">
@@ -124,6 +139,7 @@
 </div>
   <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+    cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
     const fkNotebook = 1;  
@@ -507,6 +523,83 @@ function buscarMediaPonderada(fkNotebook) {
       buscarDadosBarra();
     });
 
+    function preencherTabelaAlertas(alertaRecurso) {
+      const tabela = document.getElementById("tabelaAlertas").querySelector("tbody");
+      tabela.innerHTML = "";
+  
+      // Filtra os alertas com tempo maior que 0
+      const alertasValidos = alertaRecurso.filter(alerta => alerta.tempoEmAlerta > 0);
+  
+      // Verifica se existem alertas válidos
+      if (alertasValidos.length === 0) {
+          // Se não houver alertas válidos, oculta a tabela
+          document.getElementById("tabelaAlertas").style.display = "none";
+      } else {
+          // Exibe a tabela caso existam alertas válidos
+          document.getElementById("tabelaAlertas").style.display = "table";
+  
+          // Adiciona as linhas de alerta na tabela
+          alertasValidos.forEach(alerta => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                  <td>${alerta.recurso}</td>
+                  <td>${alerta.porcentagem}%</td>
+                  <td>${alerta.tempoEmAlerta} minutos</td>
+              `;
+              tabela.appendChild(row);
+          });
+      }
+  }
+  
+  function buscarAlertasRecursos(fkNotebook) {
+      fetch("/analista/listarRecursoAlerta", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ fkNotebook: fkNotebook })
+      })
+      .then(response => response.json())
+      .then(data => {
+          const tabelaAlertas = document.getElementById('tabelaAlertas').querySelector('tbody');
+          tabelaAlertas.innerHTML = "";
+  
+          // Filtra os alertas com tempo maior que 0
+          const alertasValidos = data.recurso_alerta.filter(alerta => alerta.tempoEmAlerta > 0);
+  
+          // Verifica se existem alertas válidos
+          if (alertasValidos.length === 0) {
+              // Se não houver alertas válidos, oculta a tabela
+              document.getElementById("tabelaAlertas").style.display = "none";
+          } else {
+              // Exibe a tabela caso existam alertas válidos
+              document.getElementById("tabelaAlertas").style.display = "table";
+  
+              // Adiciona as linhas de alerta na tabela
+              alertasValidos.forEach(alerta => {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                      <td>${alerta.recurso}</td>
+                      <td>${alerta.porcentagem}%</td>
+                      <td>${alerta.tempoEmAlerta} Segundos</td>
+                  `;
+                  tabelaAlertas.appendChild(row);
+              });
+          }
+      })
+      .catch(error => {
+          console.error("Erro ao carregar alertas de recursos:", error);
+      });
+  }
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    buscarAlertasRecursos();
+    BuscarNotebook(); 
+  });
+  
+
+
+
 
     function carregarDadosIniciais() {
       definirRecurso('ram');
@@ -517,6 +610,7 @@ function buscarMediaPonderada(fkNotebook) {
       buscarQuantidadeNucleos(fkNotebook);
       buscarMediaPonderada(fkNotebook);
       BuscarNotebook();
+      buscarAlertasRecursos(fkNotebook);
   }
  
     carregarDadosIniciais();

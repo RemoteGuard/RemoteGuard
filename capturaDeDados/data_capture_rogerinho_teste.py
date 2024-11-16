@@ -46,14 +46,6 @@ def get_disk_data():
     disk_usage_percentage = disk_data['percent']
     return disk_usage_bytes, disk_usage_percentage
 
-def get_disk_io_data():
-    disk_io = psutil.disk_io_counters()
-    read_gbs = (disk_io.read_bytes/1000000000)
-    write_gbs = disk_io.write_bytes/1000000000
-    read_formatted = round(read_gbs, 2)
-    write_formatted =round(write_gbs, 2)
-    return read_formatted, write_formatted
-
 def get_network_data():
     net_io = psutil.net_io_counters()
     bytes_sent = net_io.bytes_sent
@@ -83,22 +75,40 @@ def get_weighted_system_usage(cpu_usage, ram_usage, disk_usage):
     rounded_weighted_average = round(weighted_average, 2)
     return rounded_weighted_average
 
+def monitorar_tempo_alerta(cpu_usage, ram_usage, disk_usage, tempo_alerta):
+    if cpu_usage > 80:
+        tempo_alerta['cpu'] += 2
+    else:
+        tempo_alerta['cpu'] = 0
+
+    if ram_usage > 80:
+        tempo_alerta['ram'] += 2
+    else:
+        tempo_alerta['ram'] = 0
+
+    if disk_usage > 80:
+        tempo_alerta['disk'] += 2
+    else:
+        tempo_alerta['disk'] = 0
+
+    return tempo_alerta
+
 def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
         sql = """INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
                     bytes_disco, porcentagem_disco, processos, boot_time, fkNotebook, 
-                    numero_nucleos, media_ponderada, leitura_disco, escrita_disco) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    numero_nucleos, media_ponderada, tempo_alerta_cpu, tempo_alerta_ram, tempo_alerta_disco) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         
         print(f"Dados a serem inseridos: {dados}")
         
-        if len(dados) == 13:
+        if len(dados) == 14:
             cursor.execute(sql, dados)
             connection.commit()
             print("Dados inseridos no MySQL com sucesso.")
         else:
-            print("Erro: A tupla de dados deve conter exatamente 13 elementos.")
+            print("Erro: A tupla de dados deve conter exatamente 14 elementos.")
     except Error as e:
         print(f"Erro ao inserir os dados: {e}")
     finally:
@@ -114,22 +124,25 @@ def data_capture():
     formatted_boot_time = format_boot_time(boot_time)
 
     numero_nucleos = get_cpu_cores()
+    tempo_alerta = {'cpu': 0, 'ram': 0, 'disk': 0}
 
     while True:
         cpu_idle_time, cpu_usage_percentage = get_cpu_data()
         ram_usage_bytes, ram_usage_percentage = get_ram_data()
         disk_usage_bytes, disk_usage_percentage = get_disk_data()
-        raed_formatted, write_formatted = get_disk_io_data()
         bytes_sent, bytes_recv = get_network_data()
         process_count = get_process_count()
         fk_notebook = 1  
 
-       
         rounded_weighted_average = get_weighted_system_usage(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage)
+        tempo_alerta = monitorar_tempo_alerta(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage, tempo_alerta)
+
+        print(f"Tempo em alerta - CPU: {tempo_alerta['cpu']}s, RAM: {tempo_alerta['ram']}s, Disco: {tempo_alerta['disk']}s")
 
         dados = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
                  disk_usage_bytes, disk_usage_percentage, process_count,
-                 formatted_boot_time, fk_notebook, numero_nucleos, rounded_weighted_average, raed_formatted, write_formatted)
+                 formatted_boot_time, fk_notebook, numero_nucleos, rounded_weighted_average,
+                 tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
 
         insert_data_to_mysql(connection, dados)
 

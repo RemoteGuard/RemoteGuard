@@ -67,18 +67,16 @@
     }
 
 
+    var cargo = "";
+
     function autenticar() {
         var email = input_email.value;
         var senha = input_senha.value;
 
         if (email == "" || senha == "") {
-            // div_mensagem.innerHTML = `<span style="color: yellow;"> - Todos os campos devem estar preenchidos!</span><br><br>`;
-            finalizarAguardar();
-            return false;
+            alert("Por favor, preencha todos os campos.");
+            return;
         }
-
-        console.log("FORM LOGIN: ", email);
-        console.log("FORM SENHA: ", senha);
 
         fetch("/usuarios/autenticar", {
             method: "POST",
@@ -90,15 +88,11 @@
                 senhaServer: senha
             })
         }).then(function (resposta) {
-            console.log(`Resposta da requisição: ${JSON.stringify(resposta)}`);
-
             if (resposta.ok) {
-
-                alert("Autenticação feita com sucesso");
                 resposta.json().then(json => {
-                    console.log(JSON.stringify(json));
                     sessionStorage.EMAIL_USUARIO = email;
-                    sessionStorage.ID_USUARIO = json.idFuncionario
+                    sessionStorage.ID_USUARIO = json.idFuncionario;
+
                     fetch("/usuarios/chamar_usuario", {
                         method: "POST",
                         headers: {
@@ -108,55 +102,40 @@
                             id_UsuarioServer: sessionStorage.ID_USUARIO 
                         })
                     }).then(function (resposta) {
-                        console.log("ESTOU NO THEN DO entrar()!")
                         if (resposta.ok) {
-                            console.log(resposta);
-
                             resposta.json().then(json => {
-                                console.log(json);
-                                console.log(JSON.stringify(json));
-                                console.log(json.resultado[0])
-                                teste.push(json.resultado[0])
-                                cargo = json.resultado[0]
-                                var cargoCorreto = cargo.cargo
-                                if (cargoCorreto != "") {
-                                    console.log("Cargo atribuido")
-                                }
-                                if (cargoCorreto == "gerente") {
-                                    setTimeout(() => {
-                                        window.location.href = "./dashboard/DashGerente.html"
-                                    }, 1000);
-                                }
-                                else {
-                                    setTimeout(() => {
-                                        window.location.href = "./dashboard/DashAnalista.html"
-                                    }, 1000);
-                                }
+                                var usuario = json.resultado[0];
+                                cargo = usuario.cargo;
 
+                                // Armazenando dados adicionais no sessionStorage
+                                sessionStorage.setItem('NOME_USUARIO', usuario.nome);
+                                sessionStorage.setItem('EMPRESA_USUARIO', usuario.empresa);
+                                sessionStorage.setItem('CARGO_USUARIO', usuario.cargo);
+
+                                if (cargo === "gerente") {
+                                    setTimeout(() => {
+                                        window.location.href = "./dashboard/DashGerente.html";
+                                    }, 1000);
+                                } else {
+                                    setTimeout(() => {
+                                        window.location.href = "./dashboard/DashAnalista.html";
+                                    }, 1000);
+                                }
                             });
-
                         } else {
-                            throw "Houve um erro ao tentar realizar o cadastro!";
+                            throw "Houve um erro ao tentar obter os dados do usuário!";
                         }
-                    })
-                        .catch(function (resposta) {
-                            console.log(`#ERRO: ${resposta}`);
-                        });
-
-                    return false;
+                    }).catch(function (erro) {
+                        console.error("Erro ao chamar usuário:", erro);
+                    });
                 });
             } else {
                 alert('Usuário não encontrado!');
-                console.log("Houve um erro ao tentar realizar o login!");
-
-                resposta.text().then(texto => {
-                    console.error(texto);
-                });
+                resposta.text().then(texto => console.error(texto));
             }
         }).catch(function (erro) {
-            console.log(erro);
-        })
-
+            console.error("Erro na autenticação:", erro);
+        });
     }
 
     let menu = document.querySelector('#divLinksLogin');

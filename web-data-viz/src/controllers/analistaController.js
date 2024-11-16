@@ -155,9 +155,44 @@ function listarMediaPonderada(req, res) {
         if (resultado.length > 0) {
             res.json({media_ponderada : resultado[0].media_ponderada });
             }
-            })
+        })
             }
+            function listarRecursoAlerta(req, res) {
+                const { fkNotebook } = req.body;  // Garantir que fkNotebook está sendo recebido corretamente.
+                analistaModel.listarRecursoAlerta(fkNotebook)
+                    .then(resultado => {
+                        if (resultado.length > 0) {
+                            const dadosRecurso = resultado[0];
+                            const recursoAlerta = [
+                                {
+                                    recurso: 'CPU',
+                                    porcentagem: dadosRecurso.porcentagem_cpu,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_cpu
+                                },
+                                {
+                                    recurso: 'RAM',
+                                    porcentagem: dadosRecurso.porcentagem_ram,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_ram
+                                },
+                                {
+                                    recurso: 'Disco',
+                                    porcentagem: dadosRecurso.porcentagem_disco,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_disco
+                                }
+                            ];
+                            res.json({ recurso_alerta: recursoAlerta });
+                        } else {
+                            res.json({ recurso_alerta: [] });  
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro ao listar alertas de recurso:", error);
+                        res.status(500).json({ error: "Erro no servidor." });
+                    });
+            }
+            
+            
 
   
 module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
-    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada};
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarRecursoAlerta};
