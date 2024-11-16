@@ -7,6 +7,7 @@
     <title>Dashboard - alertas</title>
     <link rel="stylesheet" href="../css/css-dash-Isa.css">
     <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -75,7 +76,7 @@
                     <option selected disabled value="#">Selecione um funcionário</option>
                 </select>
                 <div class="metricas-funcionario">
-                    <div class="grafico">
+                    <div id="grafico" class="grafico">
 
                     </div>
                     <div class="cards">
@@ -208,6 +209,7 @@
                     });
                     exibirTotalAlertasHardware()
                     exibirTotalAlertasProcessos()
+                    buscarDados()
                     console.log(fkNote)
                 });
             } else {
@@ -285,13 +287,90 @@
                 resposta.json().then(function (resposta) {
                     for (var index = 0; index < resposta.length; index++) {
                         var dados = resposta[index];
-                        exibirNomesTopFuncionarios.innerHTML += `${dados.nome.toUpperCase()} <br>`
-                        exibirQtdAlertasTopFuncionarios.innerHTML += ` ${dados.qtdAlertas} <br>`;
+                        exibirNomesTopFuncionarios.innerHTML += `<div>${dados.nome.toUpperCase()}</div><br>`
+                        exibirQtdAlertasTopFuncionarios.innerHTML += ` <div>${dados.qtdAlertas}</div><br>`;
 
                     }
                 })
             }
         })
     }
+
+
+    function buscarDados() {
+        const deletarGrafico = document.getElementById("grafico");
+        deletarGrafico.innerHTML = '';
+
+        document.getElementById("grafico").innerHTML += `<canvas style="width: 100%" id="myChartCanvas" class="canvas"></canvas>`;
+
+        fetch("/alertas/buscarDados/", {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then(function(response) {
+            if (response.ok) {
+                response.json().then(function(resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    plotarGrafico(resposta);
+
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function plotarGrafico(resposta) {
+        let labels = [];
+
+        let dados = {
+            labels: labels,
+            datasets: [{
+                label: 'Frequência de alertas',
+                data: [],
+                fill: true,
+                backgroundColor: '#fcdf3b',
+                tension: 0.1
+            }]
+        };
+
+        console.log(resposta)
+
+        for (i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            labels.push(registro.DiaSemana);
+            dados.datasets[0].data.push(registro.FreqAlertas);
+        }
+
+        console.log('O gráfico será plotado com os respectivos valores:')
+        console.log('Labels:')
+        console.log(labels)
+        console.log('Dados:')
+        console.log(dados.datasets)
+
+        const config = {
+            type: 'bar',
+            data: dados,
+            options: {
+                plugins: {
+                    title: {
+                    display: true,
+                    text: 'FREQUÊNCIA DE ALERTAS POR DIA DA SEMANA'
+            }
+        }
+    }
+        };
+
+        let myChart = new Chart(
+            document.getElementById(`myChartCanvas`),
+            config
+        );
+    }
+
 
 </script>

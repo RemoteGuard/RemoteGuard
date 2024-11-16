@@ -222,16 +222,27 @@ main {
 }
 
 .ranking {
-    width: 70%;
+    width: 60%;
 }
 
 .tabelaRanking {
     overflow: auto;
-    height: 100px;
+    height: 110px;
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 18px;
+    width: 90%;
+}
+
+.tabelaRanking::-webkit-scrollbar {
+    width: 10px;
+    background-color: #504e4e;
+}
+
+.tabelaRanking::-webkit-scrollbar-thumb {
+    background-color: #fcdf3b;
+    border-radius: 20px;
 }
 
 .mediaAlertas {
@@ -242,7 +253,7 @@ main {
 }
 
 .mediaAlertas span {
-    font-size: 35px;
+    font-size: 55px;
     margin-bottom: 20px;
 }
 
@@ -302,7 +313,7 @@ main {
     justify-content: space-evenly;
 }
 
-.card h1{
+.card h1 {
     font-size: 15px;
 }
 
@@ -322,8 +333,13 @@ main {
 }
 
 .grafico {
-    background-color: #FFD700;
+    background-color:#202020;
     width: 60%;
+    height: 100%;
+}
+
+.canvas {
+    height: 85% !important;
 }
 
 .cards h1 {

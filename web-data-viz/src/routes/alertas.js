@@ -31,4 +31,8 @@ router.get("/exibirRankingFuncionarios", function (req, res) {
     alertasController.exibirRankingFuncionarios(req, res);
 });
 
+router.get("/buscarDados", function (req, res) {
+    alertasController.buscarDados(req, res);
+})
+
 module.exports = router;

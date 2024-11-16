@@ -28,14 +28,14 @@ function buscarNotebookDoFuncionario(fkNotebookModel) {
 }
 
 function exibirTotalAlertasHardware(fkNotebook) {
-    var instrucaoSql = `SELECT COUNT(idAlerta) AS alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Recurso%"`;
+    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Recurso%" AND dataHora >= CURDATE() - INTERVAL 7 DAY;`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function exibirTotalAlertasProcessos(fkNotebook) {
-    var instrucaoSql = `SELECT COUNT(idAlerta) AS alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Processo indevido%";
+    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Processo indevido%" AND dataHora >= CURDATE() - INTERVAL 7 DAY;
 `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -60,8 +60,20 @@ function exibirRankingFuncionarios() {
                         FROM alerta AS a
                         JOIN notebook AS n ON a.fkNotebook = n.idNotebook
                         JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
+                        WHERE dataHora >= NOW() - INTERVAL 7 DAY
                         GROUP BY f.idFuncionario
                         ORDER BY qtdAlertas DESC;`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarDados() {
+    var instrucaoSql = `SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
+                        COUNT(idAlerta) as FreqAlertas
+                        FROM alerta WHERE fkNotebook = 4
+                        AND dataHora >= CURDATE() - INTERVAL 7 DAY
+                        GROUP BY DATE_FORMAT(dataHora, '%W');`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -76,5 +88,6 @@ module.exports = {
     exibirTotalAlertasHardware,
     exibirTotalAlertasProcessos,
     exibirMediaAlertas,
-    exibirRankingFuncionarios
+    exibirRankingFuncionarios,
+    buscarDados
 };
