@@ -31,6 +31,18 @@ function listarDadosPorNotebook(fkNotebook) {
   return database.executar(instrucaoSql);
 }
 
+function listarDadosMediaPorNotebooks() {
+  var instrucaoSql = `
+   SELECT 
+    ROUND(AVG(porcentagem_cpu), 2) AS media_cpu,
+    ROUND(AVG(porcentagem_ram), 2) AS media_ram,
+    ROUND(AVG(porcentagem_disco), 2) AS media_disco
+FROM dados;
+  `;
+  return database.executar(instrucaoSql);
+}
+
+
 function listarNomeResponsavel(fkNotebook) {
   const instrucaoSql = `
       SELECT funcionario.nome AS nome_funcionario
@@ -91,4 +103,4 @@ Select porcentagem_cpu,porcentagem_ram,porcentagem_disco,tempo_alerta_cpu,tempo_
 
 
 module.exports = {listarNotebook, listarPorcentagemRAMPorNotebook,listarPorcentagemCPUPorNotebook,listarPorcentagemDiscoPorNotebook,listarDadosPorNotebook,listarNomeResponsavel,listarQuantidadeProcessos,
-  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarRecursoAlerta};
+  listarInformacaoesFuncionario,listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarRecursoAlerta,listarDadosMediaPorNotebooks};

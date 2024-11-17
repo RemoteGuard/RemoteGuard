@@ -51,37 +51,36 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
 
 
 function listarDadosBarra(req, res) {
-    var fkNotebookBase = req.body.fkNotebookBase; 
-    var fkNotebookComparacao = req.body.fkNotebookComparacao;
-  
+    var fkNotebookBase = req.body.fkNotebookBase;
+
     Promise.all([
-      analistaModel.listarDadosPorNotebook(fkNotebookBase),
-      analistaModel.listarDadosPorNotebook(fkNotebookComparacao)
+        analistaModel.listarDadosPorNotebook(fkNotebookBase),
+        analistaModel.listarDadosMediaPorNotebooks() 
     ])
     .then(resultado => {
-      const dadosBase = resultado[0];
-      const dadosComparacao = resultado[1];
-  
-      if (dadosBase.length > 0 && dadosComparacao.length > 0) {
-        const dadosBarra = {
-          base: {
-            cpu: dadosBase[0].porcentagem_cpu,
-            ram: dadosBase[0].porcentagem_ram,
-            disco: dadosBase[0].porcentagem_disco,
-            processos: dadosBase[0].processos
-          },
-          comparacao: {
-            cpu: dadosComparacao[0].porcentagem_cpu,
-            ram: dadosComparacao[0].porcentagem_ram,
-            disco: dadosComparacao[0].porcentagem_disco,
-            processos: dadosComparacao[0].processos
-          }
-        };
-        res.json(dadosBarra);
-      }
+        const dadosBase = resultado[0];
+        const dadosMedia = resultado[1]; 
+
+        if (dadosBase.length > 0 && dadosMedia.length > 0) {
+            const dadosBarra = {
+                base: {
+                    cpu: dadosBase[0].porcentagem_cpu,
+                    ram: dadosBase[0].porcentagem_ram,
+                    disco: dadosBase[0].porcentagem_disco,
+                   
+                },
+                media: {
+                    cpu: dadosMedia[0].media_cpu,
+                    ram: dadosMedia[0].media_ram,
+                    disco: dadosMedia[0].media_disco,
+                   
+                }
+            };
+            res.json(dadosBarra);
+        }
     })
-  
-  }
+}
+
   function listarNomeResponsavel(req, res) {
     const { fkNotebook } = req.body;
     analistaModel.listarNomeResponsavel(fkNotebook)
