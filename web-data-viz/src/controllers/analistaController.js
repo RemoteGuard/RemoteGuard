@@ -51,37 +51,36 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
 
 
 function listarDadosBarra(req, res) {
-    var fkNotebookBase = req.body.fkNotebookBase; 
-    var fkNotebookComparacao = req.body.fkNotebookComparacao;
-  
+    var fkNotebookBase = req.body.fkNotebookBase;
+
     Promise.all([
-      analistaModel.listarDadosPorNotebook(fkNotebookBase),
-      analistaModel.listarDadosPorNotebook(fkNotebookComparacao)
+        analistaModel.listarDadosPorNotebook(fkNotebookBase),
+        analistaModel.listarDadosMediaPorNotebooks() 
     ])
     .then(resultado => {
-      const dadosBase = resultado[0];
-      const dadosComparacao = resultado[1];
-  
-      if (dadosBase.length > 0 && dadosComparacao.length > 0) {
-        const dadosBarra = {
-          base: {
-            cpu: dadosBase[0].porcentagem_cpu,
-            ram: dadosBase[0].porcentagem_ram,
-            disco: dadosBase[0].porcentagem_disco,
-            processos: dadosBase[0].processos
-          },
-          comparacao: {
-            cpu: dadosComparacao[0].porcentagem_cpu,
-            ram: dadosComparacao[0].porcentagem_ram,
-            disco: dadosComparacao[0].porcentagem_disco,
-            processos: dadosComparacao[0].processos
-          }
-        };
-        res.json(dadosBarra);
-      }
+        const dadosBase = resultado[0];
+        const dadosMedia = resultado[1]; 
+
+        if (dadosBase.length > 0 && dadosMedia.length > 0) {
+            const dadosBarra = {
+                base: {
+                    cpu: dadosBase[0].porcentagem_cpu,
+                    ram: dadosBase[0].porcentagem_ram,
+                    disco: dadosBase[0].porcentagem_disco,
+                   
+                },
+                media: {
+                    cpu: dadosMedia[0].media_cpu,
+                    ram: dadosMedia[0].media_ram,
+                    disco: dadosMedia[0].media_disco,
+                   
+                }
+            };
+            res.json(dadosBarra);
+        }
     })
-  
-  }
+}
+
   function listarNomeResponsavel(req, res) {
     const { fkNotebook } = req.body;
     analistaModel.listarNomeResponsavel(fkNotebook)
@@ -146,8 +145,53 @@ function listarNumeroNucleos(req, res) {
                 res.json({numero_nucleos : resultado[0].numero_nucleos });
             }
         })
-
 }
+
+function listarMediaPonderada(req, res) {
+    const { fkNotebook } = req.body;
+    analistaModel.listarMediaPonderada(fkNotebook)
+    .then(resultado => {
+        if (resultado.length > 0) {
+            res.json({media_ponderada : resultado[0].media_ponderada });
+            }
+        })
+            }
+            function listarRecursoAlerta(req, res) {
+                const { fkNotebook } = req.body;  // Garantir que fkNotebook está sendo recebido corretamente.
+                analistaModel.listarRecursoAlerta(fkNotebook)
+                    .then(resultado => {
+                        if (resultado.length > 0) {
+                            const dadosRecurso = resultado[0];
+                            const recursoAlerta = [
+                                {
+                                    recurso: 'CPU',
+                                    porcentagem: dadosRecurso.porcentagem_cpu,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_cpu
+                                },
+                                {
+                                    recurso: 'RAM',
+                                    porcentagem: dadosRecurso.porcentagem_ram,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_ram
+                                },
+                                {
+                                    recurso: 'Disco',
+                                    porcentagem: dadosRecurso.porcentagem_disco,
+                                    tempoEmAlerta: dadosRecurso.tempo_alerta_disco
+                                }
+                            ];
+                            res.json({ recurso_alerta: recursoAlerta });
+                        } else {
+                            res.json({ recurso_alerta: [] });  
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro ao listar alertas de recurso:", error);
+                        res.status(500).json({ error: "Erro no servidor." });
+                    });
+            }
+            
+            
+
   
 module.exports = { listarNotebooks,listarPorcentagemRAMPorNotebook, listarPorcentagemCPUPorNotebook, listarPorcentagemDiscoPorNotebook,listarDadosBarra,listarNomeResponsavel,listarQuantidadeProcessos,
-    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos};
+    listarInformacaoesFuncionario, listarInformacaoesNotebook,listarNumeroNucleos,listarMediaPonderada,listarRecursoAlerta};

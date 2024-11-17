@@ -191,6 +191,10 @@
                     if (resposta.ok) {
                         if (nomeVar) {
                             sessionStorage.setItem('NOME_USUARIO', nomeVar);
+                            sessionStorage.setItem('EMAIL_USUARIO', emailVar);
+                            sessionStorage.setItem('EMPRESA_USUARIO', nomeEmpresaVar);
+                            sessionStorage.setItem('CARGO_USUARIO', cargoVar);
+
                         } else {
                             console.error("Nome do usuário está vazio.");
                         }
