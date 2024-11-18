@@ -90,6 +90,9 @@ CREATE TABLE IF NOT EXISTS dados (
     boot_time DATETIME,
 	numero_nucleos INT, 
     media_ponderada DOUBLE,
+    tempo_alerta_cpu Double ,
+    tempo_alerta_ram DOUBLE,
+    tempo_alerta_disco DOUBLE,
 	data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
         REFERENCES notebook(idNotebook)
