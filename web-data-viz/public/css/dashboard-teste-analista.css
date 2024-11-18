@@ -205,9 +205,13 @@
   
   .controles {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
+    justify-content: space-around;
+    }
+
+    .atencaoo{
+      width: 30px;
+      height: 30px;
+    }
   
   .controles select {
     background-color: #333;
@@ -217,9 +221,11 @@
     width: 45%;
   }
   .funcionario-atual{
+    display: flex;
+    justify-content: center;
     font-weight: 30px ;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    width: 300px;
+    width: 400px;
     height: 40px;
     background-color: #202020;
     text-align: center;
@@ -229,6 +235,19 @@
     background-color: #FFD700;
     color: black;
     transition-duration: 1s;
+  }
+
+
+  .alinhamento{
+display: flex;
+justify-content: center;
+  }
+
+.box-responsa p{
+  margin-left: 8.5%;
+  font-size: 20px;
+  margin-bottom: 2%;
+  
   }
   .maquina{
     background-color: #333;
@@ -241,8 +260,9 @@
   }
   .dashboard {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: flex-start;
+    margin: 30px;
   }
   
   .dashboard1 {
@@ -301,22 +321,21 @@
   }
   
   .status-boxes {
+    margin-top: 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-left: 10px;
+    justify-content: space-evenly;
   }
   
   .status-boxes2 {
     display: flex;
     justify-content: space-between;
     width: 100%; 
-    margin-top: 20px;
   }
   
   .status-card {
     width: 200px;
-    height: 110px;
+    height: 100px;
     margin: 20px 0;
     background-color: #202020;
     border-radius: 7%;
@@ -345,11 +364,6 @@
   }
   
 
-  
-  .status-card {
-    border-color: #FFD700;
-    border: 2px solid #FFD700;
-  }
   
   .cor-botoes {
     display: flex;
@@ -470,13 +484,12 @@
     top: 0;
     width: 100%; 
     height: 100%; 
-    overflow: auto; 
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
     background-color: #202020;
-    margin: 10% auto; 
+    margin: 5% auto; 
     padding: 15px;
     border: 1px solid #888;
     width: 90%; 
@@ -551,38 +564,19 @@
 }
 
 .alerta-container {
-  margin: 20px;
   padding: 10px;
   background-color: #202020;
   border-radius: 8px;
   color: #fff;
+  margin :1%;
+  margin-left: 3%;
+  width: 94%;
 }
 
-.alerta-container h2 {
-  text-align: center;
-  color: #FFD700;
-  margin-bottom: 10px;
+.alerta-item{
+  text-align:center;
 }
 
-.alerta-tabela {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #34495e;
-}
 
-.alerta-tabela th, .alerta-tabela td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid black;
-}
-
-.alerta-tabela th {
-  background-color: #FFD700;
-  color: black;
-}
-
-.alerta-tabela td {
-  color: #ecf0f1;
-}
 
 

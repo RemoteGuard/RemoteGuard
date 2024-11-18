@@ -39,7 +39,6 @@ function listarPorcentagemCPUPorNotebook(req, res) {
 
 function listarPorcentagemDiscoPorNotebook(req, res) {
     var fkNotebook = req.body.fkNotebook;
-
     analistaModel.listarPorcentagemDiscoPorNotebook(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
