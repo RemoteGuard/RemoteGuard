@@ -8,7 +8,7 @@ import pymysql
 # from botocore.exceptions import ClientError
 #from atlassian import Jira
 #from requests import HTTPError
-cleber = 4
+cleber = 5
 processos_indevidos = [
     # Jogos populares
     "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "valorant.exe", "apex_legends.exe",
@@ -320,7 +320,7 @@ def data_capture(data_capture_delay):
         
 
 def menu():
-    data_capture_delay = int(input('Deseja Capturar os Dados a cada quantos Segundos?: '))
+    data_capture_delay = 5
     data_capture(data_capture_delay)
 
 menu()
