@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_ram FLOAT,
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
-    processos INT,
+    processos LONGTEXT,
     boot_time DATETIME,
     data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
