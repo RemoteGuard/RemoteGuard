@@ -12,4 +12,7 @@ router.post("/listarInformacaoesFuncionario", analistaController.listarInformaca
 router.post("/listarInformacaoesNotebook", analistaController.listarInformacaoesNotebook);
 router.post("/listarNumeroNucleos", analistaController.listarNumeroNucleos);
 router.post("/listarNotebook", analistaController.listarNotebooks);
+router.post("/listarMediaPonderada", analistaController.listarMediaPonderada);
+router.post("/listarRecursoAlerta", analistaController.listarRecursoAlerta);
+
 module.exports = router;

@@ -549,3 +549,40 @@
     background-color: #202020; 
     border-radius: 5px; 
 }
+
+.alerta-container {
+  margin: 20px;
+  padding: 10px;
+  background-color: #202020;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.alerta-container h2 {
+  text-align: center;
+  color: #FFD700;
+  margin-bottom: 10px;
+}
+
+.alerta-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #34495e;
+}
+
+.alerta-tabela th, .alerta-tabela td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.alerta-tabela th {
+  background-color: #FFD700;
+  color: black;
+}
+
+.alerta-tabela td {
+  color: #ecf0f1;
+}
+
+
