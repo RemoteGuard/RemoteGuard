@@ -87,7 +87,8 @@ function exibirRankingFuncionarios(req, res) {
 }
 
 function buscarDados(req, res) {
-    alertasModel.buscarDados().then(function (resultado) {
+    const { fkNotebook } = req.params
+    alertasModel.buscarDados(fkNotebook).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {

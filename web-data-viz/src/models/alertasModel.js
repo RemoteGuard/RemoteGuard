@@ -68,10 +68,10 @@ function exibirRankingFuncionarios() {
     return database.executar(instrucaoSql);
 }
 
-function buscarDados() {
+function buscarDados(fkNotebook) {
     var instrucaoSql = `SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
                         COUNT(idAlerta) as FreqAlertas
-                        FROM alerta WHERE fkNotebook = 4
+                        FROM alerta WHERE fkNotebook = '${fkNotebook}'
                         AND dataHora >= CURDATE() - INTERVAL 7 DAY
                         GROUP BY DATE_FORMAT(dataHora, '%W');`;
 

@@ -31,7 +31,7 @@ router.get("/exibirRankingFuncionarios", function (req, res) {
     alertasController.exibirRankingFuncionarios(req, res);
 });
 
-router.get("/buscarDados", function (req, res) {
+router.get("/buscarDados/:fkNotebook", function (req, res) {
     alertasController.buscarDados(req, res);
 })
 

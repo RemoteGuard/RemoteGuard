@@ -303,7 +303,7 @@
 
         document.getElementById("grafico").innerHTML += `<canvas style="width: 100%" id="myChartCanvas" class="canvas"></canvas>`;
 
-        fetch("/alertas/buscarDados/", {
+        fetch(`/alertas/buscarDados/${fkNote}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
