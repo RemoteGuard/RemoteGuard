@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS empresa (
 CREATE TABLE IF NOT EXISTS notebook (
     idNotebook INT PRIMARY KEY AUTO_INCREMENT,
     hostname VARCHAR(100),
-    marca VARCHAR(30) ,
-    modelo VARCHAR(45),
-    memoriaRAM INT,
-    processador VARCHAR(25)
+    marca VARCHAR(30) NOT NULL,
+    modelo VARCHAR(45) NOT NULL,
+    memoriaRAM INT NOT NULL,
+    processador VARCHAR(25) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS funcionario (
@@ -86,21 +86,16 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_ram FLOAT,
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
-    processos LONGTEXT,
+    processos INT,
     boot_time DATETIME,
-    data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
+	numero_nucleos INT, 
+    media_ponderada DOUBLE,
+    tempo_alerta_cpu Double ,
+    tempo_alerta_ram DOUBLE,
+    tempo_alerta_disco DOUBLE,
+	data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
         REFERENCES notebook(idNotebook)
-);
-
-CREATE TABLE IF NOT EXISTS alerta (
-idAlerta INT AUTO_INCREMENT PRIMARY KEY,
-dataHora timestamp DEFAULT CURRENT_TIMESTAMP,
-codigo VARCHAR(100),
-descricao VARCHAR(900),
-fkNotebook INT,
-CONSTRAINT fkNotebookAlerta FOREIGN KEY (fkNotebook)
-	REFERENCES notebook(idNotebook)
 );
 
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
@@ -115,6 +110,31 @@ INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cn
 SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
 
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
+VALUES 
+('analista', 'João Silva', '12345678901', 'joao.silva@empresa.com', 'senha123', 1, 1);
+
+INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
+('notebook4', 'HP', 'Pavilion', 8, 'AMD Ryzen 5'),
+('notebook5', 'Acer', 'Aspire', 16, 'Intel Core i7'),
+('notebook6', 'Asus', 'ZenBook', 16, 'Intel Core i5');
+
+INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
+VALUES 
+('analista', 'Maria Santos', '12345678902', 'maria.santos@empresa.com', 'senha123', 1, 2),
+('supervisor', 'Carlos Oliveira', '12345678903', 'carlos.oliveira@empresa.com', 'senha123', 2, 3),
+('gerente', 'Ana Costa', '12345678904', 'ana.costa@empresa.com', 'senha123', 2, 4),
+('analista', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
+('assistente', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
+
+
+    
+       SELECT funcionario.nome AS nome_funcionario,
+       funcionario.email AS email_funcionario,
+       funcionario.cargo AS cargo_funcionario
+        FROM funcionario
+        WHERE funcionario.fkNotebook = 1;
+
 
 SELECT * FROM empresa;
 SELECT * FROM notebook;
@@ -122,54 +142,39 @@ SELECT * FROM funcionario;
 SELECT * FROM armazenamento;
 SELECT * FROM processos;
 SELECT * FROM dados;
-SELECT * FROM alerta;
 
-insert into alerta (descricao,fkNotebook) values 
-('Recurso: CPU acima da capacidade ideal na Mquina (IsabelaGoulart).', 1);
+SELECT processos, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY   data_captura DESC  LIMIT 1;
 
-SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Processo indevido%"
-AND dataHora >= CURDATE() - INTERVAL 7 DAY;
+SELECT porcentagem_ram, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY data_captura DESC LIMIT 10;
 
-SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Recurso%"
-AND dataHora >= CURDATE() - INTERVAL 7 DAY;
+SELECT numero_nucleos from dados where fkNotebook =4 ORDER BY data_captura DESC LIMIT 1;
+   SELECT 
+    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.qtdDiscos, a.tamanhoTotal
+FROM 
+    notebook n
+JOIN 
+    armazenamento a ON n.idNotebook = 2
+WHERE 
+    a.fkNotebook = 2;  
 
-SELECT TRUNCATE(AVG(qtdAlertas), 2) AS mediaAlertas
-FROM (
-    SELECT COUNT(idAlerta) AS qtdAlertas
-    FROM alerta
-    WHERE dataHora >= NOW() - INTERVAL 7 DAY
-    GROUP BY fkNotebook
-) AS mediaAlertas;
-
-SELECT f.nome AS nome, COUNT(a.idAlerta) AS qtdAlertas
-FROM alerta AS a
-JOIN notebook AS n ON a.fkNotebook = n.idNotebook
-JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
-GROUP BY f.idFuncionario
-ORDER BY qtdAlertas DESC;
+    INSERT INTO armazenamento (qtdDiscos, tamanhoTotal, fkNotebook) VALUES 
+(2, 500, 1), 
+(3, 1000, 2),
+(1, 256, 3);  
 
 
+SELECT idNotebook FROM notebook;
+INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos, boot_time, numero_nucleos)
+VALUES
+    (2, 0.5, 25.3, 8388608, 60.4, 500000000, 45.0, 150, '2024-11-10 08:30:00', 4),
+    (4, 0.8, 35.2, 16384000, 70.8, 1000000000, 60.0, 200, '2024-11-10 08:35:00', 8);
 
--- Inserindo mais 5 funcionários
-INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
-VALUES 
-    ('Analista', 'João Silva', '11111111111', 'joao.silva@empresa.com', 'senha123', 1, 1),
-    ('Gerente', 'Maria Oliveira', '22222222222', 'maria.oliveira@empresa.com', 'senha456', 1, 2),
-    ('Desenvolvedor', 'Carlos Santos', '33333333333', 'carlos.santos@empresa.com', 'senha789', 2, 3),
-    ('Suporte', 'Ana Souza', '44444444444', 'ana.souza@empresa.com', 'senha101', 2, 1),
-    ('Coordenador', 'Pedro Lima', '55555555555', 'pedro.lima@empresa.com', 'senha202', 2, 2);
+Alter table dados add column escrita_disco Double;
 
--- Inserindo pelo menos um alerta para o notebook de cada funcionário
-INSERT INTO alerta (codigo, descricao, fkNotebook)
-VALUES 
-    ('A01', 'Recurso:uso de CPU acima do limite', 1),
-    ('A02', 'Recurso:uso de memória RAM alto', 2),
-    ('A03', 'Recurso:uso disco próximo da capacidade máxima', 3),
-    ('A04', 'Processo indevido em execução', 1);
+insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,processos,fkNotebook) values
+(80,15,50,70,3);
 
 
-SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
-COUNT(idAlerta) as FreqAlertas
-FROM alerta WHERE fkNotebook = 4
-AND dataHora >= CURDATE() - INTERVAL 7 DAY
-GROUP BY DATE_FORMAT(dataHora, '%W');
+SELECT n.idNotebook, f.nome AS nomeFuncionario
+FROM notebook n
+JOIN funcionario f ON n.idNotebook = f.fkNotebook;
