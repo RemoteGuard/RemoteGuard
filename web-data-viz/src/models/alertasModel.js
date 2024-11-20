@@ -79,6 +79,16 @@ function buscarDados(fkNotebook) {
     return database.executar(instrucaoSql);
 }
 
+function obterDadosRegressao() {
+    var instrucaoSql = `SELECT
+                        COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
+                        COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
+                        FROM alerta GROUP BY DATE(dataHora);`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 
 module.exports = {
@@ -89,5 +99,6 @@ module.exports = {
     exibirTotalAlertasProcessos,
     exibirMediaAlertas,
     exibirRankingFuncionarios,
-    buscarDados
+    buscarDados,
+    obterDadosRegressao
 };
