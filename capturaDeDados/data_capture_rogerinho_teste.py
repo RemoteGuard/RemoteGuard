@@ -14,8 +14,8 @@ def connect_to_mysql():
         connection = mysql.connector.connect(
             host='localhost',
             database='remote_guard',
-            user='aluno',
-            password='sptech'
+            user='root',
+            password='192719'
         )
         if connection.is_connected():
             print("Conexão com o MySQL bem-sucedida.")
