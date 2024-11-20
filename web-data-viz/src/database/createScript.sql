@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_ram FLOAT,
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
-    processos INT,
+    processos LONGTEXT,
     boot_time DATETIME,
     data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
@@ -115,8 +115,7 @@ INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cn
 SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
 
-Insert into dados(porcentagem_cpu,porcentagem_ram,porcentagem_disco,fkNotebook) values
-(40,50,60,2);
+
 SELECT * FROM empresa;
 SELECT * FROM notebook;
 SELECT * FROM funcionario;
@@ -126,10 +125,13 @@ SELECT * FROM dados;
 SELECT * FROM alerta;
 
 insert into alerta (descricao,fkNotebook) values 
-('Recurso: CPU acima da capacidade ideal na Máquina (IsabelaGoulart).', 1);
+('Recurso: CPU acima da capacidade ideal na Mquina (IsabelaGoulart).', 1);
 
-SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Processo indevido%";
-SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 1 AND descricao LIKE "Recurso%";
+SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Processo indevido%"
+AND dataHora >= CURDATE() - INTERVAL 7 DAY;
+
+SELECT COUNT(idAlerta) FROM alerta WHERE fkNotebook = 4 AND descricao LIKE "Recurso%"
+AND dataHora >= CURDATE() - INTERVAL 7 DAY;
 
 SELECT TRUNCATE(AVG(qtdAlertas), 2) AS mediaAlertas
 FROM (
@@ -166,7 +168,16 @@ VALUES
     ('A04', 'Processo indevido em execução', 1);
 
 
+SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
+COUNT(idAlerta) as FreqAlertas
+FROM alerta WHERE fkNotebook = 4
+AND dataHora >= CURDATE() - INTERVAL 7 DAY
+GROUP BY DATE_FORMAT(dataHora, '%W');
 
 
 
+SELECT
+    COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
+    COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
+FROM alerta GROUP BY DATE(dataHora);
 

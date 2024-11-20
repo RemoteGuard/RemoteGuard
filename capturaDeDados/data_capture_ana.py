@@ -3,12 +3,14 @@ import socket
 import time
 import psutil
 import json
+import datetime as dt
 import boto3
 import pymysql
 from botocore.exceptions import ClientError
-from atlassian import Jira
-from requests import HTTPError
-
+#from atlassian import Jira
+#from requests import HTTPError
+cleber = 1
+dados = []
 processos_indevidos = [
     # Jogos populares
     "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "valorant.exe", "apex_legends.exe",
@@ -52,50 +54,68 @@ processos_indevidos = [
     "malicious_popup.exe", "browser_spy.exe", "fake_antivirus.exe", "videoplayer.exe", "warning_alert.exe", "rstudio.exe"
 ]
 
-def create_db_connection(): 
-    try:
-        conexao = pymysql.connect(
-                host="localhost",
-                user="root",
-                password="cco@2024",
-                database="remote_guard"
-            )
-        cursor = conexao.cursor() 
-        print(f"Conexão com o Banco {conexao.db.decode()} estabelecida com Sucesso!")
-        return conexao, cursor
-    except pymysql.MySQLError as e:
-        print(f"Falha ao estabelecer Conexão com o Banco de Dados: {e}")
-        return None, None
 
-conexao, cursor = create_db_connection()
+# def create_db_connection(): 
+#     try:
+#         conn = pymysql.connect(
+#                 host="localhost",
+#                 user="root",
+#                 password="Ab12345@#",
+#                 database="remote_guard"
+#             )
+#         cursor = conn.cursor() 
+#         print(f"Conexão com o Banco {conn.db.decode()} estabelecida com Sucesso!")
+#         return conn, cursor
+#     except pymysql.MySQLError as e:
+#         print(f"Falha ao estabelecer Conexão com o Banco de Dados: {e}")
+#         return None, None 
+
+# conn, cursor = create_db_connection()
+
+# def create_db_connection2(): 
+#     try:
+#         conexao = pymysql.connect(
+#                 host="localhost",
+#                 user="root",
+#                 password="Ab12345@#",
+#                 database="remote_guard"
+#             )
+#         cursor = conexao.cursor() 
+#         print(f"Conexão com o Banco {conexao.db.decode()} estabelecida com Sucesso!")
+#         return conexao, cursor
+#     except pymysql.MySQLError as e:
+#         print(f"Falha ao estabelecer Conexão com o Banco de Dados: {e}")
+#         return None, None
+
+# conexao, cursor = create_db_connection2()
 
 
 
 def get_hostname():
     return socket.gethostname()
 
-def verify_equipment_registration():
-    global fkNotebook
-    hostname = get_hostname()
+# def verify_equipment_registration():
+#     global fkNotebook
+#     hostname = get_hostname()
+#     # hostname = 'hostTeste'
     
-    sql = "SELECT idNotebook, hostname FROM notebook WHERE hostname = %s"
-    cursor.execute(sql, (hostname,))
-    register = cursor.fetchone()
+#     sql = "SELECT idNotebook, hostname FROM notebook WHERE hostname = %s"
+#     cursor.execute(sql, (hostname,))
+#     register = cursor.fetchone()
 
-    if register: 
-        fkNotebook = register[0]
-    else:
-        sql = "INSERT INTO notebook (hostname) VALUES (%s)"
-        cursor.execute(sql, (hostname))
-        conexao.commit()
-        fkNotebook = cursor.lastrowid
+#     if register: 
+#         fkNotebook = register[0]
+#     else:
+#         sql = "INSERT INTO notebook (hostname) VALUES (%s)"
+#         cursor.execute(sql, (hostname))
+#         conexao.commit()
+#         fkNotebook = cursor.lastrowid
     
-    return fkNotebook
+#     return fkNotebook
 
-verify_equipment_registration()
-
+#  verify_equipment_registration()
 s3 = boto3.client('s3')
-bucket_name = 'bucket-raw-rg'
+bucket_name = 'raw-stocks-ana'
 file_key = f'/{get_hostname()}.json' 
 
 def download_s3_json(bucket, key):
@@ -115,9 +135,9 @@ def download_s3_json(bucket, key):
     print("----------------------------------------------------------------------------------------------------")               
     return dados
 
-bucket_name = 'bucket-raw-rg'
+bucket_name = 'raw-stocks-ana'
 file_key = f'{get_hostname()}.json' 
-json_file_path = f'/home/murillo/Downloads/{get_hostname()}.json'
+json_file_path = f'/home/aluno/Documentos/{get_hostname()}.json'
 dados = download_s3_json(bucket_name, file_key)
 
 def get_root_directory():
@@ -172,63 +192,63 @@ def verify_alert(recurso, uso, limites):
             break
 
 
-jira = Jira(
-        url = "https://remoteguard.atlassian.net",
-        username = "remoteguard@outlook.com.br",
-        password = "ATATT3xFfGF0fgxCl5zLBT2JycewlrlIAMcMnJM1AAPSjg6l6HgCLss1qWoCWNnPM6xhUHefa5nD22rZxpqu2LIszBJs064Tlj3c-ph5o7ep1VIDTJDmFioz_tlfHxi7vI0KRPsFJ4YNbkjbWjttFJpjG6s7-Bu1GPLyBxugMv4S33zZTwW9C3k=11DD1D32"
-        )
+# jira = Jira(
+#         url = "https://remoteguard.atlassian.net",
+#         username = "remoteguard@outlook.com.br",
+#         password = "ATATT3xFfGF0fgxCl5zLBT2JycewlrlIAMcMnJM1AAPSjg6l6HgCLss1qWoCWNnPM6xhUHefa5nD22rZxpqu2LIszBJs064Tlj3c-ph5o7ep1VIDTJDmFioz_tlfHxi7vI0KRPsFJ4YNbkjbWjttFJpjG6s7-Bu1GPLyBxugMv4S33zZTwW9C3k=11DD1D32"
+#         )
 
         
-def throw_alert(recurso, limite, prioridade):
-    descricao_chamado = f'Recurso: {recurso} acima da capacidade ideal na Máquina ({get_hostname()}).'
-    chamado = jira.issue_create(fields={
-        'project': {'key': 'CS'},
-        'summary': f'ALERTA: {recurso} ACIMA DE {limite}% na Máquina: ({get_hostname()})!',
-        'description': descricao_chamado,
-        'issuetype': {'name': 'Alert'},
-        'priority': {'name': prioridade}
-        })
+# def throw_alert(recurso, limite, prioridade):
+#     descricao_chamado = f'Recurso: {recurso} acima da capacidade ideal na Máquina ({get_hostname()}).'
+#     chamado = jira.issue_create(fields={
+#         'project': {'key': 'CS'},
+#         'summary': f'ALERTA: {recurso} ACIMA DE {limite}% na Máquina: ({get_hostname()})!',
+#         'description': descricao_chamado,
+#         'issuetype': {'name': 'Alert'},
+#         'priority': {'name': prioridade}
+#         })
     
-    codigo_chamado = ''
+#     codigo_chamado = ''
 
-    try:
-        chamado
-        codigo_chamado = chamado.get('key')
-        print(f'Código do Chamado: {codigo_chamado}')
-        register_alert(codigo_chamado, descricao_chamado)
+#     try:
+#         chamado
+#         codigo_chamado = chamado.get('key')
+#         print(f'Código do Chamado: {codigo_chamado}')
+#         register_alert(codigo_chamado, descricao_chamado)
       
 
-    except HTTPError as e:
-      print(e.response.text)
+#     except HTTPError as e:
+#       print(e.response.text)
 
 
-def register_alert(codigo_chamado, descricao_chamado):
-    sql = "INSERT INTO alerta (codigo, descricao, fkNotebook) VALUES (%s, %s, %s)"
-    cursor.execute(sql, (codigo_chamado, descricao_chamado, fkNotebook))
-    conexao.commit()
+# def register_alert(codigo_chamado, descricao_chamado):
+#     sql = "INSERT INTO alerta (codigo, descricao, fkNotebook) VALUES (%s, %s, %s)"
+#     cursor.execute(sql, (codigo_chamado, descricao_chamado, fkNotebook))
+#     conn.commit()
 
 
-def throw_process_alert():
-    descricao_chamado = f'Processo indevido rodando na máquina ({get_hostname()})!.'
-    chamado = jira.issue_create(fields={
-        'project': {'key': 'CS'},
-        'summary': f'Processo indevido rodando na máquina ({get_hostname()})!',
-        'description': descricao_chamado,
-        'issuetype': {'name': 'Alert'},
-        'priority': {'name': 'Medium'}
-        })
+# def throw_process_alert():
+#     descricao_chamado = f'Processo indevido rodando na máquina ({get_hostname()})!.'
+#     chamado = jira.issue_create(fields={
+#         'project': {'key': 'CS'},
+#         'summary': f'Processo indevido rodando na máquina ({get_hostname()})!',
+#         'description': descricao_chamado,
+#         'issuetype': {'name': 'Alert'},
+#         'priority': {'name': 'Medium'}
+#         })
     
-    codigo_chamado = ''
+#     codigo_chamado = ''
 
-    try:
-        chamado
-        codigo_chamado = chamado.get('key')
-        print(f'Código do Chamado: {codigo_chamado}')
-        register_alert(codigo_chamado, descricao_chamado)
+#     try:
+#         chamado
+#         codigo_chamado = chamado.get('key')
+#         print(f'Código do Chamado: {codigo_chamado}')
+#         register_alert(codigo_chamado, descricao_chamado)
       
 
-    except HTTPError as e:
-      print(e.response.text)
+#     except HTTPError as e:
+#       print(e.response.text)
 
 
 
@@ -254,9 +274,9 @@ def data_capture(data_capture_delay):
             
             processosString = str(processos)
             
-            sql = "INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (fkNotebook, cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage, disk_usage_bytes, disk_usage_percentage, processosString))
-            conexao.commit()
+            # sql = "INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            # cursor.execute(sql, (cleber, cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage, disk_usage_bytes, disk_usage_percentage, processosString))
+            # conexao.commit()
 
             dados.append ({
                 "tempoInatividadeCPU": cpu_idle_time,
@@ -265,7 +285,8 @@ def data_capture(data_capture_delay):
                 "porcentagemRAM": ram_usage_percentage,
                 "bytesDisco": disk_usage_bytes,
                 "porcentagemDisco": disk_usage_percentage,
-                "processos": processos
+                "processos": processos,
+                "dataHora": dt.datetime.now().isoformat()
             })
 
             print("----------------------------------------------------------------------------------------------------")           
@@ -275,6 +296,7 @@ def data_capture(data_capture_delay):
             print(f"Porcentagem de Uso da Memória: {ram_usage_percentage}")
             print(f"Uso do Disco em Bytes: {disk_usage_bytes}")
             print(f"Porcentagem de Uso do Disco: {disk_usage_percentage}")
+            print(f"Captura de Data e Hora: {dt.datetime.now().isoformat()}")
             print()
             print(cont_registers, " Registro Inserido.") if cont_registers == 1 else print(cont_registers, "Registro Inseridos.")
 
@@ -290,14 +312,14 @@ def data_capture(data_capture_delay):
         cpu_usage_percentage = 89.0
         ram_usage_percentage = 88.0
 
-        verificar_processos_indevidos = bool(set(processos).intersection(processos_indevidos))
+        # verificar_processos_indevidos = bool(set(processos).intersection(processos_indevidos))
 
-        if verificar_processos_indevidos:
-            throw_process_alert()
+        # if verificar_processos_indevidos:
+        #     throw_process_alert()
 
 
-        verify_alert('CPU', cpu_usage_percentage, limites_recursos)
-        verify_alert('MEMÓRIA RAM', ram_usage_percentage, limites_recursos)
+        # verify_alert('CPU', cpu_usage_percentage, limites_recursos)
+        # verify_alert('MEMÓRIA RAM', ram_usage_percentage, limites_recursos)
         
 
 def menu():
