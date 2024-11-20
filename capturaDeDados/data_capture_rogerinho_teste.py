@@ -31,7 +31,7 @@ def get_cpu_data():
     cpu_data = psutil.cpu_times()._asdict()
     cpu_idle_time = cpu_data['idle']
     cpu_usage_percentage = psutil.cpu_percent(interval=1)
-    cpu_usage_percentage_transform = cpu_usage_percentage*50
+    cpu_usage_percentage_transform = cpu_usage_percentage*10
     return cpu_idle_time, cpu_usage_percentage_transform
 
 def get_ram_data():
