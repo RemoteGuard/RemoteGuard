@@ -156,7 +156,7 @@ function listarMediaPonderada(req, res) {
         })
             }
             function listarRecursoAlerta(req, res) {
-                const { fkNotebook } = req.body;  // Garantir que fkNotebook está sendo recebido corretamente.
+                const { fkNotebook } = req.body;  
                 analistaModel.listarRecursoAlerta(fkNotebook)
                     .then(resultado => {
                         if (resultado.length > 0) {

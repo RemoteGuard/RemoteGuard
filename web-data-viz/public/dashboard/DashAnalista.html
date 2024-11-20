@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,34 @@
   <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
+<style>
+ 
+
+  .atencaoo {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+  }
+
+  .atencao-box {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #ee0909;
+    border: 1px solid #000000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    width: 250px;
+  }
+
+  .atencao-box p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+  }
+</style>
 
 <body>
   <header id="main-header">
@@ -15,7 +44,15 @@
       <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
     </div>
     <div class="perfil-wrapper">
-      <img class="atencaoo" src="../assets/imgs/atencao.png" alt="">
+      <img class="atencaoo" src="../assets/imgs/atencao.png" alt="Alerta" style="display: none;">
+      <div class="atencao-box" id="atencao-box" style="display: none;">
+        <div id="alerta" class="alerta oculto">
+          <span id="alerta-recurso"></span> está em alerta!
+          <span id="alerta-porcentagem"></span>% em uso por
+          <span id="alerta-tempo"></span> segundos.
+        </div>
+      </div>
+
       <div class="Ativacao">
         <button>Ajuda</button>
       </div>
@@ -34,8 +71,10 @@
       <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
     </div>
     <ul class="menu-items">
-      <li class="ativo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png" alt="Ícone Dashboard">Dashboard</a></li>
-      <li class="naoAtivo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png" alt="Ícone Configuração">Configuração</a></li>
+      <li class="ativo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png"
+            alt="Ícone Dashboard">Dashboard</a></li>
+      <li class="naoAtivo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png"
+            alt="Ícone Configuração">Configuração</a></li>
       <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone Sair">Sair</a></li>
     </ul>
   </nav>
@@ -44,22 +83,17 @@
     <div class="alinhamento">
       <div class="box-responsa">
         <p>Funcionário Responsavel pela Máquina</p>
-    <div class="funcionario-atual" id="nomeResponsavel" style="cursor: pointer;">Clique aqui para ver o responsável</div>
-  </div>
-</div>
+        <div class="funcionario-atual" id="nomeResponsavel" style="cursor: pointer;">Clique aqui para ver o responsável
+        </div>
+      </div>
+    </div>
 
     <div class="status-boxes">
       <div class="status-card"><span id="mediaPonderada" class="text-card"></span></div>
       <div class="status-card"><span id="quantidadeProcessos" class="text-card"></span></div>
       <div class="status-card"><span id="quantidadeNucleos" class="text-card"></span></div>
     </div>
-    <div id="alerta-container" class="alerta-container oculto">
-      <div id="alerta" class="alerta oculto">
-        <span id="alerta-recurso"></span> está em alerta!
-        <span id="alerta-porcentagem"></span>% em uso por 
-        <span id="alerta-tempo"></span> Segundos.
-      </div>
-    </div>
+
     <div class="controles">
       <select id="recurso">
         <option value="" selected disabled>Selecionar recurso</option>
@@ -97,7 +131,7 @@
           </div>
         </div>
         <hr class="divider">
- <h2 class="resp_maquina">Informações da Máquina</h2>
+        <h2 class="resp_maquina">Informações da Máquina</h2>
         <div class="info-grid">
           <div class="info-item">
             <p class="mini-titulo">Hostname:</p>
@@ -133,7 +167,7 @@
     cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
-    const fkNotebook = 1;  
+    const fkNotebook = 1;
 
     function buscarNomeResponsavel(fkNotebook) {
       fetch("/analista/listarNomeResponsavel", {
@@ -141,13 +175,13 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.nome_funcionario) {
-          console.log("Responsável pela máquina:", data.nome_funcionario);
-          document.getElementById('nomeResponsavel').textContent = data.nome_funcionario;
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.nome_funcionario) {
+            console.log("Responsável pela máquina:", data.nome_funcionario);
+            document.getElementById('nomeResponsavel').textContent = data.nome_funcionario;
+          }
+        });
     }
 
     function buscarInformacoesFuncionario(fkNotebook) {
@@ -156,14 +190,14 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.nome_funcionario && data.email_funcionario && data.cargo_funcionario) {
-          document.getElementById('nomeFuncionario').textContent = data.nome_funcionario;
-          document.getElementById('emailFuncionario').textContent = data.email_funcionario;
-          document.getElementById('cargoFuncionario').textContent = data.cargo_funcionario;
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.nome_funcionario && data.email_funcionario && data.cargo_funcionario) {
+            document.getElementById('nomeFuncionario').textContent = data.nome_funcionario;
+            document.getElementById('emailFuncionario').textContent = data.email_funcionario;
+            document.getElementById('cargoFuncionario').textContent = data.cargo_funcionario;
+          }
+        });
     }
 
     function buscarInformacoesNotebook(fkNotebook) {
@@ -172,17 +206,17 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.tamanhoTotal) {
-          document.getElementById('hostname').textContent = data.hostname;
-          document.getElementById('marca').textContent = data.marca;
-          document.getElementById('modelo').textContent = data.modelo;
-          document.getElementById('memoriaRAM').textContent = data.memoriaRAM + " GB";
-          document.getElementById('processador').textContent = data.processador;
-          document.getElementById('tamanhoTotal').textContent = data.tamanhoTotal + " GB";
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.tamanhoTotal) {
+            document.getElementById('hostname').textContent = data.hostname;
+            document.getElementById('marca').textContent = data.marca;
+            document.getElementById('modelo').textContent = data.modelo;
+            document.getElementById('memoriaRAM').textContent = data.memoriaRAM + " GB";
+            document.getElementById('processador').textContent = data.processador;
+            document.getElementById('tamanhoTotal').textContent = data.tamanhoTotal + " GB";
+          }
+        });
     }
 
     function buscarQuantidadeProcessos(fkNotebook) {
@@ -191,13 +225,13 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.processos !== undefined) {
-          console.log("Quantidade de processos:", data.processos);
-          document.getElementById('quantidadeProcessos').innerHTML = `<p class="qtdprocess">Número de Processos Na Máquina</p>` + data.processos;
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.processos !== undefined) {
+            console.log("Quantidade de processos:", data.processos);
+            document.getElementById('quantidadeProcessos').innerHTML = `<p class="qtdprocess">Número de Processos Na Máquina</p>` + data.processos;
+          }
+        });
     }
 
     function buscarQuantidadeNucleos(fkNotebook) {
@@ -207,12 +241,12 @@
         body: JSON.stringify({ fkNotebook })
       })
 
-      .then(response => response.json())
-      .then(data => {
-        if (data.numero_nucleos !== undefined) {
-          document.getElementById('quantidadeNucleos').innerHTML = `<p class="qtdprocess">Número de Núcleos Ativos</p>` + data.numero_nucleos;
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.numero_nucleos !== undefined) {
+            document.getElementById('quantidadeNucleos').innerHTML = `<p class="qtdprocess">Número de Núcleos Ativos</p>` + data.numero_nucleos;
+          }
+        });
     }
 
     function buscarMediaPonderada(fkNotebook) {
@@ -221,12 +255,12 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.media_ponderada !== undefined) {
-          document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada+ `%`;
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.media_ponderada !== undefined) {
+            document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`;
+          }
+        });
     }
 
     function definirRecurso(recursoSelecionado) {
@@ -251,21 +285,21 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
       })
-      .then(response => response.json())
-      .then(resposta => {
-        const dados = [];
-        const labels = [];
-        resposta.forEach(item => {
-          if (label === "Memória RAM") {
-            dados.push(item.porcentagem_ram);
-          } else {
-            dados.push(item.porcentagem_cpu);
-          }
-          labels.push(new Date(item.data_captura).toLocaleTimeString());
-        });
+        .then(response => response.json())
+        .then(resposta => {
+          const dados = [];
+          const labels = [];
+          resposta.forEach(item => {
+            if (label === "Memória RAM") {
+              dados.push(item.porcentagem_ram);
+            } else {
+              dados.push(item.porcentagem_cpu);
+            }
+            labels.push(new Date(item.data_captura).toLocaleTimeString());
+          });
 
-        plotarGraficoLinha(dados, labels, label);
-      });
+          plotarGraficoLinha(dados, labels, label);
+        });
     }
 
     function plotarGraficoLinha(dados, labels, label) {
@@ -282,7 +316,7 @@
         },
         tooltip: {
           enabled: true,
-          theme: "dark", 
+          theme: "dark",
           style: {
             fontSize: '12px',
             colors: ['#FFFFFF']
@@ -291,12 +325,12 @@
         dataLabels: {
           enabled: true,
           style: {
-            colors: ['#FFD700'], 
+            colors: ['#FFD700'],
             fontWeight: 'bold'
           },
           background: {
             enabled: true,
-            foreColor: '#000000',  
+            foreColor: '#000000',
             borderRadius: 2,
             dropShadow: { enabled: false },
           }
@@ -328,13 +362,13 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
       })
-      .then(response => response.json())
-      .then(resposta => {
-        const porcentagemDisco = resposta.porcentagem_disco;
-        if (porcentagemDisco !== undefined) {
-          plotarGraficoDisco(porcentagemDisco);
-        }
-      });
+        .then(response => response.json())
+        .then(resposta => {
+          const porcentagemDisco = resposta.porcentagem_disco;
+          if (porcentagemDisco !== undefined) {
+            plotarGraficoDisco(porcentagemDisco);
+          }
+        });
     }
 
 
@@ -361,31 +395,31 @@
     }
 
     function buscarDadosBarra() {
-      const fkNotebookBase = 1; 
+      const fkNotebookBase = 1;
 
       fetch("/analista/listarDadosBarra", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebookBase })
       })
-      .then(response => response.json())
-      .then(dados => {
-        plotarGraficoBarra(dados); 
-      });
+        .then(response => response.json())
+        .then(dados => {
+          plotarGraficoBarra(dados);
+        });
     }
 
     function plotarGraficoBarra(dados) {
       const options = {
         series: [{
-            name: 'Máquina Atual',
-            data: [dados.base.cpu, dados.base.ram, dados.base.disco],
-            color: '#FFEB3B'
-          },
-          {
-            name: 'Média de Todos os Notebooks',
-            data: [dados.media.cpu, dados.media.ram, dados.media.disco],
-            color: '#00E676'
-          }
+          name: 'Máquina Atual',
+          data: [dados.base.cpu, dados.base.ram, dados.base.disco],
+          color: '#FFEB3B'
+        },
+        {
+          name: 'Média de Todos os Notebooks',
+          data: [dados.media.cpu, dados.media.ram, dados.media.disco],
+          color: '#00E676'
+        }
         ],
         chart: {
           type: 'bar',
@@ -457,7 +491,7 @@
             fontSize: '12px',
           },
           formatter: function (val) {
-            return `${val}%`; 
+            return `${val}%`;
           },
         },
       };
@@ -467,17 +501,31 @@
       }
 
       graficoBarra = new ApexCharts(document.querySelector("#chartBarra"), options);
-      graficoBarra.render();  
+      graficoBarra.render();
     }
 
+
     function exibirAlertas(alertas) {
-      const alertaContainer = document.getElementById("alerta-container");
-      alertaContainer.innerHTML = ""; 
-
-      alertas.forEach(alerta => {
+      const alertaContainer = document.getElementById("atencao-box");
+      const atencaoImg = document.querySelector(".atencaoo");
+  
+      alertaContainer.innerHTML = "";
+  
+      const alertasAtivos = alertas.filter(alerta => alerta.tempoEmAlerta > 0);
+  
+      if (alertasAtivos.length === 0) {
+          atencaoImg.style.display = "none"; 
+          alertaContainer.style.display = "none"; 
+          return;
+      }
+  
+      atencaoImg.style.display = "block"; 
+      alertaContainer.style.display = "block"; 
+  
+      alertasAtivos.forEach(alerta => {
           const alertaElemento = document.createElement("div");
-          alertaElemento.classList.add("alerta-item");
-
+          alertaElemento.className = "alerta-item"; 
+  
           alertaElemento.innerHTML = `
               <strong>${alerta.recurso}</strong> está em alerta! 
               <span>${alerta.porcentagem}%</span> em uso por 
@@ -485,32 +533,32 @@
           `;
           alertaContainer.appendChild(alertaElemento);
       });
+  }
+  
 
-      alertaContainer.classList.remove("oculto");
-    }
 
     function buscarAlertasRecursos(fkNotebook) {
       fetch("/analista/listarRecursoAlerta", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ fkNotebook: fkNotebook })
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fkNotebook: fkNotebook })
       })
-      .then(response => response.json())
-      .then(data => {
+        .then(response => response.json())
+        .then(data => {
 
           const alertasValidos = data.recurso_alerta.filter(alerta => alerta.tempoEmAlerta > 0);
 
           if (alertasValidos.length === 0) {
-              document.getElementById("alerta-container").classList.add("oculto");
+            document.getElementById("alerta-container").classList.add("oculto");
           } else {
-              exibirAlertas(alertasValidos);
+            exibirAlertas(alertasValidos);
           }
-      });
+        });
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       buscarAlertasRecursos(fkNotebook);
     });
 
@@ -518,8 +566,8 @@
       definirRecurso('ram');
       buscarInformacoesNotebook(fkNotebook);
       buscarInformacoesFuncionario(fkNotebook);
-      buscarNomeResponsavel(fkNotebook); 
-      buscarQuantidadeProcessos(fkNotebook); 
+      buscarNomeResponsavel(fkNotebook);
+      buscarQuantidadeProcessos(fkNotebook);
       buscarQuantidadeNucleos(fkNotebook);
       buscarMediaPonderada(fkNotebook);
       buscarAlertasRecursos(fkNotebook);
@@ -533,13 +581,13 @@
       definirRecurso(recursoSelecionado);
     });
 
-    setInterval(function() {
+    setInterval(function () {
       const recursoSelecionado = document.getElementById('recurso').value;
       if (recursoSelecionado) {
         buscarInformacoesNotebook(fkNotebook);
         buscarInformacoesFuncionario(fkNotebook);
-        buscarNomeResponsavel(fkNotebook); 
-        buscarQuantidadeProcessos(fkNotebook); 
+        buscarNomeResponsavel(fkNotebook);
+        buscarQuantidadeProcessos(fkNotebook);
         buscarQuantidadeNucleos(fkNotebook);
         buscarMediaPonderada(fkNotebook);
         buscarAlertasRecursos(fkNotebook);
@@ -547,13 +595,13 @@
         definirRecurso(recursoSelecionado);
         buscarDadosDisco();
       }
-    }, 10000); 
+    }, 10000);
 
-    document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('closeModal').addEventListener('click', function () {
       document.getElementById('modal').style.display = 'none';
     });
 
-    document.getElementById('nomeResponsavel').addEventListener('click', function() {
+    document.getElementById('nomeResponsavel').addEventListener('click', function () {
       document.getElementById('modal').style.display = 'block';
 
       document.getElementById('nomeFuncionario').textContent = 'João Silva';
@@ -588,14 +636,29 @@
 
     document.getElementById('closeModal').addEventListener('click', fecharModal);
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
       const modal = document.getElementById('modal');
       if (event.target === modal) {
         fecharModal();
       }
     };
 
+    const atencaoImg = document.querySelector('.atencaoo');
+    const atencaoBox = document.querySelector('#atencao-box');
+
+    atencaoImg.addEventListener('click', () => {
+      if (atencaoBox.style.display === 'block') {
+        atencaoBox.style.display = 'none';
+      } else {
+        atencaoBox.style.display = 'block';
+      }
+    });
+
     carregarDadosIniciais();
+
+
+
   </script>
 </body>
+
 </html>
