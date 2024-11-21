@@ -93,16 +93,16 @@
       <div class="status-card"><span id="quantidadeProcessos" class="text-card"></span></div>
       <div class="status-card"><span id="quantidadeNucleos" class="text-card"></span></div>
     </div>
-
+<div class="encapar">
     <div class="controles">
       <select id="recurso">
-        <option value="" selected disabled>Selecionar recurso</option>
+        <option value="" selected disabled>Selecionar Recurso Para Analisar</option>
         <option value="ram">Memória RAM</option>
         <option value="cpu">CPU</option>
         <option value="disco">Disco</option>
       </select>
     </div>
-
+  </div>
     <div class="dashboard">
       <div class="chart-container">
         <div id="chart"></div>
@@ -378,7 +378,7 @@
       const options = {
         series: [usoDisco, livreDisco],
         chart: {
-          type: 'pie',
+          type: 'donut',
           width: '100%',
           height: '350px'
         },
