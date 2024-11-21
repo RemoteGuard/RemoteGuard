@@ -18,25 +18,6 @@ function ultimosDados() {
     return database.executar(instrucaoSql);
   }
 
-  // function plotarGrafico() {
-  // var instrucaoSql = `SELECT 
-  //   funcionario.nome AS nome_funcionario, 
-  //   notebook.idNotebook AS fkNotebook, 
-  //   dados.processos,
-  //   dados.porcentagem_cpu,
-  //   dados.porcentagem_ram
-  //   FROM 
-  //   dados 
-  //   JOIN 
-  //   notebook ON dados.fkNotebook = notebook.idNotebook 
-  //   JOIN 
-  //   funcionario ON notebook.idNotebook = funcionario.idFuncionario 
-  //   ORDER BY 
-  //   funcionario.nome, notebook.idNotebook;`;
-  
-  //   return database.executar(instrucaoSql);
-  // }
-
  function plotarGrafico() {
   var instrucaoSql = `SELECT funcionario.nome, t1.processos, t1.fkNotebook, t1.porcentagem_cpu, t1.porcentagem_ram
     FROM dados AS t1
@@ -49,11 +30,18 @@ function ultimosDados() {
   
     return database.executar(instrucaoSql);
   }
+
+  function chamarIdNotebook(nomeFuncionario) {
+    var instrucaoSql = `select fkNotebook as idNotebook from funcionario where funcionario.nome = "${nomeFuncionario}"`;
+  
+    return database.executar(instrucaoSql);
+  }
   
 
 
 module.exports = {
     processos, 
     ultimosDados,
-    plotarGrafico
+    plotarGrafico,
+    chamarIdNotebook
 };
