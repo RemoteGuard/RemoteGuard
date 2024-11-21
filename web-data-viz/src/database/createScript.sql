@@ -173,3 +173,11 @@ COUNT(idAlerta) as FreqAlertas
 FROM alerta WHERE fkNotebook = 4
 AND dataHora >= CURDATE() - INTERVAL 7 DAY
 GROUP BY DATE_FORMAT(dataHora, '%W');
+
+
+
+SELECT
+    COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
+    COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
+FROM alerta GROUP BY DATE(dataHora);
+

@@ -100,6 +100,19 @@ function buscarDados(req, res) {
     });
 }
 
+function obterDadosRegressao(req, res) {
+    alertasModel.obterDadosRegressao().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     buscarEmpresaDoGerenteLogado,
     listarFuncionarios,
@@ -108,5 +121,6 @@ module.exports = {
     exibirTotalAlertasProcessos,
     exibirMediaAlertas,
     exibirRankingFuncionarios,
-    buscarDados
+    buscarDados,
+    obterDadosRegressao
 }

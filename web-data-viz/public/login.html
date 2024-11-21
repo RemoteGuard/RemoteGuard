@@ -50,6 +50,8 @@
 <script>
     var teste = [];
     var cargo = "";
+    var nome = "";
+    var empresa = "";
     var tentativas = 3;
     var sendEmail = '';
     var sendSenha = '';
@@ -67,7 +69,8 @@
     }
 
 
-    var cargo = "";
+
+
 
     function autenticar() {
         var email = input_email.value;
@@ -92,7 +95,7 @@
                 resposta.json().then(json => {
                     sessionStorage.EMAIL_USUARIO = email;
                     sessionStorage.ID_USUARIO = json.idFuncionario;
-
+                    sessionStorage.setItem('NOME_USUARIO', json.nome);
                     fetch("/usuarios/chamar_usuario", {
                         method: "POST",
                         headers: {
@@ -106,12 +109,8 @@
                             resposta.json().then(json => {
                                 var usuario = json.resultado[0];
                                 cargo = usuario.cargo;
-
-                                // Armazenando dados adicionais no sessionStorage
-                                sessionStorage.setItem('NOME_USUARIO', usuario.nome);
-                                sessionStorage.setItem('EMPRESA_USUARIO', usuario.empresa);
-                                sessionStorage.setItem('CARGO_USUARIO', usuario.cargo);
-
+                                nome = usuario.nome;
+                                empresa = usuario.empresa;
                                 if (cargo === "gerente") {
                                     setTimeout(() => {
                                         window.location.href = "./dashboard/DashGerente.html";
