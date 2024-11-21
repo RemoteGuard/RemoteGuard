@@ -10,6 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <script
+        src="https://cdn.anychart.com/samples/scatter-charts/combination-of-line-and-marker-charts/data.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/themes/dark_earth.min.js"></script>
+    <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+
 </head>
 
 <body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas(), exibirRankingFuncionarios()">
@@ -77,9 +86,9 @@
                 </select>
                 <div class="metricas-funcionario">
                     <div id="grafico" class="grafico">
-
+                        <span style="font-size: 16px; display: inline-block; margin-top: 120px; width: 500px; margin-left: -40px; color: red;">É necessário selecionar um funcionário para visualizar estes dados</span>
                     </div>
-                    <div class="cards">
+                    <div id="cards" class="cards" style="display: none;">
                         <div class="card">
                             <h1>TOTAL DE ALERTAS SEMANAIS (hardware)</h1>
                             <span id="totalAlertasHw"></span>
@@ -217,6 +226,9 @@
     }
 
     function exibirTotalAlertasHardware() {
+        cards.style.display = 'flex'
+
+
         fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}`, {
             method: "GET",
             headers: {
@@ -262,8 +274,6 @@
             }
         }).then(function (resposta) {
 
-            console.log("Estou no then do exibirMediaAlertas")
-
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
                     var dados = resposta[0];
@@ -280,7 +290,6 @@
                 "Content-Type": 'application\json'
             }
         }).then(function (resposta) {
-            console.log("Estou no then do listar")
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
                     for (var index = 0; index < resposta.length; index++) {
@@ -324,106 +333,178 @@
     }
 
     function plotarGrafico(resposta) {
-    let labels = [];
-    let data = [];
-    
-    for (let i = 0; i < resposta.length; i++) {
-        var registro = resposta[i];
-        labels.push(registro.DiaSemana); 
-        data.push(registro.FreqAlertas); 
-    }
+        let labels = [];
+        let data = [];
 
-    var options = {
-        series: [{
-            name: 'Frequência de alertas',
-            data: data,
-            title: 'Frequência de alertas por dia da semana'
-        }],
-        chart: {
-            type: 'bar',
-            height: 300
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
+        for (let i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            labels.push(registro.DiaSemana);
+            data.push(registro.FreqAlertas);
+        }
+
+        var options = {
+            series: [{
+                name: 'Frequência de alertas',
+                data: data,
+                title: 'Frequência de alertas por dia da semana'
+            }],
+            chart: {
+                type: 'bar',
+                height: 300
             },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        colors: ['#FFD700'], 
-        xaxis: {
-            categories: labels, 
-            labels: {
-                style: {
-                    colors: '#D3D3D3', 
-                    fontSize: '11px'
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            colors: ['#FFD700'],
+            xaxis: {
+                categories: labels,
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '11px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#D3D3D3'
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#D3D3D3'
                 }
             },
-            axisBorder: {
-                show: true,
-                color: '#D3D3D3' 
-            },
-            axisTicks: {
-                show: true,
-                color: '#D3D3D3' 
-            }
-        },
-        yaxis: {
-            labels: {
-                style: {
-                    colors: '#D3D3D3', 
-                    fontSize: '12px'
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '12px'
+                    }
+                },
+                title: {
+                    text: 'Frequência',
+                    style: {
+                        color: '#D3D3D3',
+                    }
                 }
+            },
+            fill: {
+                opacity: 1
             },
             title: {
-                text: 'Frequência',
+                text: 'Frequência de alertas por dia da semana',
+                align: 'center',
+                margin: 10,
+                offsetY: 10,
                 style: {
-                    color: '#D3D3D3', 
+                    fontSize: '14px',
+                    color: '#D3D3D3'
                 }
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        title: {
-            text: 'Frequência de alertas por dia da semana', 
-            align: 'center', 
-            margin: 10, 
-            offsetY: 10, 
-            style: {
-                fontSize: '14px',
-                color: '#D3D3D3'
-            }
-        },
-        tooltip: {
-            theme: 'dark', 
-            style: {
-                fontSize: '14px', 
-                color: '#FFFFFF' 
             },
-            y: {
-                formatter: function (val) {
-                    return val + " alertas";
+            tooltip: {
+                theme: 'dark',
+                style: {
+                    fontSize: '14px',
+                    color: '#FFFFFF'
+                },
+                y: {
+                    formatter: function (val) {
+                        return val + " alertas";
+                    }
                 }
-            }
-        },
-    };
+            },
+        };
 
-    var chart = new ApexCharts(document.querySelector("#myChartCanvas"), options);
-    chart.render();
+        var chart = new ApexCharts(document.querySelector("#myChartCanvas"), options);
+        chart.render();
+    }
+
+
+    function obterDadosRegressao() {
+    return fetch(`/alertas/obterDadosRegressao/`, {
+        method: "GET",
+        cache: 'no-store',
+        headers: {
+            "Content-Type": 'application/json'
+        }
+    }).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.error('Nenhum dado encontrado ou erro na API');
+            return [];
+        }
+    }).catch(function (error) {
+        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+        return [];
+    });
 }
 
+function calcularRegressaoLinear(x, y) {
+    const n = x.length;
+    const somaX = x.reduce((acc, val) => acc + val, 0);
+    const somaY = y.reduce((acc, val) => acc + val, 0);
+    const somaXY = x.reduce((acc, val, i) => acc + val * y[i], 0);
+    const somaX2 = x.reduce((acc, val) => acc + val * val, 0);
 
+    const m = (n * somaXY - somaX * somaY) / (n * somaX2 - somaX * somaX);
+    const b = (somaY - m * somaX) / n;
 
+    return { m, b };
+}
 
+anychart.onDocumentReady(function () {
+    obterDadosRegressao().then((resposta) => {
+        let alertasHW = [];
+        let alertasProcessos = [];
 
+        for (let i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            alertasHW.push(registro.alertasHardware);
+            alertasProcessos.push(registro.alertasProcessos);
+        }
 
+        // Calcular a linha de regressão
+        const { m, b } = calcularRegressaoLinear(alertasProcessos, alertasHW);
+
+        // Gerar os pontos da linha de regressão
+        const xMin = Math.min(...alertasProcessos);
+        const xMax = Math.max(...alertasProcessos);
+        const linhaRegressao = [
+            { x: 0, value: b }, // Ponto de interceptação no eixo Y
+            { x: xMax, value: m * xMax + b }
+        ];
+
+        anychart.theme('darkEarth');
+        var chart = anychart.scatter();
+        chart.animation(true);
+        chart.title('Frequência de alertas de hardware em função da frequência de processos indevidos');
+
+        chart.xScale().minimum(0).maximum(xMax + 5).ticks({ interval: 5 });
+        chart.yScale().minimum(Math.min(...alertasHW) - 10).maximum(Math.max(...alertasHW) + 10).ticks({ interval: 10 });
+
+        chart.yAxis().title('Frequência - alertas de hardware');
+        chart
+            .xAxis()
+            .title('Frequência - alertas de processos')
+
+        var marker = chart.marker(alertasProcessos.map((x, i) => ({ x: x, value: alertasHW[i] })));
+        marker.type('triangle-up').size(4);
+        marker
+            .hovered()
+            .fill('gold')
+
+        var line = chart.line(linhaRegressao);
+        line.stroke({ color: '#FFD700', thickness: 2 });
+
+        chart.container('chart-container2-5');
+        chart.draw();
+    });
+});
 </script>
