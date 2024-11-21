@@ -39,10 +39,22 @@ function ultimosDados(req, res) {
       )
   }
 
-
+  function chamarIdNotebook(req, res) {
+    var nomeFuncionario = req.body.nomeFuncionario
+  
+    renanModel.chamarIdNotebook(nomeFuncionario)
+      .then(
+        function (resultado) {
+          res.json({
+            resultado
+          });
+        }
+      )
+  }
   
 module.exports = {
     processos,
     ultimosDados,
-    plotarGrafico
+    plotarGrafico,
+    chamarIdNotebook
 }

@@ -14,4 +14,8 @@ router.post("/ultimosDados", function (req, res) {
 router.post("/plotarGrafico", function (req, res) {
     renanController.plotarGrafico(req, res);
 })
+
+router.post("/chamarIdNotebook", function (req, res) {
+    renanController.chamarIdNotebook(req, res);
+})
 module.exports = router;
