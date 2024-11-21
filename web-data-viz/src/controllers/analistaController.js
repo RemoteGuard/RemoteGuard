@@ -129,8 +129,7 @@ function listarInformacaoesNotebook(req, res) {
                     modelo: resultado[0].modelo,
                     memoriaRAM: resultado[0].memoriaRAM,
                     processador: resultado[0].processador,
-                    qtdDiscos: resultado[0].qtdDiscos,
-                    tamanhoTotal: resultado[0].tamanhoTotal
+                    total_disco: resultado[0].total_disco
                 });
             }
         })

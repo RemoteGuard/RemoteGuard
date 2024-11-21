@@ -86,17 +86,21 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_ram FLOAT,
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
+    total_disco DOUBLE,
     processos INT,
     boot_time DATETIME,
 	numero_nucleos INT, 
     media_ponderada DOUBLE,
-    tempo_alerta_cpu Double ,
+    tempo_alerta_cpu DOUBLE,
     tempo_alerta_ram DOUBLE,
     tempo_alerta_disco DOUBLE,
 	data_captura timestamp DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fkNotebookDados FOREIGN KEY (fkNotebook) 
         REFERENCES notebook(idNotebook)
 );
+
+Select porcentagem_cpu,porcentagem_ram,porcentagem_disco,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco from dados where fkNotebook =1 order by data_captura desc limit 1;
+
 
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
 ('notebook1', 'Dell', 'XPS 13', 16, 'Intel Core i7'),
@@ -112,7 +116,7 @@ SELECT porcentagem_ram FROM dados WHERE fkNotebook = 1;
 
 INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
 VALUES 
-('analista', 'João Silva', '12345678901', 'joao.silva@empresa.com', 'senha123', 1, 1);
+('Analista De Sitemas', 'João Silva', '12345678901', 'joao.silva@empresa.com', 'senha123', 1, 1);
 
 INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
 ('notebook4', 'HP', 'Pavilion', 8, 'AMD Ryzen 5'),
@@ -121,11 +125,12 @@ INSERT INTO notebook (hostname, marca, modelo, memoriaRAM, processador) VALUES
 
 INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook)
 VALUES 
-('analista', 'Maria Santos', '12345678902', 'maria.santos@empresa.com', 'senha123', 1, 2),
-('supervisor', 'Carlos Oliveira', '12345678903', 'carlos.oliveira@empresa.com', 'senha123', 2, 3),
-('gerente', 'Ana Costa', '12345678904', 'ana.costa@empresa.com', 'senha123', 2, 4),
-('analista', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
-('assistente', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
+
+('Analista De Sistemas', 'Maria Santos', '12345678902', 'maria.santos@empresa.com', 'senha123', 1, 2),
+('Analista De Sistemas', 'Carlos Oliveira', '12345678903', 'carlos.oliveira@empresa.com', 'senha123', 2, 3),
+('Analista De Sistemas', 'Ana Costa', '12345678904', 'ana.costa@empresa.com', 'senha123', 2, 4),
+('Analista De Sistemas', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
+('Analista De Sistemas', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
 
 
     
@@ -171,10 +176,28 @@ VALUES
 
 Alter table dados add column escrita_disco Double;
 
-insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,processos,fkNotebook) values
-(80,15,50,70,3);
+insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,processos,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco,fkNotebook) values
+(83,100,100,70,2,2,2,1);
 
+
+ SELECT 
+		ROUND(AVG(porcentagem_cpu)) AS media_cpu, 
+      ROUND(AVG(porcentagem_ram)) AS media_ram, 
+      ROUND(AVG(porcentagem_disco)) AS media_disco
+    FROM dados;
+SELECT 
+    ROUND(porcentagem_cpu), 
+    ROUND(porcentagem_ram), 
+    ROUND(porcentagem_disco) 
+FROM dados
+WHERE fkNotebook = 1 Order by data_captura Desc Limit 1  ;
 
 SELECT n.idNotebook, f.nome AS nomeFuncionario
 FROM notebook n
 JOIN funcionario f ON n.idNotebook = f.fkNotebook;
+
+    SELECT 
+          AVG(porcentagem_cpu) AS media_cpu,
+          AVG(porcentagem_ram) AS media_ram,
+          AVG(porcentagem_disco) AS media_disco
+      FROM dados;
