@@ -4,26 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/css-renan.css">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
-    <div id="div_alerta"></div>
-    Funcionarios com os computadores em PERIGO: (utilização maior que 90%)
-    <div id="div_card_perigo"></div>
-    Funcionarios com os computadores em ALERTA: (utilização maior que 95%)
-    <div id="div_card_urgencia"></div>
-    Funcionarios em possivel inatividade: (utilização menor que 30%)
-    <div id="div_card_inatividade"></div>
+    <div class="processosEfuncionarios">
+        <div class="div_processos">
+            <h2>Processos mais utilizados</h2>
+            <div id="div_alerta"></div>
+        </div>
+        <div class="div_funcionarios">
+            <span>Funcionarios com os computadores em PERIGO: (utilização maior que 90%)</span>
+            <div id="div_card_perigo"></div>
+            <span>Funcionarios com os computadores em ALERTA: (utilização maior que 95%)</span>
+            <div id="div_card_urgencia"></div>
+            <span>Funcionarios em possivel inatividade: (utilização menor que 30%)</span>
+            <a href="">
+                <div id="div_card_inatividade">
+            </a>
+        </div>
+    </div>
+    </div>
 
     <canvas id="myChart" width="100" height="40"></canvas>
 </body>
 <script>
     const requisicaoPadrao = "";
     function trazerProcessos() {
-        let qtdProcessos = [] 
+        let qtdProcessos = []
         var nomeFuncionarios = []
         let porcentagensCpu = []
         let porcentagensRam = []
@@ -105,18 +116,36 @@
                             vetorInatividade.push(json.resultado[i].nome)
                         }
                     }
-                    div_card_inatividade.innerHTML = ""
-                    div_card_perigo.innerHTML = ""
-                    div_card_urgencia.innerHTML = ""
-                    for (var i = 0; i < vetorPerigo.length; i++) {
-                        div_card_perigo.innerHTML += vetorPerigo[i] + '<br>'
+
+                    const perigoContainer = document.getElementById('div_card_perigo');
+                    const urgenciaContainer = document.getElementById('div_card_urgencia');
+                    const inatividadeContainer = document.getElementById('div_card_inatividade');
+
+                    inatividadeContainer.innerHTML = '';
+                    urgenciaContainer.innerHTML = '';
+                    perigoContainer.innerHTML = '';
+
+
+                    function adicionarNomesAoCard(container, nomes) {
+                        nomes.forEach(nome => {
+                            const card = document.createElement('div');
+                            card.classList.add('card'); // Classe de estilo
+                            card.textContent = nome;
+
+                            // Adiciona evento de clique para redirecionar
+                            card.addEventListener('click', () => {
+                                sessionStorage.setItem('funcionarioSelecionado', nome);
+                                window.location.href = "DashAnalista.html";
+                            });
+
+                            container.appendChild(card);
+                        });
                     }
-                    for (var i = 0; i < vetorUrgencia.length; i++) {
-                        div_card_urgencia.innerHTML += vetorUrgencia[i] + '<br>'
-                    }
-                    for (var i = 0; i < vetorInatividade.length; i++) {
-                        div_card_inatividade.innerHTML += vetorInatividade[i] + '<br>'
-                    }
+
+
+                    adicionarNomesAoCard(inatividadeContainer, vetorInatividade);
+                    adicionarNomesAoCard(urgenciaContainer, vetorUrgencia);
+                    adicionarNomesAoCard(perigoContainer, vetorPerigo);
                     setTimeout(trazerDados, 2000)
 
                 });
@@ -159,8 +188,9 @@
                     porcentagensRam = porcentagensRamMetrica
                     porcentagensCpu = porcentagensCpuMetrica
                     qtdProcessos = qtdProcessosMetrica
-                   
+
                     carregarGrafico()
+                    setTimeout(plotarGrafico, 10000)
 
                 });
             } else {
@@ -171,7 +201,7 @@
         });
     }
 
-   let myChart;
+    let myChart;
     function carregarGrafico() {
         const funcionarios = [...new Set(nomeFuncionarios)];
 
@@ -286,72 +316,72 @@
     //         },
     //     });
     //     chart.render();
-        // const finalSeries = seriesData.reduce((t, v) => (t[0].data.push([v.data[0].x, v.data[0].y, v.data[0].z]), t), [{ name: "pessoas", data: [] }]);
+    // const finalSeries = seriesData.reduce((t, v) => (t[0].data.push([v.data[0].x, v.data[0].y, v.data[0].z]), t), [{ name: "pessoas", data: [] }]);
 
-        // const chart = new ApexCharts(document.querySelector("#chart"), {
-        //     series: finalSeries,
-        //     chart: {
-        //         height: 350,
-        //         type: "bubble",
-        //     },
-        //     dataLabels: {
-        //         enabled: true,
-        //     },
-        //     fill: {
-        //         opacity: 1,
-        //     },
-        //     title: {
-        //         text: "Simple Bubble Chart",
-        //     },
-        //     xaxis: {
-        //         tickAmount: 12,
-        //         type: "category",
-        //     },
-        // });
-        // chart.render();
-        // console.log(seriesData)
-        // const options = {
-        //     chart: {
-        //         type: 'bubble',
-        //         height: 400,
-        //     },
-        //     series: seriesData,
-        //     xaxis: {
-        //         title: {
-        //             text: 'Porcentagem CPU (%)',
-        //         },
-        //     },
-        //     yaxis: {
-        //         title: {
-        //             text: 'Porcentagem RAM (%)',
-        //         },
-        //     },
-        //     tooltip: {
-        //         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-        //             const point = w.config.series[seriesIndex].data[dataPointIndex];
-        //             return `
-        //                     <div style="padding: 10px; border: 1px solid #ccc; background: white;">
-        //                         <strong>${w.config.series[seriesIndex].name}</strong><br>
-        //                         CPU: ${point.x}%<br>
-        //                         RAM: ${point.y}%<br>
-        //                         Processos: ${point.z * 150}
-        //                     </div>`;
-        //         }
-        //     },
-        // };
+    // const chart = new ApexCharts(document.querySelector("#chart"), {
+    //     series: finalSeries,
+    //     chart: {
+    //         height: 350,
+    //         type: "bubble",
+    //     },
+    //     dataLabels: {
+    //         enabled: true,
+    //     },
+    //     fill: {
+    //         opacity: 1,
+    //     },
+    //     title: {
+    //         text: "Simple Bubble Chart",
+    //     },
+    //     xaxis: {
+    //         tickAmount: 12,
+    //         type: "category",
+    //     },
+    // });
+    // chart.render();
+    // console.log(seriesData)
+    // const options = {
+    //     chart: {
+    //         type: 'bubble',
+    //         height: 400,
+    //     },
+    //     series: seriesData,
+    //     xaxis: {
+    //         title: {
+    //             text: 'Porcentagem CPU (%)',
+    //         },
+    //     },
+    //     yaxis: {
+    //         title: {
+    //             text: 'Porcentagem RAM (%)',
+    //         },
+    //     },
+    //     tooltip: {
+    //         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+    //             const point = w.config.series[seriesIndex].data[dataPointIndex];
+    //             return `
+    //                     <div style="padding: 10px; border: 1px solid #ccc; background: white;">
+    //                         <strong>${w.config.series[seriesIndex].name}</strong><br>
+    //                         CPU: ${point.x}%<br>
+    //                         RAM: ${point.y}%<br>
+    //                         Processos: ${point.z * 150}
+    //                     </div>`;
+    //         }
+    //     },
+    // };
 
-        // // Renderizar o gráfico apenas se ele não existir
-        // if (!chart) {
-        //     chart = new ApexCharts(document.querySelector("#myChart"), options);
-        //     chart.render().then(() => {
-        //         console.log("Gráfico renderizado com sucesso!");
-        //     }).catch((error) => {
-        //         console.error("Erro ao renderizar o gráfico:", error);
-        //     });
-        // }
-        // else {
-        //     atualizarGrafico()
-        // }
+    // // Renderizar o gráfico apenas se ele não existir
+    // if (!chart) {
+    //     chart = new ApexCharts(document.querySelector("#myChart"), options);
+    //     chart.render().then(() => {
+    //         console.log("Gráfico renderizado com sucesso!");
+    //     }).catch((error) => {
+    //         console.error("Erro ao renderizar o gráfico:", error);
+    //     });
+    // }
+    // else {
+    //     atualizarGrafico()
+    // }
     // }
 
     // Função para atualizar o gráfico
@@ -377,10 +407,6 @@
     //         console.error("Gráfico não inicializado! Certifique-se de chamar carregarGrafico primeiro.");
     //     }
     // }
-
-
-
-
 </script>
 
 </html>
