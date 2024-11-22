@@ -3,6 +3,7 @@ var analistaModel = require("../models/analistaModel");
 
 
 function listarNotebooks(req, res) {
+   
     analistaModel.listarNotebook()
         .then(resultado => {
             if (resultado.length > 0) {
@@ -51,7 +52,6 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
 
 function listarDadosBarra(req, res) {
     var fkNotebookBase = req.body.fkNotebookBase;
-
     Promise.all([
         analistaModel.listarDadosPorNotebook(fkNotebookBase),
         analistaModel.listarDadosMediaPorNotebooks() 
@@ -81,7 +81,7 @@ function listarDadosBarra(req, res) {
 }
 
   function listarNomeResponsavel(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarNomeResponsavel(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
@@ -93,7 +93,7 @@ function listarDadosBarra(req, res) {
   }
   
   function listarQuantidadeProcessos(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarQuantidadeProcessos(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
@@ -104,7 +104,7 @@ function listarDadosBarra(req, res) {
 }
 
 function listarInformacaoesFuncionario(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarInformacaoesFuncionario(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
@@ -119,7 +119,7 @@ function listarInformacaoesFuncionario(req, res) {
 }
 
 function listarInformacaoesNotebook(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarInformacaoesNotebook(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
@@ -136,7 +136,7 @@ function listarInformacaoesNotebook(req, res) {
 }
 
 function listarNumeroNucleos(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarNumeroNucleos(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
@@ -146,7 +146,7 @@ function listarNumeroNucleos(req, res) {
 }
 
 function listarMediaPonderada(req, res) {
-    const { fkNotebook } = req.body;
+    var fkNotebook = req.body.fkNotebook;
     analistaModel.listarMediaPonderada(fkNotebook)
     .then(resultado => {
         if (resultado.length > 0) {
@@ -155,7 +155,7 @@ function listarMediaPonderada(req, res) {
         })
             }
             function listarRecursoAlerta(req, res) {
-                const { fkNotebook } = req.body;  
+                var fkNotebook = req.body.fkNotebook;
                 analistaModel.listarRecursoAlerta(fkNotebook)
                     .then(resultado => {
                         if (resultado.length > 0) {
@@ -181,10 +181,6 @@ function listarMediaPonderada(req, res) {
                         } else {
                             res.json({ recurso_alerta: [] });  
                         }
-                    })
-                    .catch(error => {
-                        console.error("Erro ao listar alertas de recurso:", error);
-                        res.status(500).json({ error: "Erro no servidor." });
                     });
             }
             
