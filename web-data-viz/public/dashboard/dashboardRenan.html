@@ -134,7 +134,7 @@
 
                             // Adiciona evento de clique para redirecionar
                             card.addEventListener('click', () => {
-                                var usuarioNome = nome
+                               var nomeUsuario = nome
 
                                 fetch("/renan/chamarIdNotebook", {
 
@@ -143,7 +143,7 @@
                                         "Content-Type": "application/json"
                                     },
                                     body: JSON.stringify({
-                                         nomeFuncionario : usuarioNome
+                                         nomeFuncionario : nomeUsuario
                                         })
                                 }).then(function (resposta) {
                                     if (resposta.ok) {

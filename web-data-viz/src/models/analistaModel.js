@@ -1,6 +1,7 @@
 var database = require("../database/config");
 
 
+
   function listarNotebook() {
     const instrucaoSql = `SELECT n.idNotebook, f.nome AS nomeFuncionario
 FROM notebook n
@@ -22,7 +23,13 @@ function listarPorcentagemCPUPorNotebook(fkNotebook) {
 }
 
 function listarPorcentagemDiscoPorNotebook(fkNotebook) {
-  var instrucaoSql = `SELECT porcentagem_disco, data_captura FROM dados WHERE fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;`;
+  var instrucaoSql = `SELECT dados.porcentagem_disco, dados.data_captura, armazenamento.total_disco
+  FROM dados
+  JOIN armazenamento ON dados.fkNotebook = armazenamento.fkNotebook
+  WHERE dados.fkNotebook = ${fkNotebook}
+  ORDER BY dados.data_captura DESC
+  LIMIT 1;
+  `;
   return database.executar(instrucaoSql);
 }
 
@@ -73,7 +80,7 @@ function  listarInformacaoesFuncionario(fkNotebook) {
 function listarInformacaoesNotebook(fkNotebook) {
   const instrucaoSql = `
     SELECT 
-    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.qtdDiscos, a.tamanhoTotal 
+    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.total_disco 
     FROM 
     notebook n JOIN  armazenamento a ON n.idNotebook = ${fkNotebook} WHERE  a.fkNotebook = ${fkNotebook};  
   `;
@@ -82,7 +89,7 @@ function listarInformacaoesNotebook(fkNotebook) {
 
 function listarNumeroNucleos(fkNotebook) {
   const instrucaoSql = `
-SELECT numero_nucleos from dados where fkNotebook =${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
+SELECT numero_nucleos from dados where fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
   `;
   return database.executar(instrucaoSql, [fkNotebook]);
 }
