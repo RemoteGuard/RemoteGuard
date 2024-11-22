@@ -1,6 +1,7 @@
 var database = require("../database/config");
 
 
+
   function listarNotebook() {
     const instrucaoSql = `SELECT n.idNotebook, f.nome AS nomeFuncionario
 FROM notebook n
@@ -88,7 +89,7 @@ function listarInformacaoesNotebook(fkNotebook) {
 
 function listarNumeroNucleos(fkNotebook) {
   const instrucaoSql = `
-SELECT numero_nucleos from dados where fkNotebook =${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
+SELECT numero_nucleos from dados where fkNotebook = ${fkNotebook} ORDER BY data_captura DESC LIMIT 1;
   `;
   return database.executar(instrucaoSql, [fkNotebook]);
 }

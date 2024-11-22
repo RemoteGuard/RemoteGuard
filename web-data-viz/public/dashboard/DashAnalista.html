@@ -167,9 +167,9 @@
     cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
-    const fkNotebook = 1;
+   var fkNotebook =sessionStorage.FK_NOTEBOOK;
 
-    function buscarNomeResponsavel(fkNotebook) {
+    function buscarNomeResponsavel() {
       fetch("/analista/listarNomeResponsavel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
