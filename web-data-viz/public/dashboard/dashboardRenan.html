@@ -134,7 +134,7 @@
 
                             // Adiciona evento de clique para redirecionar
                             card.addEventListener('click', () => {
-                                sessionStorage.setItem('NOME_USUARIO', nome);
+                                var usuarioNome = nome
 
                                 fetch("/renan/chamarIdNotebook", {
 
@@ -143,7 +143,7 @@
                                         "Content-Type": "application/json"
                                     },
                                     body: JSON.stringify({
-                                         nomeFuncionario : sessionStorage.NOME_USUARIO
+                                         nomeFuncionario : usuarioNome
                                         })
                                 }).then(function (resposta) {
                                     if (resposta.ok) {
