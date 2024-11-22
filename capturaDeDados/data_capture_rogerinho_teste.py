@@ -14,8 +14,8 @@ def connect_to_mysql():
         connection = mysql.connector.connect(
             host='localhost',
             database='remote_guard',
-            user='root',
-            password='192719'
+            user='aluno',
+            password='sptech'
         )
         if connection.is_connected():
             print("Conexão com o MySQL bem-sucedida.")
@@ -36,7 +36,7 @@ def get_cpu_data():
 def get_ram_data():
     ram_data = psutil.virtual_memory()._asdict()
     ram_usage_bytes = ram_data['used']
-    ram_usage_percentage = ram_data['percent']
+    ram_usage_percentage = ram_data['percent']*100  
     return ram_usage_bytes, ram_usage_percentage
 
 def get_disk_data():
