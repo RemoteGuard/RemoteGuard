@@ -47,12 +47,18 @@ CREATE TABLE IF NOT EXISTS funcionario (
 CREATE TABLE IF NOT EXISTS armazenamento (
     idArmazenamento INT AUTO_INCREMENT,
     qtdDiscos INT,
-    tamanhoTotal INT NOT NULL, 
+    total_disco DOUBLE NOT NULL, 
     fkNotebook INT,
     CONSTRAINT pkArmazenamento PRIMARY KEY (idArmazenamento),
     CONSTRAINT fkNotebookArmazenamento FOREIGN KEY (fkNotebook) 
         REFERENCES notebook(idNotebook)
 );
+
+
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS controleFluxo (
     idControleFluxo INT AUTO_INCREMENT,
@@ -86,8 +92,7 @@ CREATE TABLE IF NOT EXISTS dados (
     porcentagem_ram FLOAT,
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
-    total_disco DOUBLE,
-    processos INT,
+    qtdprocessos INT,
     boot_time DATETIME,
 	numero_nucleos INT, 
     media_ponderada DOUBLE,
@@ -148,13 +153,13 @@ SELECT * FROM armazenamento;
 SELECT * FROM processos;
 SELECT * FROM dados;
 
-SELECT processos, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY   data_captura DESC  LIMIT 1;
+SELECT qtdprocessos, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY   data_captura DESC  LIMIT 1;
 
 SELECT porcentagem_ram, data_captura FROM dados WHERE fkNotebook =  1 ORDER BY data_captura DESC LIMIT 10;
 
 SELECT numero_nucleos from dados where fkNotebook =4 ORDER BY data_captura DESC LIMIT 1;
    SELECT 
-    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.qtdDiscos, a.tamanhoTotal
+    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.qtdDiscos, a.total_disco
 FROM 
     notebook n
 JOIN 
@@ -162,21 +167,18 @@ JOIN
 WHERE 
     a.fkNotebook = 2;  
 
-    INSERT INTO armazenamento (qtdDiscos, tamanhoTotal, fkNotebook) VALUES 
-(2, 500, 1), 
-(3, 1000, 2),
-(1, 256, 3);  
+
 
 
 SELECT idNotebook FROM notebook;
-INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos, boot_time, numero_nucleos)
+INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, qtdprocessos, boot_time, numero_nucleos)
 VALUES
     (2, 0.5, 25.3, 8388608, 60.4, 500000000, 45.0, 150, '2024-11-10 08:30:00', 4),
     (4, 0.8, 35.2, 16384000, 70.8, 1000000000, 60.0, 200, '2024-11-10 08:35:00', 8);
 
-Alter table dados add column escrita_disco Double;
 
-insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,processos,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco,fkNotebook) values
+
+insert into dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,qtdprocessos,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco,fkNotebook) values
 (83,100,100,70,2,2,2,1);
 
 
@@ -201,3 +203,12 @@ JOIN funcionario f ON n.idNotebook = f.fkNotebook;
           AVG(porcentagem_ram) AS media_ram,
           AVG(porcentagem_disco) AS media_disco
       FROM dados;
+      
+  
+SELECT dados.porcentagem_disco, dados.data_captura, armazenamento.total_disco
+FROM dados
+JOIN armazenamento ON dados.fkNotebook = armazenamento.fkNotebook
+WHERE dados.fkNotebook = 1
+ORDER BY dados.data_captura DESC
+LIMIT 1;
+     

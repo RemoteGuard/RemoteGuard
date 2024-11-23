@@ -14,8 +14,8 @@ def connect_to_mysql():
         connection = mysql.connector.connect(
             host='localhost',
             database='remote_guard',
-            user='aluno',
-            password='sptech'
+            user='root',
+            password='192719'
         )
         if connection.is_connected():
             print("Conexão com o MySQL bem-sucedida.")
@@ -77,17 +77,17 @@ def get_weighted_system_usage(cpu_usage, ram_usage, disk_usage):
     return round(weighted_average, 2)
 
 def monitorar_tempo_alerta(cpu_usage, ram_usage, disk_usage, tempo_alerta):
-    if cpu_usage > 80:
+    if cpu_usage > 95:
         tempo_alerta['cpu'] += 2
     else:
         tempo_alerta['cpu'] = 0
 
-    if ram_usage > 80:
+    if ram_usage > 95:
         tempo_alerta['ram'] += 2
     else:
         tempo_alerta['ram'] = 0
 
-    if disk_usage > 80:
+    if disk_usage > 95:
         tempo_alerta['disk'] += 2
     else:
         tempo_alerta['disk'] = 0
@@ -98,7 +98,7 @@ def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
         sql = """INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
-                    bytes_disco, porcentagem_disco, processos, boot_time, 
+                    bytes_disco, porcentagem_disco, qtdprocessos, boot_time, 
                     fkNotebook, numero_nucleos, media_ponderada, tempo_alerta_cpu, 
                     tempo_alerta_ram, tempo_alerta_disco) 
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
