@@ -258,7 +258,19 @@
         .then(response => response.json())
         .then(data => {
           if (data.media_ponderada !== undefined) {
+            if (data.media_ponderada > 95) {
             document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`;
+            document.getElementById('mediaPonderada').style.color = "red";
+            }
+            else if (data.media_ponderada >= 50 && data.media_ponderada >50) {
+              document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess ">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`
+              document.getElementById('mediaPonderada').style.color = "yellow";
+              }
+              else
+              {
+                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`
+                document.getElementById('mediaPonderada').style.color = "green";  
+                }
           }
         });
     }
@@ -392,13 +404,13 @@
         plotOptions: {
           pie: {
             donut: {
-              size: '70%', // Tamanho do gráfico donut
+              size: '70%',
             },
           },
         },
         dataLabels: {
           enabled: true,
-          formatter: (val) => `${val.toFixed(0)}%`, // Exibe percentual nas fatias
+          formatter: (val) => `${val.toFixed(0)}%`,
           style: {
             fontSize: '14px',
             fontWeight: 'bold',
@@ -411,10 +423,10 @@
             {
               x: '44%',
               y: '55%',
-              text: `${total_disco} GB`, // Exibe o valor total no centro
+              text: `${total_disco} GB`, 
               textAnchor: 'middle',
               dominantBaseline: 'middle',
-              fontSize: '25px', // Tamanho maior das letras
+              fontSize: '25px', 
               fontWeight: 'bold',
               foreColor: '#FFFFFF',},
           ],
