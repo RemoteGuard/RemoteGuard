@@ -601,11 +601,16 @@
 
           const alertasValidos = data.recurso_alerta.filter(alerta => alerta.tempoEmAlerta > 0);
 
-          if (alertasValidos.length === 0) {
-            document.getElementById("alerta-container").classList.add("oculto");
-          } else {
-            exibirAlertas(alertasValidos);
+          const alertaContainer = document.getElementById("alerta-container");
+          if (alertaContainer) { 
+            if (alertasValidos.length === 0) {
+              alertaContainer.style.display = "none";
+            } else {
+              exibirAlertas(alertasValidos);
+              alertaContainer.style.display = "block";
+            }
           }
+  
         });
     }
 
