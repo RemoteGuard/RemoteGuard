@@ -129,7 +129,7 @@
                     function adicionarNomesAoCard(container, nomes) {
                         nomes.forEach(nome => {
                             const card = document.createElement('div');
-                            card.classList.add('card'); // Classe de estilo
+                            card.classList.add('card');
                             card.textContent = nome;
 
                             // Adiciona evento de clique para redirecionar
@@ -157,7 +157,6 @@
                                 }).catch(function (erro) {
                                     console.log(`#ERRO: ${erro}`);
                                 });
-
                                window.location.href = "DashAnalista.html";
                             });
 
@@ -235,201 +234,56 @@
                 {
                     x: porcentagensCpu[index],
                     y: porcentagensRam[index],
-                    r: qtdProcessos[index] / 150
-                }
+                    r: qtdProcessos[index] / 150,
+                },
             ],
-            backgroundColor: gerarCorAleatoria(),
-            borderColor: 'rgba(0, 123, 255, 1)'
+            backgroundColor: "rgba(40, 168, 83, 0.3)",
         }));
 
-        const ctx = document.getElementById('myChart').getContext('2d');
+        const data = {
+            datasets: datasets,
+        };
 
-        // Inicialização do gráfico
-        if (!myChart) {
-            myChart = new Chart(ctx, {
-                type: 'bubble',
-                data: {
-                    datasets: datasets
+        const config = {
+            type: "bubble",
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                var nomeFuncionario = context.dataset.label;
+                                var porcentagemCpu = context.raw.x;
+                                var porcentagemRam = context.raw.y;
+                                var qtdProcessos = context.raw.r;
+                                return `Nome: ${nomeFuncionario}, CPU: ${porcentagemCpu}%, RAM: ${porcentagemRam}%, Processos: ${qtdProcessos}`;
+                            },
+                        },
+                    },
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'top' },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.dataset.label || '';
-                                    const x = context.raw.x;
-                                    const y = context.raw.y;
-                                    const r = context.raw.r;
-                                    return `${label}: CPU = ${x}%, RAM = ${y}%, Processos = ${r * 150}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        } else {
-            // Atualização do gráfico
-            atualizarGrafico(datasets);
+                scales: {
+                    x: {
+                        min: 0,
+                        max: 100,
+                    },
+                    y: {
+                        min: 0,
+                        max: 100,
+                    },
+                },
+            },
+        };
+
+        if (myChart) {
+            myChart.destroy();
         }
+
+        myChart = new Chart(document.getElementById("myChart"), config);
     }
-
-    function atualizarGrafico(datasets) {
-        myChart.data.datasets.forEach((dataset, index) => {
-            dataset.data[0] = {
-                x: porcentagensCpu[index],
-                y: porcentagensRam[index],
-                r: qtdProcessos[index] / 150
-            };
-        });
-        myChart.update();
-    }
-
-    function gerarCorAleatoria() {
-        const letras = '0123456789ABCDEF';
-        let color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letras[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    // let chart;
-    // function gerarCorAleatoria() {
-    //     const letras = '0123456789ABCDEF';
-    //     let color = '#';
-    //     for (let i = 0; i < 6; i++) {
-    //         color += letras[Math.floor(Math.random() * 16)];
-    //     }
-    //     return color;
-    // }
-
-    // // Função para carregar o gráfico
-    // function carregarGrafico() {
-    //     var seriesData = nomeFuncionarios.map((funcionario, index) => ({
-    //         name: funcionario,
-    //         data: [
-    //             {
-    //                 x: porcentagensCpu[index],
-    //                 y: porcentagensRam[index],
-    //                 z: qtdProcessos[index] / 150
-    //             }
-    //         ]
-    //     }));
-
-    //     const chart = new ApexCharts(document.querySelector("#chart"), {
-    //         series: seriesData,
-    //         chart: {
-    //             height: 350,
-    //             type: "bubble",
-    //         },
-    //         dataLabels: {
-    //             enabled: true,
-    //         },
-    //         fill: {
-    //             opacity: 1,
-    //         },
-    //         title: {
-    //             text: "Simple Bubble Chart",
-    //         },
-    //         xaxis: {
-    //             tickAmount: 12,
-    //             type: "category",
-    //         },
-    //     });
-    //     chart.render();
-    // const finalSeries = seriesData.reduce((t, v) => (t[0].data.push([v.data[0].x, v.data[0].y, v.data[0].z]), t), [{ name: "pessoas", data: [] }]);
-
-    // const chart = new ApexCharts(document.querySelector("#chart"), {
-    //     series: finalSeries,
-    //     chart: {
-    //         height: 350,
-    //         type: "bubble",
-    //     },
-    //     dataLabels: {
-    //         enabled: true,
-    //     },
-    //     fill: {
-    //         opacity: 1,
-    //     },
-    //     title: {
-    //         text: "Simple Bubble Chart",
-    //     },
-    //     xaxis: {
-    //         tickAmount: 12,
-    //         type: "category",
-    //     },
-    // });
-    // chart.render();
-    // console.log(seriesData)
-    // const options = {
-    //     chart: {
-    //         type: 'bubble',
-    //         height: 400,
-    //     },
-    //     series: seriesData,
-    //     xaxis: {
-    //         title: {
-    //             text: 'Porcentagem CPU (%)',
-    //         },
-    //     },
-    //     yaxis: {
-    //         title: {
-    //             text: 'Porcentagem RAM (%)',
-    //         },
-    //     },
-    //     tooltip: {
-    //         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-    //             const point = w.config.series[seriesIndex].data[dataPointIndex];
-    //             return `
-    //                     <div style="padding: 10px; border: 1px solid #ccc; background: white;">
-    //                         <strong>${w.config.series[seriesIndex].name}</strong><br>
-    //                         CPU: ${point.x}%<br>
-    //                         RAM: ${point.y}%<br>
-    //                         Processos: ${point.z * 150}
-    //                     </div>`;
-    //         }
-    //     },
-    // };
-
-    // // Renderizar o gráfico apenas se ele não existir
-    // if (!chart) {
-    //     chart = new ApexCharts(document.querySelector("#myChart"), options);
-    //     chart.render().then(() => {
-    //         console.log("Gráfico renderizado com sucesso!");
-    //     }).catch((error) => {
-    //         console.error("Erro ao renderizar o gráfico:", error);
-    //     });
-    // }
-    // else {
-    //     atualizarGrafico()
-    // }
-    // }
-
-    // Função para atualizar o gráfico
-    // function atualizarGrafico(seriesData) {
-    //     var seriesData = nomeFuncionarios.map((funcionario, index) => ({
-    //         name: funcionario,
-    //         data: [
-    //             {
-    //                 x: porcentagensCpu[index],
-    //                 y: porcentagensRam[index],
-    //                 z: qtdProcessos[index] / 150
-    //             }
-    //         ]
-    //     }));
-
-    //     if (chart) {
-    //         chart.updateSeries(seriesData).then(() => {
-    //             console.log("Gráfico atualizado com sucesso!");
-    //         }).catch((error) => {
-    //             console.error("Erro ao atualizar o gráfico:", error);
-    //         });
-    //     } else {
-    //         console.error("Gráfico não inicializado! Certifique-se de chamar carregarGrafico primeiro.");
-    //     }
-    // }
 </script>
 
 </html>

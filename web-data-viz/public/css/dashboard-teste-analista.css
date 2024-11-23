@@ -220,10 +220,6 @@
       margin-left: 2.8%;
     }
 
-    .atencaoo{
-      width: 30px;
-      height: 30px;
-    }
   
   .controles select {
     background-color: #333;
@@ -580,7 +576,87 @@ justify-content: center;
 .alerta-item{
   text-align:center;
 }
+.atencaoo {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.atencao-box {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background-color: #ee0909;
+  border: 1px solid #000000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+  width: 250px;
+}
+
+.atencao-box p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+
+.popup {
+  display: none;
+
+  width: 600px;
+  height: 300px;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  height: 200px;
+  text-align: center;
+}
 
 
 
+.popup-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: black;
+}
+.close-button {
+  background-color: #0f1923;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s;
 
+}
+
+.close-button:hover {
+  background-color: #0f1923;
+}
+
+
+.buttom{
+  background-color: #202020;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: background-color 0.3s;
+  display: flex;
+  margin-left: 140px;
+}
+.buttom i {
+ color: #fcdf3b;
+  display: flex;
+
+ 
+}

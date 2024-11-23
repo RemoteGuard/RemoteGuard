@@ -8,36 +8,8 @@
   <link rel="stylesheet" href="../css/dashboard-teste-analista.css">
   <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<style>
- 
-
-  .atencaoo {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-  }
-
-  .atencao-box {
-    display: none;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    background-color: #ee0909;
-    border: 1px solid #000000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 1000;
-    width: 250px;
-  }
-
-  .atencao-box p {
-    margin: 0;
-    font-size: 14px;
-    color: #333;
-  }
-</style>
-
 <body>
   <header id="main-header">
     <div class="menu-icone" id="menu-icone">
@@ -89,10 +61,27 @@
     </div>
 
     <div class="status-boxes">
-      <div class="status-card"><span id="mediaPonderada" class="text-card"></span></div>
+      <div class="status-card">
+        <span id="mediaPonderada" class="text-card">
+          <button class="buttom" onclick="openPopup('popupMemoria')">
+            <i class="fa-solid fa-question"></i>
+          </button>
+        </span>
+        
+        <div id="popupMemoria" class="popup">
+          <div class="popup-content">
+            <p>
+              A saúde é baseada nos 3 recursos sendo eles: Memória, CPU e Disco Rígido. A saúde é calculada com base na média ponderada dos 3 recursos.
+              A CPU representa 40% da média ponderada, a Memória 30% e o Disco Rígido 30%.
+            </p>
+            <button class="close-button" onclick="closePopup('popupMemoria')">Fechar</button>
+          </div>
+        </div>
+    </div>
       <div class="status-card"><span id="quantidadeProcessos" class="text-card"></span></div>
       <div class="status-card"><span id="quantidadeNucleos" class="text-card"></span></div>
     </div>
+
 <div class="encapar">
     <div class="controles">
       <select id="recurso">
@@ -700,6 +689,17 @@
         atencaoBox.style.display = 'block';
       }
     });
+
+function openPopup(popupId) {
+  var popup = document.getElementById(popupId);
+  popup.style.display = "flex"; 
+}
+
+function closePopup(popupId) {
+  var popup = document.getElementById(popupId);
+  popup.style.display = "none"; 
+}
+
 
     carregarDadosIniciais();
 
