@@ -62,12 +62,6 @@
 
     <div class="status-boxes">
       <div class="status-card">
-        <span id="mediaPonderada" class="text-card">
-          <button class="buttom" onclick="openPopup('popupMemoria')">
-            <i class="fa-solid fa-question"></i>
-          </button>
-        </span>
-        
         <div id="popupMemoria" class="popup">
           <div class="popup-content">
             <p>
@@ -77,6 +71,13 @@
             <button class="close-button" onclick="closePopup('popupMemoria')">Fechar</button>
           </div>
         </div>
+        <span id="mediaPonderada" class="text-card">
+          <button class="buttom" onclick="openPopup('popupMemoria')">
+            <i class="fa-solid fa-question"></i>
+          </button>
+        </span>
+        
+     
     </div>
       <div class="status-card"><span id="quantidadeProcessos" class="text-card"></span></div>
       <div class="status-card"><span id="quantidadeNucleos" class="text-card"></span></div>
@@ -244,26 +245,40 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fkNotebook })
       })
+
+
+      
         .then(response => response.json())
         .then(data => {
+          
           if (data.media_ponderada !== undefined) {
             if (data.media_ponderada > 95) {
-            document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`;
-            document.getElementById('mediaPonderada').style.color = "red";
+                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                `<button class="buttom" onclick="openPopup('popupMemoria')">
+                  <i class="fa-solid fa-question"></i>
+                </button>`;
+                
+                document.getElementById('mediaPonderada').style.color = "red";
             }
-            else if (data.media_ponderada >= 50 && data.media_ponderada >50) {
-              document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess ">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`
-              document.getElementById('mediaPonderada').style.color = "yellow";
-              }
-              else
-              {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde  dos Recursos</p>` + data.media_ponderada + `%`
+            else if (data.media_ponderada >= 50 && data.media_ponderada <= 95) {
+                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                `<button class="buttom" onclick="openPopup('popupMemoria')">
+                  <i class="fa-solid fa-question"></i>
+                </button>`;
+                
+                document.getElementById('mediaPonderada').style.color = "yellow";
+            }
+            else {
+                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                `<button class="buttom" onclick="openPopup('popupMemoria')">
+                  <i class="fa-solid fa-question"></i>
+                </button>`;
+                
                 document.getElementById('mediaPonderada').style.color = "green";  
-                }
-          }
+            }
+        }
         });
-    }
-
+        }
     function definirRecurso(recursoSelecionado) {
       const endpoints = {
         ram: { endpoint: "/analista/listarPorcentagemRAM", label: "Memória RAM" },
@@ -690,15 +705,26 @@
       }
     });
 
-function openPopup(popupId) {
-  var popup = document.getElementById(popupId);
-  popup.style.display = "flex"; 
-}
-
-function closePopup(popupId) {
-  var popup = document.getElementById(popupId);
-  popup.style.display = "none"; 
-}
+    function openPopup(popupId) {
+      // Oculta o 'mediaPonderada' quando o popup é aberto
+      document.getElementById('mediaPonderada').style.display = 'none'; 
+      
+      var popup = document.getElementById(popupId);
+      popup.style.display = "flex";  // Exibe o popup com 'display: flex'
+    }
+    
+    function closePopup(popupId) {
+      // Exibe o 'mediaPonderada' no centro quando o popup é fechado
+      var mediaPonderada = document.getElementById('mediaPonderada');
+      mediaPonderada.style.display = 'block';  // Faz o 'mediaPonderada' aparecer novamente
+  
+      mediaPonderada.style.textAlign = 'center';  // Centraliza o conteúdo horizontalmente
+     
+      
+      var popup = document.getElementById(popupId);
+      popup.style.display = "none";  // Esconde o popup
+    }
+    
 
 
     carregarDadosIniciais();
