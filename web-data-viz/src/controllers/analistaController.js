@@ -97,7 +97,7 @@ function listarDadosBarra(req, res) {
     analistaModel.listarQuantidadeProcessos(fkNotebook)
         .then(resultado => {
             if (resultado.length > 0) {
-                res.json({ processos: resultado[0].processos });
+                res.json({ qtdprocessos: resultado[0].qtdprocessos });
             }
         })
 

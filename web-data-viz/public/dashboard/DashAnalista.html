@@ -227,9 +227,9 @@
       })
         .then(response => response.json())
         .then(data => {
-          if (data.processos !== undefined) {
-            console.log("Quantidade de processos:", data.processos);
-            document.getElementById('quantidadeProcessos').innerHTML = `<p class="qtdprocess">Número de Processos Na Máquina</p>` + data.processos;
+          if (data.qtdprocessos !== undefined) {
+            console.log("Quantidade de processos:", data.qtdprocessos);
+            document.getElementById('quantidadeProcessos').innerHTML = `<p class="qtdprocess">Número de Processos Na Máquina</p>` + data.qtdprocessos;
           }
         });
     }
@@ -283,7 +283,7 @@
       fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook })
       })
         .then(response => response.json())
         .then(resposta => {
@@ -359,7 +359,7 @@
       fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook: 1 })
+        body: JSON.stringify({ idUsuarioServer: sessionStorage.ID_USUARIO, fkNotebook})
       })
         .then(response => response.json())
         .then(resposta => {
@@ -370,7 +370,7 @@
           }
         });
     }
-    function plotarGraficoDisco(usoDisco, totalDisco) {
+    function plotarGraficoDisco(usoDisco, total_disco) {
       const livreDisco = 100 - usoDisco;
     
       const options = {
@@ -378,40 +378,47 @@
         chart: {
           type: 'donut',
           width: '100%',
-          height: '350px'
+          height: '350px',
         },
         labels: ['Usado', 'Livre'],
         colors: ['rgba(255,0,0,0.4)', 'rgba(0,128,0,0.4)'],
-        title: { text: 'Uso de Disco (%)', style: { color: '#FFFFFF', fontSize: '18px' } },
-        legend: { labels: { colors: '#FFFFFF' } },
+        title: {
+          text: 'Uso de Disco (%)',
+          style: { color: '#FFFFFF', fontSize: '18px' },
+        },
+        legend: {
+          labels: { colors: '#FFFFFF' },
+        },
         plotOptions: {
-          donut: {
-            size: '70%', // Controla o tamanho do donut
-            labels: {
-              show: true,
-              name: {
-                show: false // Não exibe o nome
-              },
-              value: {
-                show: true, 
-                fontSize: '18px', 
-                color: '#FFFFFF', 
-                fontWeight: 'bold'
-              }
-            }
-          }
+          pie: {
+            donut: {
+              size: '70%', // Tamanho do gráfico donut
+            },
+          },
+        },
+        dataLabels: {
+          enabled: true,
+          formatter: (val) => `${val.toFixed(0)}%`, // Exibe percentual nas fatias
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            colors: ['#FFFFFF'],
+          },
         },
         annotations: {
-          position: 'absolute',
-          x: '50%',
-          y: '50%',
-          text: `Total: ${totalDisco} GB`,
-          style: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            color: '#FFFFFF'
-          }
-        }
+          position: 'front',
+          texts: [
+            {
+              x: '44%',
+              y: '55%',
+              text: `${total_disco} GB`, // Exibe o valor total no centro
+              textAnchor: 'middle',
+              dominantBaseline: 'middle',
+              fontSize: '25px', // Tamanho maior das letras
+              fontWeight: 'bold',
+              foreColor: '#FFFFFF',},
+          ],
+        },
       };
     
       if (grafico) grafico.destroy();

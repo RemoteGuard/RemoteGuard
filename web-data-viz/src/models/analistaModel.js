@@ -61,7 +61,7 @@ function listarNomeResponsavel(fkNotebook) {
 }
  function listarQuantidadeProcessos(fkNotebook) {
   const instrucaoSql = `
-      SELECT processos, data_captura FROM dados WHERE fkNotebook = ${fkNotebook} 
+      SELECT qtdprocessos, data_captura FROM dados WHERE fkNotebook = ${fkNotebook} 
      ORDER BY   data_captura DESC  LIMIT 1;
   `;
   return database.executar(instrucaoSql, [fkNotebook]);
