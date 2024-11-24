@@ -27,6 +27,12 @@ def connect_to_mysql():
 def get_root_directory():
     return 'C:\\' if os.name == 'nt' else '/'
 
+processos_indevidos = [
+    # Lista de processos indevidos (como jogos, aplicativos de redes sociais, etc.)
+    "fortnite.exe", "pubg.exe", "leagueoflegends.exe", "discord.exe", "zoom.exe",
+    "whatsapp.exe", "instagram.exe", "facebook.exe", # Adicione mais processos conforme necessário
+]
+
 def get_cpu_data():
     cpu_data = psutil.cpu_times()._asdict()
     cpu_idle_time = cpu_data['idle']
@@ -45,9 +51,6 @@ def get_disk_data():
     disk_usage_percentage = disk_data['percent']
     total_disk_gb = round(disk_data['total'] / (1024**3), 2) # Convertendo bytes para GB
     return disk_usage_bytes, disk_usage_percentage, total_disk_gb
-
-# No restante do código, as mudanças já estão aplicadas
-
 
 def get_network_data():
     net_io = psutil.net_io_counters()
@@ -77,17 +80,17 @@ def get_weighted_system_usage(cpu_usage, ram_usage, disk_usage):
     return round(weighted_average, 2)
 
 def monitorar_tempo_alerta(cpu_usage, ram_usage, disk_usage, tempo_alerta):
-    if cpu_usage > 80:
+    if cpu_usage > 95:
         tempo_alerta['cpu'] += 2
     else:
         tempo_alerta['cpu'] = 0
 
-    if ram_usage > 80:
+    if ram_usage > 95:
         tempo_alerta['ram'] += 2
     else:
         tempo_alerta['ram'] = 0
 
-    if disk_usage > 80:
+    if disk_usage > 95:
         tempo_alerta['disk'] += 2
     else:
         tempo_alerta['disk'] = 0
@@ -98,14 +101,13 @@ def insert_data_to_mysql(connection, dados):
     cursor = connection.cursor()
     try:
         sql = """INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
-                    bytes_disco, porcentagem_disco, processos, boot_time, 
+                    bytes_disco, porcentagem_disco, qtdprocessos, processos, boot_time, 
                     fkNotebook, numero_nucleos, media_ponderada, tempo_alerta_cpu, 
                     tempo_alerta_ram, tempo_alerta_disco) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-        print(f"Dados a serem inseridos: {dados}")
-
-        if len(dados) == 14:
+        if len(dados) == 15:
+            print(f"Dados a serem inseridos: {dados}")
             cursor.execute(sql, dados)
             connection.commit()
             print("Dados inseridos no MySQL com sucesso.")
@@ -116,7 +118,7 @@ def insert_data_to_mysql(connection, dados):
     finally:
         cursor.close()
 
-   
+
 
 def insert_armazenamento_to_mysql(connection, total_disk_bytes, fk_notebook):
     cursor = connection.cursor()
@@ -132,8 +134,6 @@ def insert_armazenamento_to_mysql(connection, total_disk_bytes, fk_notebook):
         print(f"Erro ao inserir os dados de armazenamento: {e}")
     finally:
         cursor.close()
-
-
 
 def data_capture():
     connection = connect_to_mysql()
@@ -152,21 +152,28 @@ def data_capture():
         disk_usage_bytes, disk_usage_percentage, total_disk_bytes = get_disk_data()
         bytes_sent, bytes_recv = get_network_data()
         process_count = get_process_count()
-        fk_notebook = 1  
-
+        
+        fk_notebook = 1  # Substitua pelo valor correto
+        processos = []
+        for process in psutil.process_iter():
+            process_name = process.name()
+            if process.status() == 'running':
+                processos.append(process_name)
+            
+        processosString = str(processos)  # Corrigindo a indentação da variável
+        
         rounded_weighted_average = get_weighted_system_usage(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage)
         tempo_alerta = monitorar_tempo_alerta(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage, tempo_alerta)
 
         print(f"Tempo em alerta - CPU: {tempo_alerta['cpu']}s, RAM: {tempo_alerta['ram']}s, Disco: {tempo_alerta['disk']}s")
 
-    # Dados para a tabela `dados`
+        # Dados para a tabela `dados`
         dados = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
-                 disk_usage_bytes, disk_usage_percentage, process_count,
-                 formatted_boot_time, fk_notebook, numero_nucleos, rounded_weighted_average,
-                 tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
+         disk_usage_bytes, disk_usage_percentage, process_count,
+         processosString, formatted_boot_time, fk_notebook, numero_nucleos, rounded_weighted_average,
+         tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
 
         insert_data_to_mysql(connection, dados)
-
         insert_armazenamento_to_mysql(connection, total_disk_bytes, fk_notebook)
 
         time.sleep(2)
