@@ -134,7 +134,7 @@
 
                             // Adiciona evento de clique para redirecionar
                             card.addEventListener('click', () => {
-                               var nomeUsuario = nome
+                                var nomeUsuario = nome
 
                                 fetch("/renan/chamarIdNotebook", {
 
@@ -143,13 +143,13 @@
                                         "Content-Type": "application/json"
                                     },
                                     body: JSON.stringify({
-                                         nomeFuncionario : nomeUsuario
-                                        })
+                                        nomeFuncionario: nomeUsuario
+                                    })
                                 }).then(function (resposta) {
                                     if (resposta.ok) {
                                         resposta.json().then(json => {
-                                        let idNotebook = json.resultado[0].idNotebook
-                                        sessionStorage.setItem('ID_NOTEBOOK', idNotebook);  
+                                            let idNotebook = json.resultado[0].idNotebook
+                                            sessionStorage.setItem('ID_NOTEBOOK', idNotebook);
                                         });
                                     } else {
                                         throw "Erro ao plotar grafico!";
@@ -157,8 +157,8 @@
                                 }).catch(function (erro) {
                                     console.log(`#ERRO: ${erro}`);
                                 });
+                                setTimeout(window.location.href = "DashAnalista.html", 1000)
 
-                               window.location.href = "DashAnalista.html";
                             });
 
                             container.appendChild(card);

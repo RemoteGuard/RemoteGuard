@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS dados (
     bytes_disco BIGINT,
     porcentagem_disco FLOAT,
     qtdprocessos INT,
+    processos LONGTEXT,
     boot_time DATETIME,
 	numero_nucleos INT, 
     media_ponderada DOUBLE,
