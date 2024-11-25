@@ -1,34 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/css-renan.css">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RemoteGuard Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="../css/css-renan.css">
 </head>
 
 <body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
-    <div class="processosEfuncionarios">
-        <div class="div_processos">
-            <h2>Processos mais utilizados</h2>
-            <div id="div_alerta"></div>
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+          <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
         </div>
-        <div class="div_funcionarios">
-            <span>Funcionarios com os computadores em PERIGO: (utilização maior que 90%)</span>
-            <div id="div_card_perigo"></div>
-            <span>Funcionarios com os computadores em ALERTA: (utilização maior que 95%)</span>
-            <div id="div_card_urgencia"></div>
-            <span>Funcionarios em possivel inatividade: (utilização menor que 30%)</span>
-            <a href="">
-                <div id="div_card_inatividade">
-            </a>
+        <div class="perfil-wrapper">
+          <div class="Ativacao">
+            <button>Ajuda</button>
+          </div>
+          <div class="perfil-container">
+            <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+            <div class="perfil-text">
+              <span class="nome">Analista</span>
+              <span class="legenda">perfil</span>
+            </div>
+          </div>
         </div>
-    </div>
-    </div>
-
+      </header>
+    
+      <nav id="menuhamburguer">
+        <div class="logo">
+          <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+          <li class="ativo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a></li>
+          <li class="naoAtivo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png"
+                alt="Ícone 1">Configuração</a></li>
+          <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+        </ul>
+      </nav>
+      <div class="container">
+        <!-- Menu Superior -->
+        <div class="menu">
+          <div class="menu-icon"></div>
+        </div>
+    
+        <div class="content">
+          <div class="processos">
+            <h3>Processos mais utilizados</h3>
+          </div>
+          <!-- Informações de funcionários -->
+          <div class="info-funcionarios">
+            <div class="alerta" id="div_card_alerta">Funcionários com computadores em alerta<br><strong></strong></div>
+            <div class="critico" id="div_card_perigo">Funcionários com computadores em estado crítico<br><strong></strong></div>
+            <div class="ociosidade" id="div_card_inatividade">Funcionários potencialmente ociosos<br><strong></strong></div>
+          </div>
+"
     <canvas id="myChart" width="100" height="40"></canvas>
 </body>
 <script>
@@ -68,20 +94,28 @@
                         return acc;
                     }, {})
                     var jsonContagem = contagem
+                    console.log(contagem)
                     var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
+                    console.log(contagemOrdenada)
+                    console.log(contagemOrdenada[0].nome)
                     var processosMaisUtilizadosNome = []
                     var processosMaisUtilizadosQtd = []
+                    processosMaisUtilizadosNome = [contagemOrdenada[0].nome]
+                    console.log(processosMaisUtilizadosNome)
+                    
                     for (var i = 0; i < 6; i++) {
-                        processosMaisUtilizadosNome.push(contagemOrdenada[i].nome)
-                        processosMaisUtilizadosQtd.push(contagemOrdenada[i].qtd)
+                        console.log(contagemOrdenada[i].nome);
+                        var nomeDaVez = contagemOrdenada[i];
+                        var qtdDaVez = contagemOrdenada[i];
+                        console.log(nomeDaVez.nome);
+                        processosMaisUtilizadosNome.push(nomeDaVez); 
+                        processosMaisUtilizadosQtd.push(qtdDaVez)
                     }
                     div_alerta.innerHTML = ''
                     for (var i = 0; i < processosMaisUtilizadosNome.length; i++) {
                         div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
                     }
                     setTimeout(trazerProcessos, 2000)
-
-
                 });
             } else {
                 throw "Erro ao trazer processos!";

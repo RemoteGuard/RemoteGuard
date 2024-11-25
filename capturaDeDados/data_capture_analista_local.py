@@ -74,8 +74,8 @@ def create_db_connection2():
     try:
         conexao = pymysql.connect(
                 host="localhost",
-                user="root",
-                password="Ab12345@#",
+                user="aluno",
+                password="sptech",
                 database="remote_guard"
             )
         cursor = conexao.cursor() 
