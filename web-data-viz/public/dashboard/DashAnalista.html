@@ -157,13 +157,15 @@
     cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
-    var fkNotebook =sessionStorage.ID_NOTEBOOK;
+   var fkNotebook =sessionStorage.FK_NOTEBOOK;
 
     function buscarNomeResponsavel() {
       fetch("/analista/listarNomeResponsavel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkNotebook })
+        body: JSON.stringify({ 
+          fkNotebook 
+        })
       })
         .then(response => response.json())
         .then(data => {

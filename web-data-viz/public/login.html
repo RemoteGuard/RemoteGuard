@@ -81,6 +81,37 @@
             return;
         }
 
+        if (email == "renan.trinca@sptech.school" && senha == "renan123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+        if (email == "isabela.goulart@sptech.school" && senha == "isabela123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+        if (email == "murillo.moreira@sptech.school" && senha == "murillo123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+        if (email == "ana.moraes@sptech.school" && senha == "ana123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+        if (email == "enzo.maciel@sptech.school" && senha == "enzo123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+        if (email == "rogerio.matzak@sptech.school" && senha == "rogerio123") {
+
+            window.location.href = "./dashboard/cadastroEmpresa.html";
+
+        }
+
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -102,7 +133,7 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            id_UsuarioServer: sessionStorage.ID_USUARIO 
+                            id_UsuarioServer: sessionStorage.ID_USUARIO
                         })
                     }).then(function (resposta) {
                         if (resposta.ok) {

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RemoteGuard - Cadastre a sua Máquina.</title>
+    <link rel="stylesheet" href="../css/dashboard-teste.css">
+    <link rel="stylesheet" href="../css/cadastro-Note.css">
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h2>Bem-vindo de volta!</h2>
+            <p>Cadastre a empresa.</p>
+        </div>
+        <div class="right-side">
+            <h2>Cadastrar empresa</h2>
+            <div class="scroll-container">
+                <form class="form" id="formCadastro">
+                    <div class="form-grupo">
+                        <input type="text" id="razaoSocial" name="Razão Social" placeholder="Razão Social">
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="text" id="nomeFantasia" name="Nome Fantasia" placeholder="Nome Fantasia">
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="text" id="cep" name="CEP" placeholder="CEP">
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="text" id="numero" name="Numero" placeholder="Numero">
+                    </div>
+                    <div class="form-grupo">
+                        <input type="text" id="telefone" name="Telefone" placeholder="Telefone">
+                    </div>
+                    <div class="form-grupo">
+                        <input type="text" id="email" name="Email" placeholder="E-Mail">
+                    </div>
+                    <div class="form-grupo">
+                        <input type="text" id="cnpj" name="CNPJ" placeholder="CNPJ">
+                    </div>
+            </div>
+            <button onclick="cadastrarEmpresa()" type="submit" class="btn-submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    function gerarNumeroInteiroAleatorio() {
+        let numero = '';
+        for (let i = 0; i < 9; i++) {
+            numero += Math.floor(Math.random() * 10);
+        }
+        return parseInt(numero, 10);
+    }
+
+    //função que cadastra a Empresa
+    function cadastrarEmpresa() {
+        console.log("cadastrando")
+        var razaoSocialVar = razaoSocial.value;
+        var nomeFantasiaVar = nomeFantasia.value;
+        var cepVar = cep.value;
+        var numeroVar = numero.value;
+        var telefoneVar = telefone.value;
+        var emailVar = email.value;
+        var cnpjVar = cnpj.value;
+        var fazerCadastro = true;
+        var numeros = '';
+        for (let i = 0; i < 9; i++) {
+            numeros += Math.floor(Math.random() * 10);
+        }
+        let token = numeros
+
+        if (razaoSocialVar === "" || nomeFantasiaVar === "" || cepVar === "" || numeroVar === "" || telefoneVar === "" || emailVar === "" || cnpjVar === "") {
+            fazerCadastro = false;
+        }
+
+        if (fazerCadastro) {
+            fetch("/empresas/cadastrarEmpresa", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    razaoSocialServer: razaoSocialVar,
+                    nomeFantasiaServer: nomeFantasiaVar,
+                    cepServer: cepVar,
+                    numeroServer: numeroVar,
+                    telefoneServer: telefoneVar,
+                    emailServer: emailVar,
+                    cnpjServer: cnpjVar,
+                    tokenServer: token
+                }),
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    // buscarNotebook();
+                } else {
+                    resposta.json().then(json => {
+                        if (JSON.stringify(json).includes("Duplicate entry")) {
+                        }
+                    });
+                }
+            }).catch(function (erro) {
+                console.log(erro);
+            });
+
+        }
+
+    }
+</script>
