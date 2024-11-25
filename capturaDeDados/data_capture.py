@@ -4,7 +4,9 @@ import time
 import psutil
 import json
 import boto3
+import datetime as dt
 import pymysql
+from mysql.connector import Error
 from botocore.exceptions import ClientError
 from atlassian import Jira
 from requests import HTTPError
@@ -58,7 +60,7 @@ def create_db_connection():
                 host="localhost",
                 user="root",
                 password="cco@2024",
-                database="remote_guard"
+                database="remote_guard2"
             )
         cursor = conexao.cursor() 
         print(f"Conexão com o Banco {conexao.db.decode()} estabelecida com Sucesso!")
@@ -139,7 +141,41 @@ def get_disk_data():
     disk_data = psutil.disk_usage(get_root_directory())._asdict()
     disk_usage_bytes = disk_data['used']
     disk_usage_percentage = disk_data['percent']
-    return disk_usage_bytes, disk_usage_percentage
+    total_disk_gb = round(disk_data['total'] / (1024**3), 2) # Convertendo bytes para GB
+    return disk_usage_bytes, disk_usage_percentage, total_disk_gb
+
+def get_process_count():
+    process_count = sum(1 for _ in psutil.process_iter() if _.status() == 'running')
+    return process_count
+
+def get_cpu_cores():
+    return psutil.cpu_count(logical=True)
+
+def get_weighted_system_usage(cpu_usage, ram_usage, disk_usage):
+    cpu_weight = 0.4
+    ram_weight = 0.3
+    disk_weight = 0.3
+    
+    weighted_average = (cpu_usage * cpu_weight) + (ram_usage * ram_weight) + (disk_usage * disk_weight)
+    return round(weighted_average, 2)
+
+def monitorar_tempo_alerta(cpu_usage, ram_usage, disk_usage, tempo_alerta):
+    if cpu_usage > 95:
+        tempo_alerta['cpu'] += 2
+    else:
+        tempo_alerta['cpu'] = 0
+
+    if ram_usage > 95:
+        tempo_alerta['ram'] += 2
+    else:
+        tempo_alerta['ram'] = 0
+
+    if disk_usage > 95:
+        tempo_alerta['disk'] += 2
+    else:
+        tempo_alerta['disk'] = 0
+
+    return tempo_alerta
 
 def export_to_json(dados):
     try:
@@ -230,13 +266,45 @@ def throw_process_alert():
     except HTTPError as e:
       print(e.response.text)
 
+def insert_data_to_mysql(dados):
+    try:
+        sql = """INSERT INTO dados (tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, 
+                    bytes_disco, porcentagem_disco, qtdprocessos, processos, 
+                    fkNotebook, numero_nucleos, media_ponderada, tempo_alerta_cpu, 
+                    tempo_alerta_ram, tempo_alerta_disco) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        if len(dados) == 14:
+            print(f"Dados a serem inseridos: {dados}")
+            cursor.execute(sql, dados)
+            conexao.commit()
+            print("Dados inseridos no MySQL com sucesso.")
+        else:
+            print(f"Erro: A tupla de dados deve conter exatamente 14 elementos, mas contém {len(dados)}.")
+    except Error as e:
+        print(f"Erro ao inserir os dados: {e}")
+
+def insert_armazenamento_to_mysql(total_disk_bytes, fk_notebook):
+    try:
+        sql = """INSERT INTO armazenamento (total_disco, fkNotebook) VALUES (%s, %s)"""
+        
+        print(f"Dados de armazenamento a serem inseridos: Total Disco:{total_disk_bytes},  Notebook:{fk_notebook}")
+        
+        cursor.execute(sql, (total_disk_bytes, fk_notebook))
+        conexao.commit()
+        print("Dados de armazenamento inseridos no MySQL com sucesso.")
+    except Error as e:
+        print(f"Erro ao inserir os dados de armazenamento: {e}")
 
 
 def data_capture(data_capture_delay):
+
     cont_time = 1
     cont_registers = 1
     run_data_capture = True
     limites_recursos = [(95, 'Highest'), (90, 'High'), (85, 'Medium')]
+    numero_nucleos = get_cpu_cores()
+    tempo_alerta = {'cpu': 0, 'ram': 0, 'disk': 0}
 
 
     while run_data_capture:
@@ -244,19 +312,21 @@ def data_capture(data_capture_delay):
         if cont_time % data_capture_delay == 0 or cont_time == 1:
             cpu_idle_time, cpu_usage_percentage = get_cpu_data()
             ram_usage_bytes, ram_usage_percentage = get_ram_data()
-            disk_usage_bytes, disk_usage_percentage = get_disk_data()
+            disk_usage_bytes, disk_usage_percentage, total_disk_bytes = get_disk_data()
+            process_count = get_process_count()
+            
 
             processos = []
             for process in psutil.process_iter():
                 process_name = process.name()
                 if process.status() == 'running' :
                     processos.append(process_name)
-            
+
             processosString = str(processos)
-            
-            sql = "INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, processos ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (fkNotebook, cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage, disk_usage_bytes, disk_usage_percentage, processosString))
-            conexao.commit()
+
+            rounded_weighted_average = get_weighted_system_usage(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage)
+            tempo_alerta = monitorar_tempo_alerta(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage, tempo_alerta)
+
 
             dados.append ({
                 "tempoInatividadeCPU": cpu_idle_time,
@@ -265,8 +335,18 @@ def data_capture(data_capture_delay):
                 "porcentagemRAM": ram_usage_percentage,
                 "bytesDisco": disk_usage_bytes,
                 "porcentagemDisco": disk_usage_percentage,
-                "processos": processos
+                "processos": processos,
+                "dataHora": dt.datetime.now().isoformat()
             })
+
+            dadosSQL = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
+            disk_usage_bytes, disk_usage_percentage, process_count,
+            processosString, fkNotebook, numero_nucleos, rounded_weighted_average,
+            tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
+
+            insert_data_to_mysql(dadosSQL)
+            insert_armazenamento_to_mysql(total_disk_bytes, fkNotebook)
+
 
             print("----------------------------------------------------------------------------------------------------")           
             print(f"Tempo de Inatividade da CPU: {cpu_idle_time}")
@@ -275,6 +355,7 @@ def data_capture(data_capture_delay):
             print(f"Porcentagem de Uso da Memória: {ram_usage_percentage}")
             print(f"Uso do Disco em Bytes: {disk_usage_bytes}")
             print(f"Porcentagem de Uso do Disco: {disk_usage_percentage}")
+            print(f"Captura de Data e Hora: {dt.datetime.now().isoformat()}")
             print()
             print(cont_registers, " Registro Inserido.") if cont_registers == 1 else print(cont_registers, "Registro Inseridos.")
 
