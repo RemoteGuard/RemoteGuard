@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Dados {
+public class DadosJson {
 
     @JsonProperty("tempoInatividadeCPU")
     private Double tempoInatividadeCPU;
@@ -36,8 +36,8 @@ public class Dados {
     @JsonProperty("processos")
     private List<String> processos;
 
-    public Dados(Double tempoInatividadeCPU, Double porcentagemCPU, Double bytesRAM, Double porcentagemRAM,
-                 Double bytesDisco, Double porcentagemDisco, Double bytesSwap, Double porcentegemSwap, String[] processos) {
+    public DadosJson(Double tempoInatividadeCPU, Double porcentagemCPU, Double bytesRAM, Double porcentagemRAM,
+                     Double bytesDisco, Double porcentagemDisco, Double bytesSwap, Double porcentegemSwap, String[] processos) {
         this.tempoInatividadeCPU = tempoInatividadeCPU;
         this.porcentagemCPU = porcentagemCPU;
         this.bytesRAM = bytesRAM;
@@ -53,7 +53,7 @@ public class Dados {
             this.processos.add(processos[i]);
         }
     }
-    public Dados() {
+    public DadosJson() {
     }
 
     public Double getTempoInatividadeCPU() {
