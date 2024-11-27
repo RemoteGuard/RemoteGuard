@@ -1,64 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RemoteGuard Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <link rel="stylesheet" href="../css/css-renan.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RemoteGuard Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/css-renan.css">
 </head>
 
 <body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
-          <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+            <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
         </div>
         <div class="perfil-wrapper">
-          <div class="Ativacao">
-            <button>Ajuda</button>
-          </div>
-          <div class="perfil-container">
-            <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
-            <div class="perfil-text">
-              <span class="nome">Analista</span>
-              <span class="legenda">perfil</span>
+            <div class="Ativacao">
+                <button>Ajuda</button>
             </div>
-          </div>
+            <div class="perfil-container">
+                <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+                <div class="perfil-text">
+                    <span class="nome">Analista</span>
+                    <span class="legenda">perfil</span>
+                </div>
+            </div>
         </div>
-      </header>
-    
-      <nav id="menuhamburguer">
+    </header>
+
+    <nav id="menuhamburguer">
         <div class="logo">
-          <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
         </div>
         <ul class="menu-items">
-          <li class="ativo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a></li>
-          <li class="naoAtivo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png"
-                alt="Ícone 1">Configuração</a></li>
-          <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+            <li class="ativo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Dashboard</a>
+            </li>
+            <li class="naoAtivo"><a href=""><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Relatórios</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                        alt="Ícone 1">Funcionarios</a></li>
+            <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1">
+                    Maquinas</a>
+            </li>
+            <li class="naoAtivo"><a href="perfilGerente.html"><img src="../assets/imgs/config.png"
+                        alt="Ícone 1">Configuração</a></li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
         </ul>
-      </nav>
-      <div class="container">
+    </nav>
+    <div class="container">
         <!-- Menu Superior -->
         <div class="menu">
-          <div class="menu-icon"></div>
+            <div class="menu-icon"></div>
         </div>
-    
+
+
         <div class="content">
-          <div class="processos">
-            <h3>Processos mais utilizados</h3>
-          </div>
-          <!-- Informações de funcionários -->
-          <div class="info-funcionarios">
-            <div class="alerta" id="div_card_alerta">Funcionários com computadores em alerta<br><strong></strong></div>
-            <div class="critico" id="div_card_perigo">Funcionários com computadores em estado crítico<br><strong></strong></div>
-            <div class="ociosidade" id="div_card_inatividade">Funcionários potencialmente ociosos<br><strong></strong></div>
-          </div>
-"
-    <canvas id="myChart" width="100" height="40"></canvas>
+            <div class="fundo-performance">
+                <h2>Performance de funcionarios a ser considerada</h2>
+                <div class="info-funcionarios">
+
+                    <div class="critico">
+                        <h3>Critico</h3><br>
+                        <span>(Componentes > 90%)</span>
+                        <strong>
+                            <div id="div_card_urgencia"></div>
+                        </strong>
+                    </div>
+                    <div class="alerta">
+                        <h3>Alerta(Componentes > 80%)</h3><br>
+                        <strong>
+                            <div id="div_card_perigo"></div>
+                        </strong>
+                    </div>
+                    <div class="ociosidade">
+                        <h3>Potencial Ociosidade</h3>
+                        <br>
+                        <strong>
+                            <div id="div_card_inatividade"></div>
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="processos">
+                <h3>Processos mais utilizados</h3>
+                
+                <br>
+                <div class="div_alerta" id="div_alerta">
+                    <p class="descricao" id="descricao"></p>
+                </div>
+            </div>
+        </div>
+        <div class="fundo-grafico">
+            <div class="chart-area">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
+
 </body>
 <script>
     const requisicaoPadrao = "";
+
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('main-Container');
+        var header = document.getElementById('main-header');
+
+        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove a classe 'active' de todos os itens
+            menuItems.forEach(el => el.classList.remove('active'));
+            // Adiciona a classe 'active' ao item clicado
+            this.classList.add('active');
+        });
+    });
+
     function trazerProcessos() {
         let qtdProcessos = []
         var nomeFuncionarios = []
@@ -94,26 +157,18 @@
                         return acc;
                     }, {})
                     var jsonContagem = contagem
-                    console.log(contagem)
                     var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
-                    console.log(contagemOrdenada)
-                    console.log(contagemOrdenada[0].nome)
                     var processosMaisUtilizadosNome = []
                     var processosMaisUtilizadosQtd = []
-                    processosMaisUtilizadosNome = [contagemOrdenada[0].nome]
-                    console.log(processosMaisUtilizadosNome)
-                    
                     for (var i = 0; i < 6; i++) {
-                        console.log(contagemOrdenada[i].nome);
-                        var nomeDaVez = contagemOrdenada[i];
-                        var qtdDaVez = contagemOrdenada[i];
-                        console.log(nomeDaVez.nome);
-                        processosMaisUtilizadosNome.push(nomeDaVez); 
+                        var nomeDaVez = contagemOrdenada[i].nome;
+                        var qtdDaVez = contagemOrdenada[i].qtd;
+                        processosMaisUtilizadosNome.push(nomeDaVez);
                         processosMaisUtilizadosQtd.push(qtdDaVez)
                     }
-                    div_alerta.innerHTML = ''
+                    descricao.innerHTML = ''
                     for (var i = 0; i < processosMaisUtilizadosNome.length; i++) {
-                        div_alerta.innerHTML += processosMaisUtilizadosNome[i] + " total: " + processosMaisUtilizadosQtd[i] + "<br>"
+                        descricao.innerHTML += (i + 1) + "º " + processosMaisUtilizadosNome[i] + "<br>"
                     }
                     setTimeout(trazerProcessos, 2000)
                 });
@@ -158,7 +213,6 @@
                     inatividadeContainer.innerHTML = '';
                     urgenciaContainer.innerHTML = '';
                     perigoContainer.innerHTML = '';
-
 
                     function adicionarNomesAoCard(container, nomes) {
                         nomes.forEach(nome => {
@@ -273,7 +327,7 @@
                 }
             ],
             backgroundColor: gerarCorAleatoria(),
-            borderColor: 'rgba(0, 123, 255, 1)'
+            borderColor: 'black'
         }));
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -287,8 +341,42 @@
                 },
                 options: {
                     responsive: true,
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: 'white' // Cor dos números no eixo X
+                            },
+                            grid: {
+                                color: 'white' // Cor das grades no eixo X
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: 'white' // Cor dos números no eixo Y
+                            },
+                            grid: {
+                                color: 'white' // Cor das grades no eixo Y
+                            }
+                        }
+                    },
                     plugins: {
-                        legend: { position: 'top' },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: 'white' // Cor da legenda
+                            },
+                        }, title: {
+                            display: true,
+                            align: "top",
+                            font: {
+                                weight: "normal",
+                                size: 30,
+                            },
+                            color: "#ffffffff",
+                            text: "Uso dos componentes pela quantidade de processos",
+                        },
+
+
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
