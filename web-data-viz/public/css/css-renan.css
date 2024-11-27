@@ -6,13 +6,15 @@ body {
     height: 100%;
 }
 
-.content {
+/* .content {
     margin-top: 50px;
     flex: 1;
     display: grid;
     height: 100%;
     gap: 10px;
     padding: 10px;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .processos {
@@ -21,6 +23,12 @@ body {
     padding: 10px;
     border-radius: 5px;
     height: 270px;
+    width: 320px;
+    flex: 1;
+}
+.descricao {
+padding: 3px;
+margin: 5px;
 }
 
 .processos h3 {
@@ -43,6 +51,13 @@ body {
     cursor: pointer;
 }
 
+.div_alerta{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+}
+
 .processos button:hover {
     background-color: #555;
 }
@@ -50,7 +65,7 @@ body {
 .info-funcionarios {
     grid-row: 2 / 3;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
     margin-bottom: 140px;
 }
@@ -59,7 +74,114 @@ body {
     padding: 10px;
     background-color: #444;
     border-radius: 5px;
+} */
+
+
+.content {
+    margin-top: 50px;
+    display: flex; /* Flexbox ativado */
+    flex-direction: row; /* Coloca tudo na mesma linha */
+    gap: 20px; /* Espaçamento entre os itens */
+    justify-content: space-evenly; /* Espaçamento uniforme entre itens */
+    align-items: flex-start; /* Alinhamento no início do eixo vertical */
+    height: auto; /* Ajusta altura automaticamente */
+    padding: 10px;
 }
+
+.info-funcionarios {
+    display: flex; 
+    flex-direction: row; 
+    gap: 10px;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+    width: 820px;
+    margin-top: 40px;
+    align-items: stretch;
+}
+
+.fundo-performance {
+    background-color: #444;
+}
+
+.fundo-performance h2 {
+    background-color: yellow;
+    color: black;
+    margin: 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.info-funcionarios div {
+    padding: 10px;
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.fundo-grafico {
+    background-color: #444;
+    padding: 32px;
+    width: 85%;
+    height: 500px; 
+    margin-left: 9rem;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 2rem;
+} 
+.chart-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important; 
+    max-width: 100%; 
+    max-height: 100%; 
+}
+
+.processos {
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+    height: 270px;
+    width: 620px;
+}
+
+.processos h3 {
+    background-color: yellow;
+    color: black;
+    margin: 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.div_alerta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.processos button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.processos button:hover {
+    background-color: #555;
+}
+
 
 .grafico {
     grid-column: 2 / 3;
