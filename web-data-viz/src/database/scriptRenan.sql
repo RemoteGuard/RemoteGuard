@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS empresa (
     token CHAR(9)
 );
 
+
+
 CREATE TABLE IF NOT EXISTS notebook (
     idNotebook INT PRIMARY KEY AUTO_INCREMENT,
     hostname VARCHAR(100),
