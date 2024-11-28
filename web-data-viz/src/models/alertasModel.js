@@ -57,13 +57,13 @@ function exibirMediaAlertas() {
 
 function exibirRankingFuncionarios(empresaGerente) {
     var instrucaoSql = `SELECT f.nome AS nome, COUNT(a.idAlerta) AS qtdAlertas
-                        FROM alerta AS a
-                        JOIN notebook AS n ON a.fkNotebook = n.idNotebook
-                        JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
-                        WHERE dataHora >= NOW() - INTERVAL 7 DAY
-                        AND fkEmpresa = '${empresaGerente}'
-                        GROUP BY f.idFuncionario
-                        ORDER BY qtdAlertas DESC;`;
+    FROM alerta AS a
+    JOIN notebook AS n ON a.fkNotebook = n.idNotebook
+    JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
+    WHERE dataHora >= NOW() - INTERVAL 7 DAY
+    AND fkEmpresa = '${empresaGerente}'
+    GROUP BY f.idFuncionario
+    ORDER BY qtdAlertas DESC;`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
