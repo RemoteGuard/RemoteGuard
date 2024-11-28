@@ -57,10 +57,10 @@ processos_indevidos = [
 def create_db_connection(): 
     try:
         conexao = pymysql.connect(
-                host="localhost",
+                host="34.192.145.28",
                 user="root",
-                password="cco@2024",
-                database="remote_guard2"
+                password="remoteguard",
+                database="remote_guard"
             )
         cursor = conexao.cursor() 
         print(f"Conexão com o Banco {conexao.db.decode()} estabelecida com Sucesso!")
@@ -119,7 +119,7 @@ def download_s3_json(bucket, key):
 
 bucket_name = 'bucket-raw-rg'
 file_key = f'{get_hostname()}.json' 
-json_file_path = f'/home/murillo/Downloads/{get_hostname()}.json'
+json_file_path = f'C:\\Users\\isabe\\Downloads\\{get_hostname()}.json'
 dados = download_s3_json(bucket_name, file_key)
 
 def get_root_directory():
@@ -275,7 +275,6 @@ def insert_data_to_mysql(dados):
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         if len(dados) == 14:
-            print(f"Dados a serem inseridos: {dados}")
             cursor.execute(sql, dados)
             conexao.commit()
             print("Dados inseridos no MySQL com sucesso.")
@@ -286,7 +285,7 @@ def insert_data_to_mysql(dados):
 
 def insert_armazenamento_to_mysql(total_disk_bytes, fk_notebook):
     try:
-        sql = """INSERT INTO armazenamento (total_disco, fkNotebook) VALUES (%s, %s)"""
+        sql = """INSERT INTO armazenamento (tamanhoTotal, fkNotebook) VALUES (%s, %s)"""
         
         print(f"Dados de armazenamento a serem inseridos: Total Disco:{total_disk_bytes},  Notebook:{fk_notebook}")
         
@@ -298,87 +297,84 @@ def insert_armazenamento_to_mysql(total_disk_bytes, fk_notebook):
 
 
 def data_capture(data_capture_delay):
-
-    cont_time = 1
     cont_registers = 1
-    run_data_capture = True
     limites_recursos = [(95, 'Highest'), (90, 'High'), (85, 'Medium')]
     numero_nucleos = get_cpu_cores()
     tempo_alerta = {'cpu': 0, 'ram': 0, 'disk': 0}
+    processos_verificados = set()
 
-
-    while run_data_capture:
-
-        if cont_time % data_capture_delay == 0 or cont_time == 1:
-            cpu_idle_time, cpu_usage_percentage = get_cpu_data()
-            ram_usage_bytes, ram_usage_percentage = get_ram_data()
+    while True:
+        time.sleep(data_capture_delay)
+        
+        if cont_registers == 1:
             disk_usage_bytes, disk_usage_percentage, total_disk_bytes = get_disk_data()
-            process_count = get_process_count()
-            
-
-            processos = []
-            for process in psutil.process_iter():
-                process_name = process.name()
-                if process.status() == 'running' :
-                    processos.append(process_name)
-
-            processosString = str(processos)
-
-            rounded_weighted_average = get_weighted_system_usage(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage)
-            tempo_alerta = monitorar_tempo_alerta(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage, tempo_alerta)
-
-
-            dados.append ({
-                "tempoInatividadeCPU": cpu_idle_time,
-                "porcentagemCPU": cpu_usage_percentage,
-                "bytesRAM": ram_usage_bytes,
-                "porcentagemRAM": ram_usage_percentage,
-                "bytesDisco": disk_usage_bytes,
-                "porcentagemDisco": disk_usage_percentage,
-                "processos": processos,
-                "dataHora": dt.datetime.now().isoformat()
-            })
-
-            dadosSQL = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
-            disk_usage_bytes, disk_usage_percentage, process_count,
-            processosString, fkNotebook, numero_nucleos, rounded_weighted_average,
-            tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
-
-            insert_data_to_mysql(dadosSQL)
             insert_armazenamento_to_mysql(total_disk_bytes, fkNotebook)
 
+        # Captura os dados do sistema
+        cpu_idle_time, cpu_usage_percentage = get_cpu_data()
+        ram_usage_bytes, ram_usage_percentage = get_ram_data()
+        process_count = get_process_count()
 
-            print("----------------------------------------------------------------------------------------------------")           
-            print(f"Tempo de Inatividade da CPU: {cpu_idle_time}")
-            print(f"Porcentagem de Uso da CPU: {cpu_usage_percentage}")
-            print(f"Uso da Memória em Bytes: {ram_usage_bytes}")
-            print(f"Porcentagem de Uso da Memória: {ram_usage_percentage}")
-            print(f"Uso do Disco em Bytes: {disk_usage_bytes}")
-            print(f"Porcentagem de Uso do Disco: {disk_usage_percentage}")
-            print(f"Captura de Data e Hora: {dt.datetime.now().isoformat()}")
-            print()
-            print(cont_registers, " Registro Inserido.") if cont_registers == 1 else print(cont_registers, "Registro Inseridos.")
+        # Lista de processos
+        processos = [process.name() for process in psutil.process_iter() if process.status() == 'running']
 
-            cont_registers += 1
+        # Calcula a média ponderada do uso do sistema
+        rounded_weighted_average = get_weighted_system_usage(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage)
 
-        time.sleep(1)
-        cont_time+= 1
+        # Monitora alertas
+        tempo_alerta = monitorar_tempo_alerta(cpu_usage_percentage, ram_usage_percentage, disk_usage_percentage, tempo_alerta)
+
+        # Dados coletados
+        dadosSQL = (cpu_idle_time, cpu_usage_percentage, ram_usage_bytes, ram_usage_percentage,
+                    disk_usage_bytes, disk_usage_percentage, process_count, str(processos), 
+                    fkNotebook, numero_nucleos, rounded_weighted_average, 
+                    tempo_alerta['cpu'], tempo_alerta['ram'], tempo_alerta['disk'])
+
+        # Inserção no banco e JSON
+        insert_data_to_mysql(dadosSQL)
+
+        dados.append({
+            "tempoInatividadeCPU": cpu_idle_time,
+            "porcentagemCPU": cpu_usage_percentage,
+            "bytesRAM": ram_usage_bytes,
+            "porcentagemRAM": ram_usage_percentage,
+            "bytesDisco": disk_usage_bytes,
+            "porcentagemDisco": disk_usage_percentage,
+            "processos": processos,
+            "dataHora": dt.datetime.now().isoformat()
+        })
 
         export_to_json(dados)
         upload_to_s3(json_file_path, bucket_name)
+
+        # Feedback no console
+        print("----------------------------------------------------------------------------------------------------")
+        print(f"Registro {cont_registers} inserido com sucesso.")
+        print(f"Tempo de Inatividade da CPU: {cpu_idle_time}")
+        print(f"Porcentagem de Uso da CPU: {cpu_usage_percentage}")
+        print(f"Uso da Memória em Bytes: {ram_usage_bytes}")
+        print(f"Porcentagem de Uso da Memória: {ram_usage_percentage}")
+        print(f"Uso do Disco em Bytes: {disk_usage_bytes}")
+        print(f"Porcentagem de Uso do Disco: {disk_usage_percentage}")
+        print(f"Data e Hora: {dt.datetime.now().isoformat()}")
+        print("----------------------------------------------------------------------------------------------------")
         
-        # Atribuindo valores para testes de alerta:
-        cpu_usage_percentage = 89.0
-        ram_usage_percentage = 88.0
+        # Verifica alertas de recursos
+        verify_alert('CPU', cpu_usage_percentage, limites_recursos)
+        verify_alert('MEMÓRIA RAM', ram_usage_percentage, limites_recursos)
+        verify_alert('DISCO', disk_usage_percentage, limites_recursos)
 
-        verificar_processos_indevidos = bool(set(processos).intersection(processos_indevidos))
+        # Verifica processos indevidos
+        processos_indevidos_encontrados = set(processos).intersection(processos_indevidos)
 
-        if verificar_processos_indevidos:
+        if processos_indevidos_encontrados and processos_indevidos_encontrados != processos_verificados:
+            processos_verificados = processos_indevidos_encontrados
+            print(f"Processos indevidos encontrados: {processos_indevidos_encontrados}")
             throw_process_alert()
 
 
-        verify_alert('CPU', cpu_usage_percentage, limites_recursos)
-        verify_alert('MEMÓRIA RAM', ram_usage_percentage, limites_recursos)
+        cont_registers += 1
+
         
 
 def menu():
