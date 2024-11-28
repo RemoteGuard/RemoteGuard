@@ -167,17 +167,27 @@ VALUES
     ('A03', 'Recurso:uso disco próximo da capacidade máxima', 3),
     ('A04', 'Processo indevido em execução', 1);
 
-
+select * from funcionario;
 SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
 COUNT(idAlerta) as FreqAlertas
 FROM alerta WHERE fkNotebook = 4
 AND dataHora >= CURDATE() - INTERVAL 7 DAY
 GROUP BY DATE_FORMAT(dataHora, '%W');
 
-
+insert into alerta (descricao) values ("Processo Martinez");
 
 SELECT
     COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
     COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
 FROM alerta GROUP BY DATE(dataHora);
 
+select * from alerta;
+select * from funcionario;
+
+
+SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
+                        COUNT(idAlerta) as FreqAlertas
+                        FROM alerta WHERE fkNotebook = '4'
+                        AND dataHora >= CURDATE() - INTERVAL 7 DAY
+                        GROUP BY DATE_FORMAT(dataHora, '%W');
+                        
