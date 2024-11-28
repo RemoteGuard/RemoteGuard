@@ -27,7 +27,7 @@ router.get("/exibirMediaAlertas", function (req, res) {
     alertasController.exibirMediaAlertas(req, res);
 });
 
-router.get("/exibirRankingFuncionarios", function (req, res) {
+router.get("/exibirRankingFuncionarios/:empresaGerente", function (req, res) {
     alertasController.exibirRankingFuncionarios(req, res);
 });
 

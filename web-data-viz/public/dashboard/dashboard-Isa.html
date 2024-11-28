@@ -21,7 +21,7 @@
 
 </head>
 
-<body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas(), exibirRankingFuncionarios()">
+<body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -57,7 +57,7 @@
           <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Tela inicial</a>
           </li>
           <li class="ativo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Alertas</a></li>
-          <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Processos</a></li>
+          <li class="naoAtivo"><a href="DashAna.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Processos</a></li>
           <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Produtividade</a></li>
           <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
                 alt="Ícone 1">Funcionários</a></li>
@@ -163,6 +163,8 @@
                 resposta.json().then(json => {
                     json.resultado.forEach(empresa => {
                         empresaGerente = empresa.fkEmpresa
+                        exibirRankingFuncionarios()
+
                     });
                 });
             } else {
@@ -291,7 +293,7 @@
     }
 
     function exibirRankingFuncionarios() {
-        fetch("/alertas/exibirRankingFuncionarios", {
+        fetch(`/alertas/exibirRankingFuncionarios/${empresaGerente}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'

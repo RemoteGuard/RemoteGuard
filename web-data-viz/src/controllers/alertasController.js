@@ -75,7 +75,8 @@ function exibirMediaAlertas(req, res) {
 }
 
 function exibirRankingFuncionarios(req, res) {
-    alertasModel.exibirRankingFuncionarios()
+    const { empresaGerente } = req.params
+    alertasModel.exibirRankingFuncionarios(empresaGerente)
     .then(function (resultado) {
         res.json(resultado);
     })
