@@ -61,7 +61,7 @@
     </div>
 
     <div class="status-boxes">
-      <div class="status-card">
+      <div  id="status-card-saude" class="status-card-saude">
         <div id="popupMemoria" class="popup">
           <div class="popup-content">
             <p>
@@ -145,7 +145,7 @@
           </div>
           <div class="info-item">
             <p class="mini-titulo">Tamanho Total Armazenamento:</p>
-            <p id="total_disco" class="info-text"></p>
+            <p id="tamanhoTotal" class="info-text"></p>
           </div>
         </div>
       </div>
@@ -154,9 +154,9 @@
 
   <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-    cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
+    let cargo;
    var fkNotebook =sessionStorage.ID_NOTEBOOK;
 
     function buscarNomeResponsavel() {
@@ -184,14 +184,18 @@
       })
         .then(response => response.json())
         .then(data => {
+          cargo = data.cargo_funcionario; 
+          buscarDadosBarra();
           if (data.nome_funcionario && data.email_funcionario && data.cargo_funcionario) {
             document.getElementById('nomeFuncionario').textContent = data.nome_funcionario;
             document.getElementById('emailFuncionario').textContent = data.email_funcionario;
             document.getElementById('cargoFuncionario').textContent = data.cargo_funcionario;
           }
-        });
+        })
     }
-
+    
+   
+    
     function buscarInformacoesNotebook(fkNotebook) {
       fetch("/analista/listarInformacaoesNotebook", {
         method: "POST",
@@ -200,15 +204,16 @@
       })
         .then(response => response.json())
         .then(data => {
-          if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.total_disco) {
+          if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.tamanhoTotal) {
             document.getElementById('hostname').textContent = data.hostname;
             document.getElementById('marca').textContent = data.marca;
             document.getElementById('modelo').textContent = data.modelo;
             document.getElementById('memoriaRAM').textContent = data.memoriaRAM + " GB";
             document.getElementById('processador').textContent = data.processador;
-            document.getElementById('total_disco').textContent = data.total_disco + " GB";
+            document.getElementById('tamanhoTotal').textContent = data.tamanhoTotal + " GB";
           }
         });
+      
     }
 
     function buscarQuantidadeProcessos(fkNotebook) {
@@ -255,29 +260,35 @@
           
           if (data.media_ponderada !== undefined) {
             if (data.media_ponderada > 95) {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "red";
-            }
-            else if (data.media_ponderada >= 50 && data.media_ponderada <= 95) {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "yellow";
-            }
-            else {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "green";  
-            }
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+
+              document.getElementById('status-card-saude').style.borderColor = "red";  
+          }
+          else if (data.media_ponderada >= 50 && data.media_ponderada <= 95) {
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+       
+              document.getElementById('status-card-saude').style.borderColor = "yellow";  
+          }
+          else {
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+              
+              document.getElementById('status-card-saude').style.borderColor = "green";  
+          }
         }
         });
         }
@@ -382,13 +393,13 @@
         .then(response => response.json())
         .then(resposta => {
           const porcentagemDisco = resposta.porcentagem_disco;
-          const total_disco = resposta.total_disco;
+          const tamanhoTotal = resposta.tamanhoTotal;
           if (porcentagemDisco !== undefined) {
-            plotarGraficoDisco(porcentagemDisco, total_disco);
+            plotarGraficoDisco(porcentagemDisco, tamanhoTotal);
           }
         });
     }
-    function plotarGraficoDisco(usoDisco, total_disco) {
+    function plotarGraficoDisco(usoDisco, tamanhoTotal) {
       const livreDisco = 100 - usoDisco;
     
       const options = {
@@ -429,7 +440,7 @@
             {
               x: '44%',
               y: '55%',
-              text: `${total_disco} GB`, 
+              text: `${tamanhoTotal} GB`, 
               textAnchor: 'middle',
               dominantBaseline: 'middle',
               fontSize: '25px', 
@@ -449,11 +460,11 @@
 
     function buscarDadosBarra() {
       const fkNotebookBase = 1;
-
+     
       fetch("/analista/listarDadosBarra", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkNotebookBase })
+        body: JSON.stringify({ fkNotebookBase, cargo})
       })
         .then(response => response.json())
         .then(dados => {
@@ -662,9 +673,7 @@
     document.getElementById('nomeResponsavel').addEventListener('click', function () {
       document.getElementById('modal').style.display = 'block';
 
-      document.getElementById('nomeFuncionario').textContent = 'João Silva';
-      document.getElementById('cargoFuncionario').textContent = 'Analista de Sistemas';
-      document.getElementById('emailFuncionario').textContent = 'joao.silva@email.com';
+  
     });
 
     // Manipulação do menu hamburguer

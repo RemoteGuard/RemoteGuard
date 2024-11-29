@@ -3,7 +3,6 @@ var analistaModel = require("../models/analistaModel");
 
 
 function listarNotebooks(req, res) {
-   
     analistaModel.listarNotebook()
         .then(resultado => {
             if (resultado.length > 0) {
@@ -52,9 +51,10 @@ function listarPorcentagemDiscoPorNotebook(req, res) {
 
 function listarDadosBarra(req, res) {
     var fkNotebookBase = req.body.fkNotebookBase;
+    var cargo = req.body.cargo;
     Promise.all([
         analistaModel.listarDadosPorNotebook(fkNotebookBase),
-        analistaModel.listarDadosMediaPorNotebooks() 
+        analistaModel.listarDadosMediaPorNotebooks(cargo) 
     ])
     .then(resultado => {
         const dadosBase = resultado[0];
@@ -129,7 +129,7 @@ function listarInformacaoesNotebook(req, res) {
                     modelo: resultado[0].modelo,
                     memoriaRAM: resultado[0].memoriaRAM,
                     processador: resultado[0].processador,
-                    total_disco: resultado[0].total_disco
+                    tamanhoTotal: resultado[0].tamanhoTotal
                 });
             }
         })

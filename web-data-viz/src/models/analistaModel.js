@@ -23,7 +23,7 @@ function listarPorcentagemCPUPorNotebook(fkNotebook) {
 }
 
 function listarPorcentagemDiscoPorNotebook(fkNotebook) {
-  var instrucaoSql = `SELECT dados.porcentagem_disco, dados.data_captura, armazenamento.total_disco
+  var instrucaoSql = `SELECT dados.porcentagem_disco, dados.data_captura, armazenamento.tamanhoTotal
   FROM dados
   JOIN armazenamento ON dados.fkNotebook = armazenamento.fkNotebook
   WHERE dados.fkNotebook = ${fkNotebook}
@@ -38,13 +38,20 @@ function listarDadosPorNotebook(fkNotebook) {
   return database.executar(instrucaoSql);
 }
 
-function listarDadosMediaPorNotebooks() {
+function listarDadosMediaPorNotebooks(cargo) {
   var instrucaoSql = `
-   SELECT 
-    ROUND(AVG(porcentagem_cpu), 2) AS media_cpu,
-    ROUND(AVG(porcentagem_ram), 2) AS media_ram,
-    ROUND(AVG(porcentagem_disco), 2) AS media_disco
-FROM dados;
+SELECT 
+    ROUND(AVG(d.porcentagem_cpu), 2) AS media_cpu,
+    ROUND(AVG(d.porcentagem_ram), 2) AS media_ram,
+    ROUND(AVG(d.porcentagem_disco), 2) AS media_disco
+FROM 
+    dados d
+JOIN 
+    funcionario f
+ON 
+    d.fkNotebook = f.fkNotebook
+WHERE 
+    f.cargo = '${cargo}'; 
   `;
   return database.executar(instrucaoSql);
 }
@@ -80,7 +87,7 @@ function  listarInformacaoesFuncionario(fkNotebook) {
 function listarInformacaoesNotebook(fkNotebook) {
   const instrucaoSql = `
     SELECT 
-    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.total_disco 
+    n.hostname, n.marca, n.modelo, n.memoriaRAM, n.processador, a.tamanhoTotal 
     FROM 
     notebook n JOIN  armazenamento a ON n.idNotebook = ${fkNotebook} WHERE  a.fkNotebook = ${fkNotebook};  
   `;

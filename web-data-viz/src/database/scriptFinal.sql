@@ -54,6 +54,9 @@ CREATE TABLE IF NOT EXISTS armazenamento (
         REFERENCES notebook(idNotebook)
 );
 
+
+
+
 CREATE TABLE IF NOT EXISTS controleFluxo (
     idControleFluxo INT AUTO_INCREMENT,
     dtInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -140,6 +143,15 @@ INSERT INTO empresa (razaoSocial, nomeFantasia, cep, numero, telefone, email, cn
 INSERT INTO dados (fkNotebook, tempo_inatividade_cpu, porcentagem_cpu, bytes_ram, porcentagem_ram, bytes_disco, porcentagem_disco, qtdprocessos, boot_time, numero_nucleos) VALUES
     (2, 0.5, 25.3, 8388608, 60.4, 500000000, 45.0, 150, '2024-11-10 08:30:00', 4),
     (4, 0.8, 35.2, 16384000, 70.8, 1000000000, 60.0, 200, '2024-11-10 08:35:00', 8);
+    
+    INSERT INTO armazenamento (qtdDiscos, tamanhoTotal, fkNotebook)
+VALUES 
+    (1, 256, 1), -- Um disco de 256GB associado ao notebook com ID 1
+    (2, 512, 2), -- Dois discos totalizando 512GB associados ao notebook com ID 2
+    (1, 1024, 3), -- Um disco de 1TB associado ao notebook com ID 3
+    (3, 2048, 4), -- Três discos totalizando 2TB associados ao notebook com ID 4
+    (2, 768, 5); -- Dois discos totalizando 768GB associados ao notebook com ID 5
+
 
 INSERT INTO dados (porcentagem_cpu,porcentagem_ram,porcentagem_disco,qtdprocessos,tempo_alerta_cpu,tempo_alerta_ram,tempo_alerta_disco,fkNotebook) VALUES
 (83,100,100,70,2,2,2,1);
@@ -149,7 +161,8 @@ INSERT INTO funcionario (cargo, nome, cpf, email, senha, fkEmpresa, fkNotebook) 
 ('Analista De Sistemas', 'Carlos Oliveira', '12345678903', 'carlos.oliveira@empresa.com', 'senha123', 2, 3),
 ('Analista De Sistemas', 'Ana Costa', '12345678904', 'ana.costa@empresa.com', 'senha123', 2, 4),
 ('Analista De Sistemas', 'Lucas Pereira', '12345678905', 'lucas.pereira@empresa.com', 'senha123', 1, 5),
-('Analista De Sistemas', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6);
+('Analista De Sistemas', 'Fernanda Lima', '12345678906', 'fernanda.lima@empresa.com', 'senha123', 1, 6),
+('analista', 'Rogerio Matzak', '12345679678', 'rogeriomatzak@gmail.com', 'senha123', 1, 6);
 
 select * from funcionario;
 

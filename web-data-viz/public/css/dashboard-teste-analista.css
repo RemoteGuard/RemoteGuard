@@ -65,6 +65,8 @@
     font-size: 20px;
     margin: 17px;
   }
+
+
   .qtdprocess{
     padding: 5px;
     display: flex;
@@ -350,7 +352,16 @@ justify-content: center;
     margin-left: 50px;
     transition: transform 0.5s ease, box-shadow 0.5s ease;
   }
-  
+  .status-card-saude{
+    width: 200px;
+    height: 100px;
+    margin: 20px 0;
+    background-color: #504e4e;
+    border-radius: 7%;
+    margin-left: 50px;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    border: 2px solid transparent;
+  }
 
   
   .status-card:hover {
@@ -604,19 +615,20 @@ justify-content: center;
 
 .popup {
   display: none;
-
-  width: 600px;
+  width: 700px;
   height: 300px;
 }
 
 .popup-content {
-  background-color: #202020;
-  padding: 10px;
+  background-color: #504e4e;
   border-radius: 8px;
   width: 200px;
   height: 190px;
   text-align: center;
+  position: fixed;
+
   
+
 }
 
 
