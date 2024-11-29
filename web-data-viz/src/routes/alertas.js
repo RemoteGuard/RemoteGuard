@@ -35,8 +35,8 @@ router.get("/buscarDados/:fkNotebook", function (req, res) {
     alertasController.buscarDados(req, res);
 })
 
-router.get("/obterDadosRegressao/", function (req, res) {
-    alertasController.obterDadosRegressao(req, res);
+router.get("/buscarDadosComparacaoAlertas", function (req, res) {
+    alertasController.buscarDadosComparacaoAlertas(req, res);
 })
 
 module.exports = router;

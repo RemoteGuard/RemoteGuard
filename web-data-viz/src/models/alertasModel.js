@@ -80,11 +80,12 @@ function buscarDados(fkNotebook) {
     return database.executar(instrucaoSql);
 }
 
-function obterDadosRegressao() {
-    var instrucaoSql = `SELECT
-                        COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
-                        COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
-                        FROM alerta GROUP BY DATE(dataHora);`;
+function buscarDadosComparacaoAlertas() {
+    var instrucaoSql = `SELECT DATE_FORMAT(dataHora, '%W') AS DiaSemana,
+                        COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS FreqAlertasProcessos,
+                        COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS FreqAlertasHW
+                        FROM alerta WHERE dataHora >= CURDATE() - INTERVAL 7 DAY
+                        GROUP BY DATE_FORMAT(dataHora, '%W');`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -101,5 +102,5 @@ module.exports = {
     exibirMediaAlertas,
     exibirRankingFuncionarios,
     buscarDados,
-    obterDadosRegressao
+    buscarDadosComparacaoAlertas
 };
