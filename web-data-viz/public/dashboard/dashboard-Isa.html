@@ -21,7 +21,7 @@
 
 </head>
 
-<body onload="timeout, delimitarTempo()">
+<body onload="delimitarTempo()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
@@ -152,7 +152,7 @@
     });
 
 
-    function delimitarTempo () {
+    function delimitarTempo() {
         var tempo = select_tempo.value;
 
         if (tempo == 14) {
@@ -173,8 +173,8 @@
         exibirMediaAlertas()
         buscarDadosComparacaoAlertas()
 
-        if(selectFunc.value != "#") { 
-            buscarDados() 
+        if (selectFunc.value != "#") {
+            buscarDados()
             exibirTotalAlertasHardware()
             exibirTotalAlertasProcessos()
         }
@@ -199,6 +199,7 @@
                 resposta.json().then(json => {
                     json.resultado.forEach(empresa => {
                         empresaGerente = empresa.fkEmpresa
+                        listarFuncionarios()
                         exibirRankingFuncionarios()
                     });
                 });
@@ -209,7 +210,17 @@
     }
 
     //função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
-    var timeout = setTimeout(function listarFuncionarios() {
+    function listarFuncionarios() {
+        const selectFuncionario = document.getElementById("selectFunc");
+        selectFuncionario.innerHTML = '';
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = '#';
+        defaultOption.textContent = 'Selecione um Funcionário';
+        defaultOption.disabled = true;
+        defaultOption.selected = true; 
+        selectFuncionario.appendChild(defaultOption);
+
         fetch("/alertas/listarFuncionarios", {
             method: "POST",
             headers: {
@@ -237,7 +248,6 @@
             console.log(`#ERRO: ${erro}`);
         });
     }
-        , 500)
 
 
     // traz a fkNotebook do funcionário que for selecionado pelo select
@@ -309,101 +319,101 @@
             data2.push(registro.FreqAlertasHW);
         }
 
-   
+
         var options = {
-    series: [
-        {
-            name: 'Alertas de Processos', // Nome da série 1
-            data: data // Dados da série 1
-        },
-        {
-            name: 'Alertas de Hardware', // Nome da série 2
-            data: data2 // Dados da série 2
-        }
-    ],
-    chart: {
-        type: 'bar',
-        height: 300
-    },
-    plotOptions: {
-        bar: {
-            horizontal: true, // Barras horizontais
+            series: [
+                {
+                    name: 'Alertas de Processos', // Nome da série 1
+                    data: data // Dados da série 1
+                },
+                {
+                    name: 'Alertas de Hardware', // Nome da série 2
+                    data: data2 // Dados da série 2
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 300
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true, // Barras horizontais
+                    dataLabels: {
+                        position: 'top'
+                    }
+                }
+            },
             dataLabels: {
-                position: 'top'
+                enabled: true,
+                offsetX: -6,
+                style: {
+                    fontSize: '12px',
+                    colors: ['#fff']
+                }
+            },
+            stroke: {
+                show: true,
+                width: 1,
+                color: ['#fff'],
+            },
+            colors: ['#FFD700', '#F08000'], // Definindo cores diferentes para cada série
+            xaxis: {
+                categories: labels, // Categorias (dias da semana)
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '11px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#D3D3D3'
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#202020'
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '12px'
+                    }
+                },
+                title: {
+                    text: 'Frequência',
+                    style: {
+                        color: '#D3D3D3'
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            title: {
+                text: 'Frequência de alertas por dia da semana',
+                align: 'center',
+                margin: 10,
+                offsetY: 10,
+                style: {
+                    fontSize: '14px',
+                    color: '#D3D3D3'
+                }
+            },
+            tooltip: {
+                theme: 'dark',
+                style: {
+                    fontSize: '14px',
+                    color: '#FFFFFF'
+                },
+                y: {
+                    formatter: function (val) {
+                        return val + " alertas";
+                    }
+                }
             }
-        }
-    },
-    dataLabels: {
-        enabled: true,
-        offsetX: -6,
-        style: {
-            fontSize: '12px',
-            colors: ['#fff']
-        }
-    },
-    stroke: {
-        show: true,
-        width: 1,
-        color: ['#fff'],
-    },
-    colors: ['#FFD700', '#F08000'], // Definindo cores diferentes para cada série
-    xaxis: {
-        categories: labels, // Categorias (dias da semana)
-        labels: {
-            style: {
-                colors: '#D3D3D3',
-                fontSize: '11px'
-            }
-        },
-        axisBorder: {
-            show: true,
-            color: '#D3D3D3'
-        },
-        axisTicks: {
-            show: true,
-            color: '#202020'
-        }
-    },
-    yaxis: {
-        labels: {
-            style: {
-                colors: '#D3D3D3',
-                fontSize: '12px'
-            }
-        },
-        title: {
-            text: 'Frequência',
-            style: {
-                color: '#D3D3D3'
-            }
-        }
-    },
-    fill: {
-        opacity: 1
-    },
-    title: {
-        text: 'Frequência de alertas por dia da semana',
-        align: 'center',
-        margin: 10,
-        offsetY: 10,
-        style: {
-            fontSize: '14px',
-            color: '#D3D3D3'
-        }
-    },
-    tooltip: {
-        theme: 'dark',
-        style: {
-            fontSize: '14px',
-            color: '#FFFFFF'
-        },
-        y: {
-            formatter: function (val) {
-                return val + " alertas";
-            }
-        }
-    }
-};
+        };
 
         var chart = new ApexCharts(document.querySelector("#myChartCanvas2"), options);
         chart.render();
