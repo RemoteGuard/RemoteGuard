@@ -21,17 +21,17 @@
 
 </head>
 
-<body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas(), buscarDadosComparacaoAlertas()">
+<body onload="timeout, delimitarTempo()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
         </div>
         <div class="select">
-            <select name="select_tempo" id="select_tempo">
+            <select onchange="delimitarTempo()" name="select_tempo" id="select_tempo">
                 <option value="7">Semana atual</option>
                 <option value="14">Semana passada</option>
                 <option value="21">Há três semanas</option>
-                <option value="28">Mensal</option>
+                <option value="28">Histórico mensal</option>
             </select>
         </div>
         <div class="perfil-wrapper">
@@ -77,7 +77,7 @@
             <div class="chart-container">
                 <div class="ranking">
                     <h1>RANKING - FREQUÊNCIA DE ALERTAS POR FUNCIONÁRIO</h1>
-                    <div class="tabelaRanking">
+                    <div id="ranking" class="tabelaRanking">
                         <span id="exibirNomesTopFuncionarios"></span>
                         <span id="exibirQtdAlertasTopFuncionarios"></span>
                     </div>
@@ -125,7 +125,8 @@
     var requisicaoPadrao = ''
     var empresaGerente = ''
     var fkNote = ''
-
+    var inicio = 7
+    var fim = 0
 
 
     // Manipulação do menu hamburguer
@@ -150,6 +151,35 @@
         });
     });
 
+
+    function delimitarTempo () {
+        var tempo = select_tempo.value;
+
+        if (tempo == 14) {
+            inicio = 14
+            fim = 7
+        } else if (tempo == 21) {
+            inicio = 21
+            fim = 14
+        } else if (tempo == 28) {
+            inicio = 28
+            fim = 0
+        } else {
+            inicio = 7
+            fim = 0
+        }
+
+        buscarEmpresaDoGerenteLogado()
+        exibirMediaAlertas()
+        buscarDadosComparacaoAlertas()
+
+        if(selectFunc.value != "#") { 
+            buscarDados() 
+            exibirTotalAlertasHardware()
+            exibirTotalAlertasProcessos()
+        }
+
+    }
 
     //funcao que traz a fkEmpresa do funcionário que estiver logado
     function buscarEmpresaDoGerenteLogado() {
@@ -245,7 +275,7 @@
 
         document.getElementById("chart-container2-5").innerHTML += `<div style="width: 100%" id="myChartCanvas2" class="canvas"></div>`;
 
-        fetch(`/alertas/buscarDadosComparacaoAlertas/`, {
+        fetch(`/alertas/buscarDadosComparacaoAlertas/${inicio}/${fim}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -383,7 +413,7 @@
         cards.style.display = 'flex'
 
 
-        fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}`, {
+        fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -402,7 +432,7 @@
     }
 
     function exibirTotalAlertasProcessos() {
-        fetch(`/alertas/exibirTotalAlertasProcessos/${fkNote}`, {
+        fetch(`/alertas/exibirTotalAlertasProcessos/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -421,7 +451,7 @@
     }
 
     function exibirMediaAlertas() {
-        fetch(`/alertas/exibirMediaAlertas/`, {
+        fetch(`/alertas/exibirMediaAlertas/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -438,11 +468,18 @@
     }
 
     function exibirRankingFuncionarios() {
-        fetch(`/alertas/exibirRankingFuncionarios/${empresaGerente}`, {
-            method: "GET",
+        exibirNomesTopFuncionarios.innerHTML = ''
+        exibirQtdAlertasTopFuncionarios.innerHTML = ''
+
+        fetch(`/alertas/exibirRankingFuncionarios/${inicio}/${fim}`, {
+            method: "POST",
             headers: {
-                "Content-Type": 'application\json'
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                empresaServer: empresaGerente
+
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
@@ -464,7 +501,7 @@
 
         document.getElementById("grafico").innerHTML += `<div style="width: 100%" id="myChartCanvas" class="canvas"></div>`;
 
-        fetch(`/alertas/buscarDados/${fkNote}`, {
+        fetch(`/alertas/buscarDados/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             cache: 'no-store',
             headers: {

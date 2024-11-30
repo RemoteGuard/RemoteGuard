@@ -38,7 +38,9 @@ function buscarNotebookDoFuncionario(req, res) {
 
 function exibirTotalAlertasHardware(req, res) {
     const { fkNotebook } = req.params
-    alertasModel.exibirTotalAlertasHardware(fkNotebook)
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.exibirTotalAlertasHardware(fkNotebook, inicio, fim)
     .then(function (resultado) {
         res.json(resultado);
     })
@@ -51,7 +53,9 @@ function exibirTotalAlertasHardware(req, res) {
 
 function exibirTotalAlertasProcessos(req, res) {
     const { fkNotebook } = req.params
-    alertasModel.exibirTotalAlertasProcessos(fkNotebook)
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.exibirTotalAlertasProcessos(fkNotebook, inicio, fim)
     .then(function (resultado) {
         res.json(resultado);
     })
@@ -63,7 +67,9 @@ function exibirTotalAlertasProcessos(req, res) {
 }
 
 function exibirMediaAlertas(req, res) {
-    alertasModel.exibirMediaAlertas()
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.exibirMediaAlertas(inicio, fim)
     .then(function (resultado) {
         res.json(resultado);
     })
@@ -75,7 +81,10 @@ function exibirMediaAlertas(req, res) {
 }
 
 function exibirRankingFuncionarios(req, res) {
-    alertasModel.exibirRankingFuncionarios()
+    var empresaModel = req.body.empresaServer
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.exibirRankingFuncionarios(empresaModel, inicio, fim)
     .then(function (resultado) {
         res.json(resultado);
     })
@@ -88,7 +97,10 @@ function exibirRankingFuncionarios(req, res) {
 
 function buscarDados(req, res) {
     const { fkNotebook } = req.params
-    alertasModel.buscarDados(fkNotebook).then(function (resultado) {
+    var empresaModel = req.body.empresaServer
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.buscarDados(fkNotebook, inicio, fim).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -102,7 +114,9 @@ function buscarDados(req, res) {
 
 
 function buscarDadosComparacaoAlertas(req, res) {
-    alertasModel.buscarDadosComparacaoAlertas()
+    const { inicio } = req.params
+    const { fim } = req.params
+    alertasModel.buscarDadosComparacaoAlertas(inicio, fim)
     .then(function (resultado) {
         res.json(resultado);
     })
