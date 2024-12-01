@@ -55,18 +55,21 @@
     <div class="alinhamento">
       <div class="box-responsa">
         <p>Funcionário Responsavel pela Máquina</p>
-        <div class="funcionario-atual" id="nomeResponsavel" style="cursor: pointer;">Clique aqui para ver o responsável
+        <div class="funcionario-atual"  style="cursor: pointer;"><i class="fa-solid fa-person"></i><span id="nomeResponsavel">
+        </span>
         </div>
+        
       </div>
     </div>
 
     <div class="status-boxes">
-      <div class="status-card">
+      <div  id="status-card-saude" class="status-card-saude">
+        <i class="fa-solid fa-gears"></i>
         <div id="popupMemoria" class="popup">
           <div class="popup-content">
             <p>
-              A saúde é baseada nos 3 recursos sendo eles: Memória, CPU e Disco Rígido. A saúde é calculada com base na média ponderada dos 3 recursos.
-              A CPU representa 40% da média ponderada, a Memória 30% e o Disco Rígido 30%.
+              O uso dos recursos  é baseada nos 3 recursos sendo eles: Memória RAM, CPU e Disco . A saúde é calculada com base na média ponderada dos 3 recursos.
+              A CPU representa 40% da média ponderada, a Memória RAM  30% e o Disco representa 30% da média ponderada.
             </p>
             <button class="close-button" onclick="closePopup('popupMemoria')">Fechar</button>
           </div>
@@ -79,8 +82,8 @@
         
      
     </div>
-      <div class="status-card"><span id="quantidadeProcessos" class="text-card"></span></div>
-      <div class="status-card"><span id="quantidadeNucleos" class="text-card"></span></div>
+      <div class="status-card"><i class="fa-regular fa-folder-open"></i><span id="quantidadeProcessos" class="text-card"></span></div>
+      <div class="status-card"><i class="fa-solid fa-microchip"></i><span id="quantidadeNucleos" class="text-card"></span></div>
     </div>
 
 <div class="encapar">
@@ -145,7 +148,7 @@
           </div>
           <div class="info-item">
             <p class="mini-titulo">Tamanho Total Armazenamento:</p>
-            <p id="total_disco" class="info-text"></p>
+            <p id="tamanhoTotal" class="info-text"></p>
           </div>
         </div>
       </div>
@@ -154,9 +157,9 @@
 
   <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-    cargo = sessionStorage.CARGO_USUARIO;
     let grafico;
     var graficoBarra;
+    let cargo;
    var fkNotebook =sessionStorage.ID_NOTEBOOK;
 
     function buscarNomeResponsavel() {
@@ -184,14 +187,18 @@
       })
         .then(response => response.json())
         .then(data => {
+          cargo = data.cargo_funcionario; 
+          buscarDadosBarra();
           if (data.nome_funcionario && data.email_funcionario && data.cargo_funcionario) {
             document.getElementById('nomeFuncionario').textContent = data.nome_funcionario;
             document.getElementById('emailFuncionario').textContent = data.email_funcionario;
             document.getElementById('cargoFuncionario').textContent = data.cargo_funcionario;
           }
-        });
+        })
     }
-
+    
+   
+    
     function buscarInformacoesNotebook(fkNotebook) {
       fetch("/analista/listarInformacaoesNotebook", {
         method: "POST",
@@ -200,15 +207,16 @@
       })
         .then(response => response.json())
         .then(data => {
-          if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.total_disco) {
+          if (data.hostname && data.marca && data.modelo && data.memoriaRAM && data.processador && data.tamanhoTotal) {
             document.getElementById('hostname').textContent = data.hostname;
             document.getElementById('marca').textContent = data.marca;
             document.getElementById('modelo').textContent = data.modelo;
             document.getElementById('memoriaRAM').textContent = data.memoriaRAM + " GB";
             document.getElementById('processador').textContent = data.processador;
-            document.getElementById('total_disco').textContent = data.total_disco + " GB";
+            document.getElementById('tamanhoTotal').textContent = data.tamanhoTotal + " GB";
           }
         });
+      
     }
 
     function buscarQuantidadeProcessos(fkNotebook) {
@@ -255,29 +263,35 @@
           
           if (data.media_ponderada !== undefined) {
             if (data.media_ponderada > 95) {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "red";
-            }
-            else if (data.media_ponderada >= 50 && data.media_ponderada <= 95) {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "yellow";
-            }
-            else {
-                document.getElementById('mediaPonderada').innerHTML = `<p class="qtdprocess">A Saúde dos Recursos</p>` + data.media_ponderada + `%` +
-                `<button class="buttom" onclick="openPopup('popupMemoria')">
-                  <i class="fa-solid fa-question"></i>
-                </button>`;
-                
-                document.getElementById('mediaPonderada').style.color = "green";  
-            }
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess">A Uso dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+
+              document.getElementById('status-card-saude').style.borderColor = "red";  
+          }
+          else if (data.media_ponderada >= 50 && data.media_ponderada <= 95) {
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess"> Uso dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+       
+              document.getElementById('status-card-saude').style.borderColor = "yellow";  
+          }
+          else {
+              document.getElementById('mediaPonderada').innerHTML = 
+                  `<p class="qtdprocess">A Uso dos Recursos</p>` + data.media_ponderada + `%` +
+                  `<button class="buttom" onclick="openPopup('popupMemoria')">
+                      <i class="fa-solid fa-question"></i>
+                  </button>`;
+          
+              
+              document.getElementById('status-card-saude').style.borderColor = "green";  
+          }
         }
         });
         }
@@ -326,6 +340,7 @@
           name: label,
           data: dados,
           color: '#FFD700',
+          
         }],
         chart: {
           height: 400,
@@ -382,13 +397,13 @@
         .then(response => response.json())
         .then(resposta => {
           const porcentagemDisco = resposta.porcentagem_disco;
-          const total_disco = resposta.total_disco;
+          const tamanhoTotal = resposta.tamanhoTotal;
           if (porcentagemDisco !== undefined) {
-            plotarGraficoDisco(porcentagemDisco, total_disco);
+            plotarGraficoDisco(porcentagemDisco, tamanhoTotal);
           }
         });
     }
-    function plotarGraficoDisco(usoDisco, total_disco) {
+    function plotarGraficoDisco(usoDisco, tamanhoTotal) {
       const livreDisco = 100 - usoDisco;
     
       const options = {
@@ -429,7 +444,7 @@
             {
               x: '44%',
               y: '55%',
-              text: `${total_disco} GB`, 
+              text: `${tamanhoTotal} GB`, 
               textAnchor: 'middle',
               dominantBaseline: 'middle',
               fontSize: '25px', 
@@ -449,11 +464,11 @@
 
     function buscarDadosBarra() {
       const fkNotebookBase = 1;
-
+     
       fetch("/analista/listarDadosBarra", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fkNotebookBase })
+        body: JSON.stringify({ fkNotebookBase, cargo})
       })
         .then(response => response.json())
         .then(dados => {
@@ -466,12 +481,12 @@
         series: [{
           name: 'Máquina Atual',
           data: [dados.base.cpu, dados.base.ram, dados.base.disco],
-          color: '#FFEB3B'
+          color: '#FFEB1B'
         },
         {
           name: 'Média de Todos os Notebooks',
           data: [dados.media.cpu, dados.media.ram, dados.media.disco],
-          color: '#00E676'
+          color: '#F08000'
         }
         ],
         chart: {
@@ -662,9 +677,7 @@
     document.getElementById('nomeResponsavel').addEventListener('click', function () {
       document.getElementById('modal').style.display = 'block';
 
-      document.getElementById('nomeFuncionario').textContent = 'João Silva';
-      document.getElementById('cargoFuncionario').textContent = 'Analista de Sistemas';
-      document.getElementById('emailFuncionario').textContent = 'joao.silva@email.com';
+  
     });
 
     // Manipulação do menu hamburguer

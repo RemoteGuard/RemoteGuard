@@ -21,10 +21,18 @@
 
 </head>
 
-<body onload="timeout, buscarEmpresaDoGerenteLogado(), exibirMediaAlertas(), exibirRankingFuncionarios()">
+<body onload="delimitarTempo()">
     <header id="main-header">
         <div class="menu-icone" id="menu-icone">
             <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="select">
+            <select onchange="delimitarTempo()" name="select_tempo" id="select_tempo">
+                <option value="7">Semana atual</option>
+                <option value="14">Semana passada</option>
+                <option value="21">Há três semanas</option>
+                <option value="28">Histórico mensal</option>
+            </select>
         </div>
         <div class="perfil-wrapper">
             <div class="Ativacao">
@@ -43,28 +51,33 @@
 
     <nav id="menuhamburguer">
         <div class="logo">
-          <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
         </div>
         <ul class="menu-items">
-          <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Tela inicial</a>
-          </li>
-          <li class="ativo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Alertas</a></li>
-          <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Processos</a></li>
-          <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Produtividade</a></li>
-          <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
-                alt="Ícone 1">Funcionários</a></li>
-          <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Máquinas</a>
-          </li>
-          <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+            <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Tela
+                    inicial</a>
+            </li>
+            <li class="ativo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Alertas</a></li>
+            <li class="naoAtivo"><a href="DashAna.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Processos</a></li>
+            <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Produtividade</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                        alt="Ícone 1">Funcionários</a></li>
+            <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1">
+                    Máquinas</a>
+            </li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
         </ul>
-      </nav>
+    </nav>
 
     <main id="main-Container">
         <div class="dashboard1">
             <div class="chart-container">
                 <div class="ranking">
                     <h1>RANKING - FREQUÊNCIA DE ALERTAS POR FUNCIONÁRIO</h1>
-                    <div class="tabelaRanking">
+                    <div id="ranking" class="tabelaRanking">
                         <span id="exibirNomesTopFuncionarios"></span>
                         <span id="exibirQtdAlertasTopFuncionarios"></span>
                     </div>
@@ -77,15 +90,16 @@
             </div>
         </div>
         <div class="dashboard2">
-            <div id="chart-container2-5" class="chart-container2-5">
-            </div>
+            <div id="chart-container2-5" class="chart-container2-5"></div>
             <div class="chart-container2">
                 <select onchange="buscarNotebookDoFuncionario()" name="select-func" id="selectFunc" class="select-func">
                     <option selected disabled value="#">Selecione um funcionário</option>
                 </select>
                 <div class="metricas-funcionario">
                     <div id="grafico" class="grafico">
-                        <span style="font-size: 16px; display: inline-block; margin-top: 120px; width: 500px; margin-left: -40px; color: red;">É necessário selecionar um funcionário para visualizar estes dados</span>
+                        <span
+                            style="font-size: 16px; display: inline-block; margin-top: 120px; width: 500px; margin-left: -40px; color: red;">É
+                            necessário selecionar um funcionário para visualizar estes dados</span>
                     </div>
                     <div id="cards" class="cards" style="display: none;">
                         <div class="card">
@@ -111,7 +125,8 @@
     var requisicaoPadrao = ''
     var empresaGerente = ''
     var fkNote = ''
-
+    var inicio = 7
+    var fim = 0
 
 
     // Manipulação do menu hamburguer
@@ -137,6 +152,35 @@
     });
 
 
+    function delimitarTempo() {
+        var tempo = select_tempo.value;
+
+        if (tempo == 14) {
+            inicio = 14
+            fim = 7
+        } else if (tempo == 21) {
+            inicio = 21
+            fim = 14
+        } else if (tempo == 28) {
+            inicio = 28
+            fim = 0
+        } else {
+            inicio = 7
+            fim = 0
+        }
+
+        buscarEmpresaDoGerenteLogado()
+        exibirMediaAlertas()
+        buscarDadosComparacaoAlertas()
+
+        if (selectFunc.value != "#") {
+            buscarDados()
+            exibirTotalAlertasHardware()
+            exibirTotalAlertasProcessos()
+        }
+
+    }
+
     //funcao que traz a fkEmpresa do funcionário que estiver logado
     function buscarEmpresaDoGerenteLogado() {
         idUsuario = sessionStorage.ID_USUARIO
@@ -155,6 +199,8 @@
                 resposta.json().then(json => {
                     json.resultado.forEach(empresa => {
                         empresaGerente = empresa.fkEmpresa
+                        listarFuncionarios()
+                        exibirRankingFuncionarios()
                     });
                 });
             } else {
@@ -164,7 +210,17 @@
     }
 
     //função que lista todos os funcionários da fkEmpresa que for encontrada com a função anterior
-    var timeout = setTimeout(function listarFuncionarios() {
+    function listarFuncionarios() {
+        const selectFuncionario = document.getElementById("selectFunc");
+        selectFuncionario.innerHTML = '';
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = '#';
+        defaultOption.textContent = 'Selecione um Funcionário';
+        defaultOption.disabled = true;
+        defaultOption.selected = true; 
+        selectFuncionario.appendChild(defaultOption);
+
         fetch("/alertas/listarFuncionarios", {
             method: "POST",
             headers: {
@@ -192,7 +248,6 @@
             console.log(`#ERRO: ${erro}`);
         });
     }
-        , 500)
 
 
     // traz a fkNotebook do funcionário que for selecionado pelo select
@@ -224,11 +279,151 @@
         })
     }
 
+    function buscarDadosComparacaoAlertas() {
+        const deletarGrafico = document.getElementById("chart-container2-5");
+        deletarGrafico.innerHTML = '';
+
+        document.getElementById("chart-container2-5").innerHTML += `<div style="width: 100%" id="myChartCanvas2" class="canvas"></div>`;
+
+        fetch(`/alertas/buscarDadosComparacaoAlertas/${inicio}/${fim}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    exibirComparacaoAlertas(resposta);
+
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function exibirComparacaoAlertas(resposta) {
+        let labels = [];
+        let data = [];
+        let data2 = [];
+
+        for (let i = 0; i < resposta.length; i++) {
+            var registro = resposta[i];
+            labels.push(registro.DiaSemana);
+            data.push(registro.FreqAlertasProcessos);
+            data2.push(registro.FreqAlertasHW);
+        }
+
+
+        var options = {
+            series: [
+                {
+                    name: 'Alertas de Processos', // Nome da série 1
+                    data: data // Dados da série 1
+                },
+                {
+                    name: 'Alertas de Hardware', // Nome da série 2
+                    data: data2 // Dados da série 2
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 300
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true, // Barras horizontais
+                    dataLabels: {
+                        position: 'top'
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: -6,
+                style: {
+                    fontSize: '12px',
+                    colors: ['#fff']
+                }
+            },
+            stroke: {
+                show: true,
+                width: 1,
+                color: ['#fff'],
+            },
+            colors: ['#FFD700', '#F08000'], // Definindo cores diferentes para cada série
+            xaxis: {
+                categories: labels, // Categorias (dias da semana)
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '11px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#D3D3D3'
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#202020'
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '12px'
+                    }
+                },
+                title: {
+                    text: 'Frequência',
+                    style: {
+                        color: '#D3D3D3'
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            title: {
+                text: 'Frequência de alertas por dia da semana',
+                align: 'center',
+                margin: 10,
+                offsetY: 10,
+                style: {
+                    fontSize: '14px',
+                    color: '#D3D3D3'
+                }
+            },
+            tooltip: {
+                theme: 'dark',
+                style: {
+                    fontSize: '14px',
+                    color: '#FFFFFF'
+                },
+                y: {
+                    formatter: function (val) {
+                        return val + " alertas";
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChartCanvas2"), options);
+        chart.render();
+    }
+
     function exibirTotalAlertasHardware() {
         cards.style.display = 'flex'
 
 
-        fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}`, {
+        fetch(`/alertas/exibirTotalAlertasHardware/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -247,7 +442,7 @@
     }
 
     function exibirTotalAlertasProcessos() {
-        fetch(`/alertas/exibirTotalAlertasProcessos/${fkNote}`, {
+        fetch(`/alertas/exibirTotalAlertasProcessos/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -266,7 +461,7 @@
     }
 
     function exibirMediaAlertas() {
-        fetch(`/alertas/exibirMediaAlertas/`, {
+        fetch(`/alertas/exibirMediaAlertas/${inicio}/${fim}`, {
             method: "GET",
             headers: {
                 "Content-Type": 'application\json'
@@ -283,11 +478,18 @@
     }
 
     function exibirRankingFuncionarios() {
-        fetch("/alertas/exibirRankingFuncionarios", {
-            method: "GET",
+        exibirNomesTopFuncionarios.innerHTML = ''
+        exibirQtdAlertasTopFuncionarios.innerHTML = ''
+
+        fetch(`/alertas/exibirRankingFuncionarios/${inicio}/${fim}`, {
+            method: "POST",
             headers: {
-                "Content-Type": 'application\json'
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                empresaServer: empresaGerente
+
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
@@ -309,7 +511,7 @@
 
         document.getElementById("grafico").innerHTML += `<div style="width: 100%" id="myChartCanvas" class="canvas"></div>`;
 
-        fetch(`/alertas/buscarDados/${fkNote}`, {
+        fetch(`/alertas/buscarDados/${fkNote}/${inicio}/${fim}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -424,86 +626,4 @@
         chart.render();
     }
 
-
-    function obterDadosRegressao() {
-    return fetch(`/alertas/obterDadosRegressao/`, {
-        method: "GET",
-        cache: 'no-store',
-        headers: {
-            "Content-Type": 'application/json'
-        }
-    }).then(function (response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.error('Nenhum dado encontrado ou erro na API');
-            return [];
-        }
-    }).catch(function (error) {
-        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-        return [];
-    });
-}
-
-function calcularRegressaoLinear(x, y) {
-    const n = x.length;
-    const somaX = x.reduce((acc, val) => acc + val, 0);
-    const somaY = y.reduce((acc, val) => acc + val, 0);
-    const somaXY = x.reduce((acc, val, i) => acc + val * y[i], 0);
-    const somaX2 = x.reduce((acc, val) => acc + val * val, 0);
-
-    const m = (n * somaXY - somaX * somaY) / (n * somaX2 - somaX * somaX);
-    const b = (somaY - m * somaX) / n;
-
-    return { m, b };
-}
-
-anychart.onDocumentReady(function () {
-    obterDadosRegressao().then((resposta) => {
-        let alertasHW = [];
-        let alertasProcessos = [];
-
-        for (let i = 0; i < resposta.length; i++) {
-            var registro = resposta[i];
-            alertasHW.push(registro.alertasHardware);
-            alertasProcessos.push(registro.alertasProcessos);
-        }
-
-        // Calcular a linha de regressão
-        const { m, b } = calcularRegressaoLinear(alertasProcessos, alertasHW);
-
-        // Gerar os pontos da linha de regressão
-        const xMin = Math.min(...alertasProcessos);
-        const xMax = Math.max(...alertasProcessos);
-        const linhaRegressao = [
-            { x: 0, value: b }, // Ponto de interceptação no eixo Y
-            { x: xMax, value: m * xMax + b }
-        ];
-
-        anychart.theme('darkEarth');
-        var chart = anychart.scatter();
-        chart.animation(true);
-        chart.title('Frequência de alertas de hardware em função da frequência de processos indevidos');
-
-        chart.xScale().minimum(0).maximum(xMax + 5).ticks({ interval: 5 });
-        chart.yScale().minimum(Math.min(...alertasHW) - 10).maximum(Math.max(...alertasHW) + 10).ticks({ interval: 10 });
-
-        chart.yAxis().title('Frequência - alertas de hardware');
-        chart
-            .xAxis()
-            .title('Frequência - alertas de processos')
-
-        var marker = chart.marker(alertasProcessos.map((x, i) => ({ x: x, value: alertasHW[i] })));
-        marker.type('triangle-up').size(4);
-        marker
-            .hovered()
-            .fill('gold')
-
-        var line = chart.line(linhaRegressao);
-        line.stroke({ color: '#FFD700', thickness: 2 });
-
-        chart.container('chart-container2-5');
-        chart.draw();
-    });
-});
 </script>

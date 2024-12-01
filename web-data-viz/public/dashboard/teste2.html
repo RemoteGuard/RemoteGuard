@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/dashboard-teste-analista.css">
+
+  <title>Interface RemoteGuard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #101010;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .dashRenan{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto 1fr;
+      gap: 20px;
+      width: 90%;
+    }
+
+    .status-box {
+      background-color: #3b3b3b;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .status-box h3 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    .chart {
+      grid-column: span 2;
+      background-color: #202020;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .process-table {
+      background-color: #202020;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      overflow-x: auto;
+    }
+
+    .process-table h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.4em;
+      color: #FFD700;
+    }
+
+    .process-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .process-table table thead {
+      background-color: #202020;
+    }
+
+    .process-table table th,
+    .process-table table td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .process-table table th {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .process-table table tr:nth-child(even) {
+      background-color: #202020;
+    }
+
+    .process-table table tr:nth-child(odd) {
+      background-color: #2c2c2c;
+    }
+
+    .process-table table td {
+      color: #fff;
+      border-top: 1px solid #444;
+    }
+
+    .process-table table tr:hover {
+      background-color: #202020;
+      transition: background-color 0.3s ease;
+    }
+  </style>
+  <!-- Adicionando o CDN do ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<header id="main-header">
+  <div class="menu-icone" id="menu-icone">
+    <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+  </div>
+  <div class="perfil-wrapper">
+    <img class="atencaoo" src="../assets/imgs/atencao.png" alt="Alerta" style="display: none;">
+    <div class="atencao-box" id="atencao-box" style="display: none;">
+      <div id="alerta" class="alerta oculto">
+        <span id="alerta-recurso"></span> está em alerta!
+        <span id="alerta-porcentagem"></span>% em uso por
+        <span id="alerta-tempo"></span> segundos.
+      </div>
+    </div>
+
+    <div class="Ativacao">
+      <button>Ajuda</button>
+    </div>
+    <div class="perfil-container">
+      <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+      <div class="perfil-text">
+        <span class="nome" id="b_usuario">Analista</span>
+        <span class="legenda">perfil</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav id="menuhamburguer">
+  <div class="logo">
+    <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+  </div>
+  <ul class="menu-items">
+    <li class="ativo"><a href="DashAnalista.html"><img src="../assets/imgs/dash.png"
+          alt="Ícone Dashboard">Dashboard</a></li>
+    <li class="naoAtivo"><a href="perfilAnalista.html"><img src="../assets/imgs/config.png"
+          alt="Ícone Configuração">Configuração</a></li>
+    <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone Sair">Sair</a></li>
+  </ul>
+</nav>
+
+<body onload="trazerProcessos(), trazerDados(), plotarGrafico()">
+  <div class="dashRenan">
+    <!-- <div class="status-box">
+      <h3>Funcionários potencialmente ociosos</h3>
+      <p>cleber, murilo, miguel</p>
+    </div> -->
+
+    <div class="status-box">
+      <h3>Potencial Ociosidade</h3>
+      <strong>
+          <div id="div_card_inatividade"></div>
+      </strong>
+  </div>
+    <!-- <div class="status-box">
+      <h3>Funcionários com computadores em alerta</h3>
+      <p>Xingu, isa</p>
+    </div> -->
+
+    <div class="status-box">
+      <h3>Alerta</h3>
+      <span>(Componentes > 80%)</span>
+      <strong>
+          <div id="div_card_perigo"></div>
+      </strong>
+  </div>
+    <!-- <div class="status-box">
+      <h3>Funcionários com computadores em estado crítico</h3>
+      <p>Ana, renan</p>
+    </div> -->
+
+    <div class="status-box">
+      <h3>Critico</h3>
+      <span>(Componentes > 90%)</span>
+      <strong>
+          <div id="div_card_urgencia"></div>
+      </strong>
+  </div>
+
+    <div class="chart" id="scatter-chart">
+      <!-- O gráfico será inserido aqui -->
+    </div>
+    <!-- <div class="process-table">
+      <h3>Processos mais utilizados</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Processo</th>
+            <th>Uso (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Processo 1</td>
+            <td>35%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Processo 2</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Processo 3</td>
+            <td>20%</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Processo 4</td>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Processo 5</td>
+            <td>5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+  <div class="process-table">
+    <h3>Processos mais utilizados</h3>
+
+    <!-- Div para alertas -->
+    <div class="div_alerta" id="div_alerta">
+      <p class="descricao" id="descricao">Nenhum alerta no momento.</p>
+    </div>
+
+    <!-- Tabela dinâmica -->
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Processo</th>
+          <th>Uso (%)</th>
+        </tr>
+      </thead>
+      <tbody id="processTableBody">
+        <!-- Linhas geradas dinamicamente -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+<script>
+
+  
+   const requisicaoPadrao = "";
+
+document.getElementById('menu-icone').addEventListener('click', function () {
+    var menuhamburguer = document.getElementById('menuhamburguer');
+    var mainContainer = document.getElementById('main-Container');
+    var header = document.getElementById('main-header');
+
+    // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+    menuhamburguer.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+});
+
+const menuItems = document.querySelectorAll('.menu-items li');
+
+menuItems.forEach(item => {
+    item.addEventListener('click', function () {
+        // Remove a classe 'active' de todos os itens
+        menuItems.forEach(el => el.classList.remove('active'));
+        // Adiciona a classe 'active' ao item clicado
+        this.classList.add('active');
+    });
+});
+
+function trazerProcessos() {
+    let qtdProcessos = []
+    var nomeFuncionarios = []
+    let porcentagensCpu = []
+    let porcentagensRam = []
+    let vetorProcessos = []
+    let contagemOrdenada;
+    let contagem;
+    let vetorProcessosTeste = []
+
+    fetch("/renan/processos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            requisicaoPadraoServer: requisicaoPadrao
+        })
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            resposta.json().then(json => {
+                json.resultado.forEach(processo => {
+                    var processosReplaceBarraInversa = processo.processos.replaceAll(']', '')
+                    var processosReplaceBarraComum = processosReplaceBarraInversa.replaceAll('[', '')
+                    var processosReplaceEspaco = processosReplaceBarraComum.replaceAll(' ', '')
+                    processosSeparados = processosReplaceEspaco.split(",")
+                    for (var i = 0; i < processosSeparados.length; i++) {
+                        vetorProcessos.push(processosSeparados[i])
+                    }
+                });
+                contagem = vetorProcessos.reduce((acc, processo) => {
+                    acc[processo] = (acc[processo] || 0) + 1;
+                    return acc;
+                }, {})
+                var jsonContagem = contagem
+                var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
+                var processosMaisUtilizadosNome = []
+                var processosMaisUtilizadosQtd = []
+                for (var i = 0; i < 6; i++) {
+                    var nomeDaVez = contagemOrdenada[i].nome;
+                    var qtdDaVez = contagemOrdenada[i].qtd;
+                    processosMaisUtilizadosNome.push(nomeDaVez);
+                    processosMaisUtilizadosQtd.push(qtdDaVez)
+                }
+                descricao.innerHTML = ''
+                for (var i = 0; i < processosMaisUtilizadosNome.length; i++) {
+                    descricao.innerHTML += (i + 1) + "º " + processosMaisUtilizadosNome[i] + "<br>"
+                }
+                setTimeout(trazerProcessos, 2000)
+            });
+        } else {
+            throw "Erro ao trazer processos!";
+        }
+    }).catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+    });
+}
+function trazerDados() {
+    let vetorUrgencia = []
+    let vetorPerigo = []
+    let vetorInatividade = []
+    fetch("/renan/ultimosDados", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            resposta.json().then(json => {
+                for (var i = 0; i < json.resultado.length; i++) {
+                    if (json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90) {
+                        if (json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95) {
+                            vetorPerigo.push(json.resultado[i].nome)
+                        }
+                    }
+                    if (json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95) {
+                        vetorUrgencia.push(json.resultado[i].nome)
+                    }
+                    if (json.resultado[i].porcentagem_cpu < 30 && json.resultado[i].porcentagem_ram < 30) {
+                        vetorInatividade.push(json.resultado[i].nome)
+                    }
+                }
+
+                const perigoContainer = document.getElementById('div_card_perigo');
+                const urgenciaContainer = document.getElementById('div_card_urgencia');
+                const inatividadeContainer = document.getElementById('div_card_inatividade');
+
+                inatividadeContainer.innerHTML = '';
+                urgenciaContainer.innerHTML = '';
+                perigoContainer.innerHTML = '';
+
+                function adicionarNomesAoCard(container, nomes) {
+                    nomes.forEach(nome => {
+                        const card = document.createElement('div');
+                        card.classList.add('card'); // Classe de estilo
+                        card.textContent = nome;
+
+                        // Adiciona evento de clique para redirecionar
+                        card.addEventListener('click', () => {
+                            var nomeUsuario = nome
+
+                            fetch("/renan/chamarIdNotebook", {
+
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    nomeFuncionario: nomeUsuario
+                                })
+                            }).then(function (resposta) {
+                                if (resposta.ok) {
+                                    resposta.json().then(json => {
+                                        let idNotebook = json.resultado[0].idNotebook
+                                        sessionStorage.setItem('ID_NOTEBOOK', idNotebook);
+                                    });
+                                } else {
+                                    throw "Erro ao plotar grafico!";
+                                }
+                            }).catch(function (erro) {
+                                console.log(`#ERRO: ${erro}`);
+                            });
+                            setTimeout(window.location.href = "DashAnalista.html", 1000)
+
+                        });
+
+                        container.appendChild(card);
+                    });
+                }
+
+
+                adicionarNomesAoCard(inatividadeContainer, vetorInatividade);
+                adicionarNomesAoCard(urgenciaContainer, vetorUrgencia);
+                adicionarNomesAoCard(perigoContainer, vetorPerigo);
+                setTimeout(trazerDados, 2000)
+
+            });
+        } else {
+            throw "Erro ao trazer dados!";
+        }
+    }).catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+    });
+}
+
+function plotarGrafico() {
+    fetch("/renan/plotarGrafico", {
+
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ requisicaoPadraoServer: requisicaoPadrao })
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            let nomeFuncionariosMetrica = []
+            let porcentagensCpuMetrica = []
+            let porcentagensRamMetrica = []
+            let qtdProcessosMetrica = []
+            resposta.json().then(json => {
+                for (var i = 0; i < json.resultado.length; i++) {
+                    nomeFuncionariosMetrica.push(json.resultado[i].nome)
+                    porcentagensCpuMetrica.push(json.resultado[i].porcentagem_cpu)
+                    porcentagensRamMetrica.push(json.resultado[i].porcentagem_ram)
+                }
+                for (var i = 0; i < json.resultado.length; i++) {
+                    var metricaProcessos = 0;
+                    for (var j = 0; j < json.resultado[i].processos.length; j++) {
+                        metricaProcessos++
+                    }
+                    qtdProcessosMetrica.push(metricaProcessos)
+                }
+                nomeFuncionarios = nomeFuncionariosMetrica
+                porcentagensRam = porcentagensRamMetrica
+                porcentagensCpu = porcentagensCpuMetrica
+                qtdProcessos = qtdProcessosMetrica
+
+                carregarGrafico()
+                setTimeout(plotarGrafico, 10000)
+
+            });
+        } else {
+            throw "Erro ao plotar grafico!";
+        }
+    }).catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+    });
+}
+
+let myChart;
+function carregarGrafico() {
+    const funcionarios = [...new Set(nomeFuncionarios)];
+
+    // Geração inicial dos datasets
+    const datasets = nomeFuncionarios.map((funcionario, index) => ({
+        label: ` ${funcionario}`,
+        data: [
+            {
+                x: porcentagensCpu[index],
+                y: porcentagensRam[index],
+                r: qtdProcessos[index] / 150
+            }
+        ],
+        backgroundColor: gerarCorAleatoria(),
+        borderColor: 'black'
+    }));
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Inicialização do gráfico
+    if (!myChart) {
+        myChart = new Chart(ctx, {
+            type: 'bubble',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white' // Cor dos números no eixo X
+                        },
+                        grid: {
+                            color: 'white' // Cor das grades no eixo X
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white' // Cor dos números no eixo Y
+                        },
+                        grid: {
+                            color: 'white' // Cor das grades no eixo Y
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white' // Cor da legenda
+                        },
+                    }, title: {
+                        display: true,
+                        align: "top",
+                        font: {
+                            weight: "normal",
+                            size: 30,
+                        },
+                        color: "#ffffffff",
+                        text: "Uso dos componentes pela quantidade de processos",
+                    },
+
+
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const x = context.raw.x;
+                                const y = context.raw.y;
+                                const r = context.raw.r;
+                                return `${label}: CPU = ${x}%, RAM = ${y}%, Processos = ${r * 150}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        // Atualização do gráfico
+        atualizarGrafico(datasets);
+    }
+}
+
+function atualizarGrafico(datasets) {
+    myChart.data.datasets.forEach((dataset, index) => {
+        dataset.data[0] = {
+            x: porcentagensCpu[index],
+            y: porcentagensRam[index],
+            r: qtdProcessos[index] / 150
+        };
+    });
+    myChart.update();
+}
+
+function gerarCorAleatoria() {
+    const letras = '0123456789ABCDEF';
+    let color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letras[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+// let chart;
+// function gerarCorAleatoria() {
+//     const letras = '0123456789ABCDEF';
+//     let color = '#';
+//     for (let i = 0; i < 6; i++) {
+//         color += letras[Math.floor(Math.random() * 16)];
+//     }
+//     return color;
+// }
+
+// // Função para carregar o gráfico
+// function carregarGrafico() {
+//     var seriesData = nomeFuncionarios.map((funcionario, index) => ({
+//         name: funcionario,
+//         data: [
+//             {
+//                 x: porcentagensCpu[index],
+//                 y: porcentagensRam[index],
+//                 z: qtdProcessos[index] / 150
+//             }
+//         ]
+//     }));
+
+//     const chart = new ApexCharts(document.querySelector("#chart"), {
+//         series: seriesData,
+//         chart: {
+//             height: 350,
+//             type: "bubble",
+//         },
+//         dataLabels: {
+//             enabled: true,
+//         },
+//         fill: {
+//             opacity: 1,
+//         },
+//         title: {
+//             text: "Simple Bubble Chart",
+//         },
+//         xaxis: {
+//             tickAmount: 12,
+//             type: "category",
+//         },
+//     });
+//     chart.render();
+// const finalSeries = seriesData.reduce((t, v) => (t[0].data.push([v.data[0].x, v.data[0].y, v.data[0].z]), t), [{ name: "pessoas", data: [] }]);
+
+// const chart = new ApexCharts(document.querySelector("#chart"), {
+//     series: finalSeries,
+//     chart: {
+//         height: 350,
+//         type: "bubble",
+//     },
+//     dataLabels: {
+//         enabled: true,
+//     },
+//     fill: {
+//         opacity: 1,
+//     },
+//     title: {
+//         text: "Simple Bubble Chart",
+//     },
+//     xaxis: {
+//         tickAmount: 12,
+//         type: "category",
+//     },
+// });
+// chart.render();
+// console.log(seriesData)
+// const options = {
+//     chart: {
+//         type: 'bubble',
+//         height: 400,
+//     },
+//     series: seriesData,
+//     xaxis: {
+//         title: {
+//             text: 'Porcentagem CPU (%)',
+//         },
+//     },
+//     yaxis: {
+//         title: {
+//             text: 'Porcentagem RAM (%)',
+//         },
+//     },
+//     tooltip: {
+//         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+//             const point = w.config.series[seriesIndex].data[dataPointIndex];
+//             return `
+//                     <div style="padding: 10px; border: 1px solid #ccc; background: white;">
+//                         <strong>${w.config.series[seriesIndex].name}</strong><br>
+//                         CPU: ${point.x}%<br>
+//                         RAM: ${point.y}%<br>
+//                         Processos: ${point.z * 150}
+//                     </div>`;
+//         }
+//     },
+// };
+
+// // Renderizar o gráfico apenas se ele não existir
+// if (!chart) {
+//     chart = new ApexCharts(document.querySelector("#myChart"), options);
+//     chart.render().then(() => {
+//         console.log("Gráfico renderizado com sucesso!");
+//     }).catch((error) => {
+//         console.error("Erro ao renderizar o gráfico:", error);
+//     });
+// }
+// else {
+//     atualizarGrafico()
+// }
+// }
+
+// Função para atualizar o gráfico
+// function atualizarGrafico(seriesData) {
+//     var seriesData = nomeFuncionarios.map((funcionario, index) => ({
+//         name: funcionario,
+//         data: [
+//             {
+//                 x: porcentagensCpu[index],
+//                 y: porcentagensRam[index],
+//                 z: qtdProcessos[index] / 150
+//             }
+//         ]
+//     }));
+
+//     if (chart) {
+//         chart.updateSeries(seriesData).then(() => {
+//             console.log("Gráfico atualizado com sucesso!");
+//         }).catch((error) => {
+//             console.error("Erro ao atualizar o gráfico:", error);
+//         });
+//     } else {
+//         console.error("Gráfico não inicializado! Certifique-se de chamar carregarGrafico primeiro.");
+//     }
+// }
+</script>

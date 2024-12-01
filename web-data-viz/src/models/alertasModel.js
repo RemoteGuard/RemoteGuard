@@ -27,27 +27,34 @@ function buscarNotebookDoFuncionario(fkNotebookModel) {
     return database.executar(instrucaoSql);
 }
 
-function exibirTotalAlertasHardware(fkNotebook) {
-    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Recurso%" AND dataHora >= CURDATE() - INTERVAL 7 DAY;`;
+function exibirTotalAlertasHardware(fkNotebook, inicio, fim) {
+    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' 
+                        AND descricao LIKE "Recurso%" 
+                        AND dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+                        AND dataHora < CURDATE() - INTERVAL '${fim}' DAY;`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function exibirTotalAlertasProcessos(fkNotebook) {
-    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' AND descricao LIKE "Processo indevido%" AND dataHora >= CURDATE() - INTERVAL 7 DAY;
+function exibirTotalAlertasProcessos(fkNotebook, inicio, fim) {
+    var instrucaoSql = `SELECT COUNT(idAlerta) as alertas FROM alerta WHERE fkNotebook = '${fkNotebook}' 
+                        AND descricao LIKE "Processo%" 
+                        AND dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+                        AND dataHora < CURDATE() - INTERVAL '${fim}' DAY;;
 `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function exibirMediaAlertas() {
-    var instrucaoSql = `SELECT TRUNCATE(AVG(qtdAlertas), 0) AS mediaAlertas
+function exibirMediaAlertas(inicio,fim) {
+    var instrucaoSql = `  SELECT TRUNCATE(AVG(qtdAlertas), 0) AS mediaAlertas
                         FROM (
                         SELECT COUNT(idAlerta) AS qtdAlertas
                         FROM alerta
-                        WHERE dataHora >= NOW() - INTERVAL 7 DAY
+                        WHERE dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+                        AND dataHora < CURDATE() - INTERVAL '${fim}' DAY
                         GROUP BY fkNotebook
                         ) AS mediaAlertas;`;
 
@@ -55,35 +62,40 @@ function exibirMediaAlertas() {
     return database.executar(instrucaoSql);
 }
 
-function exibirRankingFuncionarios() {
+function exibirRankingFuncionarios(empresaModel, inicio, fim) {
     var instrucaoSql = `SELECT f.nome AS nome, COUNT(a.idAlerta) AS qtdAlertas
-                        FROM alerta AS a
-                        JOIN notebook AS n ON a.fkNotebook = n.idNotebook
-                        JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
-                        WHERE dataHora >= NOW() - INTERVAL 7 DAY
-                        GROUP BY f.idFuncionario
-                        ORDER BY qtdAlertas DESC;`;
+    FROM alerta AS a
+    JOIN notebook AS n ON a.fkNotebook = n.idNotebook
+    JOIN funcionario AS f ON f.fkNotebook = n.idNotebook
+    WHERE dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+    AND dataHora <= CURDATE() - INTERVAL '${fim}' DAY
+    AND fkEmpresa = '${empresaModel}'
+    GROUP BY f.idFuncionario
+    ORDER BY qtdAlertas DESC;`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function buscarDados(fkNotebook) {
+function buscarDados(fkNotebook, inicio, fim) {
     var instrucaoSql = `SELECT DATE_FORMAT(dataHora, '%W') as DiaSemana,
                         COUNT(idAlerta) as FreqAlertas
                         FROM alerta WHERE fkNotebook = '${fkNotebook}'
-                        AND dataHora >= CURDATE() - INTERVAL 7 DAY
+                        AND dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+                        AND dataHora <= CURDATE() - INTERVAL '${fim}' DAY
                         GROUP BY DATE_FORMAT(dataHora, '%W');`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function obterDadosRegressao() {
-    var instrucaoSql = `SELECT
-                        COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS alertasHardware,
-                        COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS alertasProcessos
-                        FROM alerta GROUP BY DATE(dataHora);`;
+function buscarDadosComparacaoAlertas(inicio,fim) {
+    var instrucaoSql = `SELECT DATE_FORMAT(dataHora, '%W') AS DiaSemana,
+                        COUNT(CASE WHEN descricao LIKE 'Processo%' THEN 1 END) AS FreqAlertasProcessos,
+                        COUNT(CASE WHEN descricao LIKE 'Recurso%' THEN 1 END) AS FreqAlertasHW
+                        FROM alerta WHERE dataHora >= CURDATE() - INTERVAL '${inicio}' DAY
+                        AND dataHora <= CURDATE() - INTERVAL '${fim}' DAY
+                        GROUP BY DATE_FORMAT(dataHora, '%W');`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -100,5 +112,5 @@ module.exports = {
     exibirMediaAlertas,
     exibirRankingFuncionarios,
     buscarDados,
-    obterDadosRegressao
+    buscarDadosComparacaoAlertas
 };

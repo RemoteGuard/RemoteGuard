@@ -65,6 +65,8 @@
     font-size: 20px;
     margin: 17px;
   }
+
+
   .qtdprocess{
     padding: 5px;
     display: flex;
@@ -208,6 +210,9 @@
     justify-content: space-around;
     }
     .controles select{
+      color: #000000;
+      border-color: #FFD700;
+      background-color: #FFD700;
       margin-top: 10px;
       border-radius: 10px;
     }
@@ -222,9 +227,9 @@
 
   
   .controles select {
-    background-color: #333;
-    color: white;
-    border: 1px solid #555;
+    background-color: #FFD700;
+    color: black;
+    border: 1px solid #FFD700;
     padding: 10px;
     width: 45%;
   }
@@ -350,8 +355,36 @@ justify-content: center;
     margin-left: 50px;
     transition: transform 0.5s ease, box-shadow 0.5s ease;
   }
+  .status-card span{
+  margin-top: 0px;
+  }
+  .status-card i{
+    margin-top: 10px;
+    margin-left: 45%;
+  }
+  .box-responsa i{
+    margin-right: 5.5%;
+ 
+  }
   
 
+  .status-card-saude{
+    width: 200px;
+    height: 100px;
+    margin: 20px 0;
+    background-color: #504e4e;
+    border-radius: 7%;
+    margin-left: 50px;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    border: 2px solid transparent;
+  }
+  .status-card-saude i{
+    margin-top: 10px;
+    margin-left: 45%;
+  }
+  .status-card-saude span{
+    margin-top: 0px;
+    }
   
   .status-card:hover {
     transform: scale(1.1); 
@@ -604,21 +637,45 @@ justify-content: center;
 
 .popup {
   display: none;
-
-  width: 600px;
+  width: 700px;
   height: 300px;
+
 }
 
+.text-card button {
+ height: 25px;
+  margin-top: -10px;
+}
+.text-card button i {
+  height: 25px;
+   margin-top: 5px;
+   margin-left:0px;
+ }
+
+
+
 .popup-content {
-  background-color: #202020;
-  padding: 10px;
+  background-color: #504e4e;
   border-radius: 8px;
   width: 200px;
   height: 190px;
   text-align: center;
-  
+  position: fixed;
 }
 
+.buttom {
+  background-color: #202020;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: background-color 0.3s;
+  display: flex
+;
+  margin-left: 140px;
+}
 
 
 .popup-content p {

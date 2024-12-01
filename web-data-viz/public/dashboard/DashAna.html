@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RemoteGuard - Visualize, analise, transforme.</title>
+    <link rel="stylesheet" href="../css/Ana.css">
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="obterMaiorProcesso();">
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+            <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="perfil-wrapper">
+            <div class="Ativacao">
+                <button>Ajuda</button>
+            </div>
+            <div class="perfil-container">
+                <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+                <div class="perfil-text">
+                    <span class="nome">Gerente</span>
+                    <span class="legenda">perfil</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav id="menuhamburguer">
+        <div class="logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+            <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Tela inicial</a>
+            </li>
+            <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Alertas</a></li>
+            <li class="ativo"><a href="DashAna.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Processos</a></li>
+            <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png" alt="Ícone 1">Produtividade</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                  alt="Ícone 1">Funcionários</a></li>
+            <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1"> Máquinas</a>
+            </li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+          </ul>
+    </nav>
+
+    <main id="main-Container">
+        <div class="controles">
+            <!-- <label for="selectPeriodo"></label> -->
+            <select id="selectPeriodo" onchange="carregarGrafico(); carregarRanking(); obterMaiorProcesso(); totalHoras();">
+                <option value="dia">Dias da Semana</option>
+                <option value="mes">Semanas do Mês</option>
+            </select>
+            <select id="selectProcesso" onchange="carregarGrafico(); carregarRanking();totalHoras();">
+            </select>
+        </div>
+
+        <!-- Cards -->
+        <div class="cards-container">
+
+            <div class="card">
+                <h3>Total de Horas</h3>
+                <p id="cardHoras"></p>
+            </div>
+            <div class="card">
+                <h3>Processo Mais Usado</h3>
+                <p id="cardProcesso"></p>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="charts-container">
+            <div class="chart" id="chartBar"></div>
+            <div class="chart" id="chartLine">
+                <table id="tabelaClassificacao" class="tabela">
+                    <div class="container-titulo">
+                        <h1 class="titulo_ranking"> Ranking de utilização </h1>
+
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Funcionario</th>
+                            <th>Tempo (Horas)</th>
+                        </tr>
+                    </thead>
+            </div>
+            <tbody id="Tabela">
+            </tbody>
+            </table>
+        </div>
+        </div>
+
+
+
+        </table>
+
+    </main>
+
+    <script>
+
+        // Função para buscar dados e renderizar o card
+        function fetchAndRenderCard(processoEscolhido) {
+            fetch(`/cardTotalDias/${processoEscolhido}`)
+                    // Renderiza os dados no elemento HTML
+                    const cardElement = document.getElementById('cardHoras');
+                    cardElement.innerHTML = `
+        <p>${dados.total_horas}</p>
+      `;
+                };
+        
+        function formatTime(val) {
+            // Verifica se `val` é uma string com formato "HH:MM" ou "HH:MM:SS"
+            if (typeof val === "string") {
+                const parts = val.split(':');
+                let hours = 0;
+                let minutes = 0;
+                let seconds = 0;
+
+                // Se tiver horas e minutos
+                if (parts.length === 2) {
+                    [hours, minutes] = parts;
+                    seconds = 0;
+                }
+                // Se tiver horas, minutos e segundos
+                else if (parts.length === 3) {
+                    [hours, minutes, seconds] = parts;
+                }
+
+                // Converte para números inteiros
+                hours = parseInt(hours);
+                minutes = parseInt(minutes);
+                seconds = parseInt(seconds);
+
+                // Converte tudo para minutos (pode ser feito em segundos se necessário)
+                return hours * 60 + minutes + (seconds / 60);
+            }
+
+            return 0;  // Se o valor não for string ou não estiver no formato esperado, retorna 0
+        }
+
+        let chartBar = null;
+        function preencherSelectProcessos() {
+            const select = document.getElementById('selectProcesso');
+
+            select.innerHTML = '';
+
+            const optionDefault = document.createElement('option');
+            optionDefault.value = '';
+            optionDefault.textContent = 'Selecione um processo indevido';
+            select.appendChild(optionDefault);
+
+            fetch('/ana/processos')
+                .then(response => response.json())
+                .then(processos => {
+                    console.log(processos)
+                    processos.forEach(processo => {
+                        const option = document.createElement('option');
+                        option.textContent = processo.processo;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar processos indevidos:', error);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', preencherSelectProcessos());
+
+        function carregarGrafico() {
+            const selectProcesso = document.getElementById("selectProcesso").value;
+            const selectPeriodo = document.getElementById("selectPeriodo").value;
+
+            if (!selectProcesso) {
+                console.error("Nenhum processo foi selecionado.");
+                return;
+            }
+
+            let url;
+            if (selectPeriodo === 'dia') {
+                url = `/ana/grafico/${selectProcesso}`;
+            } else if (selectPeriodo === 'mes') {
+                url = `/ana/graficoSemanas/${selectProcesso}`;
+            } else {
+                console.error("Período inválido.");
+                return;
+            }
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar dados da API");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Dados do gráfico",data);
+
+                    const labels = data.labels;
+                    const totalHoras = data.datasets.map(item => formatTime(item));  // Converte as horas para minutos ou segundos
+                    const options = {
+    series: [{
+        name: "Total de Horas",
+        data: totalHoras
+    }],
+    chart: {
+        type: 'bar',
+        height: 350
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '55%',
+        }
+    },
+    dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+            const hours = Math.floor(val / 60);
+            const minutes = Math.floor(val % 60);
+            return `${hours}h ${minutes}min`;
+        },
+        style: {
+            colors: ['#FFFFFF']
+        }
+    },
+    xaxis: {
+        categories: labels,
+        labels: {
+            style: {
+                colors: '#FFFFFF',  // Cor branca para as legendas do eixo X
+                fontSize: '12px',    // Tamanho da fonte (opcional)
+                fontWeight: 'bold',  // Peso da fonte (opcional)
+            }
+        }
+    },
+    yaxis: {
+        labels: {
+            formatter: function (val) {
+                const hours = Math.floor(val / 60);
+                const minutes = Math.floor(val % 60);
+                return `${hours}h ${minutes}min`;
+            },
+            style: {
+                colors: '#fff'
+            }
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                const hours = Math.floor(val / 60);
+                const minutes = Math.floor(val % 60);
+                return `${hours}h ${minutes}min`;
+            }
+        }
+    },
+    colors: ['#FFD700'],
+    legend: {
+        position: 'top',
+        labels: {
+            colors: '#FFFFFF'
+        }
+    },
+    title: {
+        text: 'Total de Horas',
+        align: 'center',
+        style: {
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: '#FFFFFF'
+        }
+    },
+    tooltip: {
+        theme: 'dark',
+        style: {
+            fontSize: '14px',
+            fontFamily: 'Arial, sans-serif',
+            background: '#2c2c2c',
+            color: '#fff',
+        },
+        marker: {
+            fillColors: ['#FFD700']
+        }
+    }
+};
+
+
+                    // Se o gráfico já existir, destrói antes de criar um novo
+                    if (chartBar) {
+                        chartBar.destroy();
+                    }
+
+                    // Cria e renderiza o gráfico
+                    chartBar = new ApexCharts(document.querySelector("#chartBar"), options);
+                    chartBar.render();
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar gráfico:", error.message);
+                });
+        }
+
+        function carregarRanking() {
+            const selectProcesso = document.getElementById("selectProcesso").value;
+            const selectPeriodo = document.getElementById("selectPeriodo").value;
+            console.log('Processo selecionado:', selectProcesso);
+
+            // Verifique se o valor do selectProcesso não é vazio
+            if (!selectProcesso) {
+                console.error("Nenhum processo foi selecionado");
+                return;
+            }
+
+            let url;
+            if (selectPeriodo === 'dia') {
+                url = `/ana/rankingSemana/${selectProcesso}`;  // Para gráficos diários
+            } else if (selectPeriodo === 'mes') {
+                url = `/ana/rankingMes/${selectProcesso}`;  // Para gráficos semanais
+            } else {
+                console.error("Período inválido.");  // Caso o valor seja diferente de 'dia' ou 'mes'
+                return;
+            }
+
+            fetch(url)
+                .then(response => {
+                    console.log('Resposta da API:', response);  // Log da resposta
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar dados da API: ' + response.statusText);
+                    }
+                    return response.json();  // Converta a resposta para JSON
+                })
+                .then(dados => {
+                    console.log('Dados recebidos:', dados);  // Log dos dados recebidos
+                    const tabela = document.getElementById("Tabela");
+                    tabela.innerHTML = '';  // Limpa a tabela antes de preencher
+
+                    // Preencher a tabela com os dados do ranking
+                    dados.forEach((dado, index) => {
+                        const row = document.createElement("tr");
+
+                        const posicao = document.createElement("td");
+                        posicao.textContent = index + 1;  // Posição
+                        row.appendChild(posicao);
+
+                        const nomeFuncionario = document.createElement("td");
+                        nomeFuncionario.textContent = dado.nome_funcionario;  // Nome do Funcionário
+                        row.appendChild(nomeFuncionario);
+
+                        const totalHoras = document.createElement("td");
+                        totalHoras.textContent = dado.total_horas;  // Total de horas
+                        row.appendChild(totalHoras);
+
+                        tabela.appendChild(row);  // Adiciona a linha à tabela
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar dados do ranking:", error.message);
+                });
+        }
+
+        window.onload = carregarRanking;
+
+        function totalHoras(){
+            const selectProcesso = document.getElementById("selectProcesso").value;
+            const selectPeriodo = document.getElementById("selectPeriodo").value;
+
+            let url = ''
+            if (selectPeriodo === 'dia') {
+                url = `/ana/cardTotalDias/${selectProcesso}`;  // Para gráficos diários
+            } else if (selectPeriodo === 'mes') {
+                url = `/ana/cardTotalMes/${selectProcesso}`;  // Para gráficos semanais
+            } else {
+                console.error("Período inválido.");  // Caso o valor seja diferente de 'dia' ou 'mes'
+                return;
+            }
+
+            fetch(url)
+            .then(response => {
+                    console.log('Resposta da API:', response);  // Log da resposta
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar dados da API: ' + response.statusText);
+                    }
+                    return response.json();  // Converta a resposta para JSON
+                })
+            .then(dados => {
+                console.log("Dados do total horas Card", dados)
+
+                const card = document.getElementById("cardHoras")
+
+                card.innerHTML = `${dados[0].total_horas}`
+            })
+        }
+
+        function obterMaiorProcesso(){
+            const selectPeriodo = document.getElementById("selectPeriodo").value; 
+
+            let url;
+            if (selectPeriodo === 'dia') {
+                url = `/ana/obterMaiorProcessoSemanas/`;  // Para gráficos diários
+            } else if (selectPeriodo === 'mes') {
+                url = `/ana/obterMaiorProcessoMensal/`;  // Para gráficos semanais
+            } else {
+                console.error("Período inválido.");  // Caso o valor seja diferente de 'dia' ou 'mes'
+                return;
+            }
+
+            fetch(url)
+            .then(response => {
+                    console.log('Resposta da API:', response);  // Log da resposta
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar dados da API: ' + response.statusText);
+                    }
+                    return response.json();  // Converta a resposta para JSON
+                })
+            .then(dados => {
+                console.log("Dados do Maior Processo  Card", dados)
+
+                const card = document.getElementById("cardProcesso")
+
+                card.innerHTML = `${dados[0].processo}`
+            })
+        }
+
+         // menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('main-Container');
+        var header = document.getElementById('main-header');
+
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            menuItems.forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    </script>
+</body>
+
+</html>

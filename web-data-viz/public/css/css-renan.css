@@ -17,6 +17,8 @@ body {
     justify-content: space-evenly;
 }
 
+
+
 .processos {
     grid-row: 1 / 2;
     background-color: #444;
@@ -76,6 +78,14 @@ margin: 5px;
     border-radius: 5px;
 } */
 
+.content {
+    display: flex;  
+    flex: 0 0 auto;
+    /* justify-content: space-between; */
+    margin-top: 40px;
+    margin-left: 200px;
+    /* gap: 15px; */
+  }
 
 .content {
     margin-top: 50px;
