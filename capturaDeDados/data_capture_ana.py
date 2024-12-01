@@ -115,7 +115,7 @@ def get_hostname():
 
 #  verify_equipment_registration()
 s3 = boto3.client('s3')
-bucket_name = 'raw-stocks-ana'
+bucket_name = 'bucket-raw-rg'
 file_key = f'/{get_hostname()}.json' 
 
 def download_s3_json(bucket, key):
@@ -135,9 +135,9 @@ def download_s3_json(bucket, key):
     print("----------------------------------------------------------------------------------------------------")               
     return dados
 
-bucket_name = 'raw-stocks-ana'
+bucket_name = 'bucket-raw-rg'
 file_key = f'{get_hostname()}.json' 
-json_file_path = f'/home/aluno/Documentos/{get_hostname()}.json'
+json_file_path = f'/Users/Usuário/Downloads/arqJson{get_hostname()}.json'
 dados = download_s3_json(bucket_name, file_key)
 
 def get_root_directory():

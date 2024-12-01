@@ -59,8 +59,8 @@ def create_db_connection():
         conexao = pymysql.connect(
                 host="localhost",
                 user="root",
-                password="cco@2024",
-                database="remote_guard2"
+                password="Ab12345@#",
+                database="remote_guard"
             )
         cursor = conexao.cursor() 
         print(f"Conexão com o Banco {conexao.db.decode()} estabelecida com Sucesso!")
@@ -119,7 +119,7 @@ def download_s3_json(bucket, key):
 
 bucket_name = 'bucket-raw-rg'
 file_key = f'{get_hostname()}.json' 
-json_file_path = f'/home/murillo/Downloads/{get_hostname()}.json'
+json_file_path = r'C:\Users\Usuário\Downloads\arqJson/{get_hostname()}.json'
 dados = download_s3_json(bucket_name, file_key)
 
 def get_root_directory():

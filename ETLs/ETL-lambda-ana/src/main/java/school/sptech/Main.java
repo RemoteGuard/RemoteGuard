@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Main implements RequestHandler<S3Event, String> {
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
-    private static final String DESTINATION_BUCKET = "trusted-stocks-ana";
+    private static final String DESTINATION_BUCKET = "bucket-trusted-rg";
 
     public Main() {
     }
@@ -35,7 +35,7 @@ public class Main implements RequestHandler<S3Event, String> {
             CsvWriter csvWriter = new CsvWriter();
             ByteArrayOutputStream csvOutputStream = csvWriter.writeCsv(dados);
             InputStream csvInputStream = new ByteArrayInputStream(csvOutputStream.toByteArray());
-            this.s3Client.putObject("trusted-stocks-ana", sourceKey.replace(".json", ".csv"), csvInputStream, (ObjectMetadata)null);
+            this.s3Client.putObject("bucket-trusted-rg", sourceKey.replace(".json", ".csv"), csvInputStream, (ObjectMetadata)null);
             return "Sucesso no processamento";
         } catch (Exception var11) {
             Exception e = var11;
