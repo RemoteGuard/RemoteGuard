@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class Main implements RequestHandler<S3Event, String> {
 
     // Bucket de destino para o CSV gerado
-    private static final String DESTINATION_BUCKET = "bucket-trusted-remoteguard";
+    private static final String DESTINATION_BUCKET = "bucket-trusted-rg";
     // Criação do cliente S3 para acessar os buckets
     private final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 
@@ -28,6 +29,7 @@ public class Main implements RequestHandler<S3Event, String> {
 
         try {
             // Lendo o Arquivo de do Bucket de Origem:
+            System.out.println("Lendo Arquivo do Bucket...");
             InputStream s3InputStream = s3Client.getObject(sourceBucket, sourceKey).getObjectContent();
 
             // Determinando a Extensão do Arquivo do Bucket de Origem:
@@ -36,10 +38,13 @@ public class Main implements RequestHandler<S3Event, String> {
             // Se Arquivo for JSON:
             if (fileExtension.equals(".json")) {
                 // Mapeando Dados do JSON:
+
+                System.out.println("Mapeando Dados do JSON...");
                 MappableFile<DadosJson> mapper = new DadosJsonMapper();
                 List<DadosJson> dadosDoJson = mapper.mapFile(s3InputStream);
 
                 // Gerando Arquivo CSV:
+                System.out.println("Processando Dados para Arquivo CSV...");
                 WriteableFile<DadosJson> csvWriter = new CsvWriter();
                 ByteArrayOutputStream csvOutputStream = csvWriter.writeFile(dadosDoJson);
 
@@ -47,7 +52,10 @@ public class Main implements RequestHandler<S3Event, String> {
                 InputStream csvInputStream = new ByteArrayInputStream(csvOutputStream.toByteArray());
 
                 // Transferindo Arquivo CSV para o Bucket:
-                s3Client.putObject(DESTINATION_BUCKET, sourceKey.replace(".json", ".csv"), csvInputStream, null);
+                System.out.println("Transferindo Arquivo para o Bucket de Destino...");
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(csvOutputStream.size());
+                s3Client.putObject(DESTINATION_BUCKET, sourceKey.replace(".json", ".csv"), csvInputStream, metadata);
 
                 return "Arquivo (%s) JSON Processado com Sucesso!".formatted(sourceKey);
             }
@@ -55,10 +63,12 @@ public class Main implements RequestHandler<S3Event, String> {
             // Se Arquivo for CSV:
             else if (fileExtension.equals(".csv")) {
                 // Mapeando Dados do CSV:
+                System.out.println("Mapeando Dados do CSV...");
                 MappableFile<Map<String, Object>> mapper = new DadosCsvMapper();
                 List<Map<String, Object>> dadosDoCsv = mapper.mapFile(s3InputStream);
 
                 // Gerando Arquivo JSON:
+                System.out.println("Processando Dados para Arquivo JSON...");
                 WriteableFile<Map<String, Object>> jsonWriter = new JsonWriter();
                 ByteArrayOutputStream jsonOutputStream = jsonWriter.writeFile(dadosDoCsv);
 
@@ -66,7 +76,10 @@ public class Main implements RequestHandler<S3Event, String> {
                 InputStream jsonInputStream = new ByteArrayInputStream(jsonOutputStream.toByteArray());
 
                 // Transferindo Arquivo JSON para o Bucket:
-                s3Client.putObject(DESTINATION_BUCKET, sourceKey.replace(".csv", ".json"), jsonInputStream, null);
+                System.out.println("Transferindo Arquivo para o Bucket de Destino...");
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(jsonOutputStream.size());
+                s3Client.putObject(DESTINATION_BUCKET, sourceKey.replace(".csv", ".json"), jsonInputStream, metadata);
 
                 return "Arquivo (%s) CSV Processado com Sucesso!".formatted(sourceKey);
             }

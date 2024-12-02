@@ -30,7 +30,25 @@ public class DadosCsvMapper implements MappableFile<Map<String, Object>> {
                 String value = record.get(header);
 
                 // Tratar os Valores Nulos:
-                tuplaDoCsv.put(header, value == null || value.isEmpty() ? null : value);
+                if (value == null || value.isEmpty()) {
+                    tuplaDoCsv.put(header, null);
+                }
+                else {
+                    // Se for Valor Inteiro:
+                    try {
+                        Integer intValue = Integer.parseInt(value);
+                        tuplaDoCsv.put(header, intValue);
+                    } catch (NumberFormatException e1) {
+                        // Se não for Inteiro, Tenta converter para Double:
+                        try {
+                            Double doubleValue = Double.parseDouble(value);
+                            tuplaDoCsv.put(header, doubleValue);
+                        } catch (NumberFormatException e2) {
+                            // Se não for Inteiro ou Double, insere como String:
+                            tuplaDoCsv.put(header, value);
+                        }
+                    }
+                }
             }
             dadosDoCsv.add(tuplaDoCsv);
         }
