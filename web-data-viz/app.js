@@ -23,6 +23,7 @@ var analistaRouter = require("./src/routes/analista");
 var alertasRouter = require("./src/routes/alertas")
 var renanRouter = require("./src/routes/renan")
 var anaRouter= require("./src/routes/ana")
+var produtividadeRouter= require("./src/routes/produtividade")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,6 +39,7 @@ app.use("/analista", analistaRouter);
 app.use("/alertas", alertasRouter);
 app.use("/renan", renanRouter);
 app.use("/ana", anaRouter);
+app.use("/produtividade", produtividadeRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
