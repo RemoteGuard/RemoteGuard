@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RemoteGuard - Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    /* Estilos Globais */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #101010;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 10px 20px;
+      background-color: #202020;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-icone {
+      cursor: pointer;
+    }
+
+    .menu-icone img {
+      width: 30px;
+    }
+
+    /* Sidebar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #202020;
+      transition: left 0.3s ease;
+      z-index: 1000;
+      box-shadow: 4px 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    nav.open {
+      left: 0;
+    }
+
+    nav .logo {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    nav .logo img {
+      width: 120px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    nav ul li {
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul li a img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    nav ul li:hover {
+      background-color: #000000;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      margin-top: 70px;
+    }
+
+    .filters select {
+      width: 30%;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .kpis.hidden,
+    .chart-container.hidden {
+      display: none;
+    }
+
+    .kpis {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .kpi {
+      background: linear-gradient(135deg, #282828, #1e1e1e);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      flex: 1;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      min-width: 200px;
+    }
+
+    .kpi h3 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .kpi p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .chart-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .chart {
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      width: 48%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .chart h3 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    #chartRecursos,
+    #chartAtivoInativoSemanal {
+      max-width: 100%;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="menu-icone" id="menu-icone">
+      <img src="../assets/imgs/2.png" alt="Menu">
+    </div>
+    <div class="perfil-wrapper">
+      <button style="background-color: #FFD700; color: black; border: none; padding: 5px 10px; border-radius: 6px;">Ajuda</button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav id="menuhamburguer">
+    <div class="logo">
+      <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+    </div>
+    <ul>
+      <li><a href="#"><img src="../assets/imgs/dash.png" alt="">Dashboard</a></li>
+      <li><a href="#"><img src="../assets/imgs/relatorio.png" alt="">Relatórios</a></li>
+      <li><a href="#"><img src="../assets/imgs/config.png" alt="">Configurações</a></li>
+      <li><a href="logout.html"><img src="../assets/imgs/sair.png" alt="">Sair</a></li>
+    </ul>
+  </nav>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <select id="select-mes">
+      <option value="" disabled selected>Selecionar Mês</option>
+      <option value="0">Janeiro</option>
+      <option value="1">Fevereiro</option>
+      <option value="2">Março</option>
+      <option value="3">Abril</option>
+      <option value="4">Maio</option>
+      <option value="5">Junho</option>
+      <option value="6">Julho</option>
+      <option value="7">Agosto</option>
+      <option value="8">Setembro</option>
+      <option value="9">Outubro</option>
+      <option value="10">Novembro</option>
+      <option value="11">Dezembro</option>
+    </select>
+    <select id="select-maquina">
+      <option value="" disabled selected>Selecionar Máquina</option>
+      <option value="1">Máquina 1</option>
+      <option value="2">Máquina 2</option>
+      <option value="3">Máquina 3</option>
+    </select>
+    <select id="select-recurso">
+      <option value="" disabled selected>Selecionar Recurso</option>
+      <option value="ram">Memória RAM</option>
+      <option value="cpu">CPU</option>
+    </select>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis hidden">
+    <div class="kpi">
+      <h3>Máximo de Uso</h3>
+      <p id="maxUso">-</p>
+    </div>
+    <div class="kpi">
+      <h3>Consumo Total</h3>
+      <p id="consumoTotal">-</p>
+    </div>
+    <div class="kpi">
+      <h3>Dia da Semana com Maior Média</h3>
+      <p id="diaSemanaMaiorMedia">-</p>
+    </div>
+    <div class="kpi">
+      <h3>Dia do Mês com Maior Média</h3>
+      <p id="diaMesMaiorMedia">-</p>
+    </div>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="chart-container hidden">
+    <div class="chart">
+      <h3>Utilização de Recursos</h3>
+      <div id="chartRecursos"></div>
+    </div>
+    <div class="chart">
+      <h3>Tempo Ativo vs. Tempo Inativo</h3>
+      <div id="chartAtivoInativoSemanal"></div>
+    </div>
+  </div>
+
+  <script>
+    const menuIcon = document.getElementById("menu-icone");
+    const sideBar = document.getElementById("menuhamburguer");
+
+    menuIcon.addEventListener("click", () => {
+      sideBar.classList.toggle("open");
+    });
+
+    document.addEventListener("click", (event) => {
+      const isClickInsideSidebar = sideBar.contains(event.target);
+      const isClickOnMenuIcon = menuIcon.contains(event.target);
+
+      if (!isClickInsideSidebar && !isClickOnMenuIcon) {
+        sideBar.classList.remove("open");
+      }
+    });
+
+    const kpisContainer = document.querySelector(".kpis");
+    const chartsContainer = document.querySelector(".chart-container");
+
+    const chartRecursos = new ApexCharts(document.querySelector("#chartRecursos"), {
+      chart: { type: "line", height: 300, foreColor: "#fff", toolbar: { show: false } },
+      series: [{ name: "CPU", data: [] }],
+      xaxis: { categories: Array.from({ length: 30 }, (_, i) => `Dia ${i + 1}`) },
+      colors: ["#FFD700"],
+    });
+
+    const chartAtivoInativoSemanal = new ApexCharts(document.querySelector("#chartAtivoInativoSemanal"), {
+      chart: { type: "bar", height: 300, stacked: true, foreColor: "#fff", toolbar: { show: false } },
+      series: [
+        { name: "Tempo Ativo", data: [] },
+        { name: "Tempo Inativo", data: [] }
+      ],
+      xaxis: { categories: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"] },
+      colors: ["#00FF00", "#FF0000"],
+    });
+
+    chartRecursos.render();
+    chartAtivoInativoSemanal.render();
+
+    function gerarDadosSimulados(mes, maquina) {
+      const base = (parseInt(mes, 10) + 1) * 10 + parseInt(maquina, 10) * 5;
+      return Array.from({ length: 30 }, () => Math.floor(Math.random() * 50 + base));
+    }
+
+    function gerarDadosSemanais(mes, maquina) {
+      const base = (parseInt(mes, 10) + 1) * 20 + parseInt(maquina, 10) * 5;
+      const tempoAtivo = Array.from({ length: 4 }, () => Math.floor(Math.random() * 50 + base));
+      const tempoInativo = tempoAtivo.map((ativo) => Math.floor(100 - ativo));
+      return { tempoAtivo, tempoInativo };
+    }
+
+    function calcularMediaPorDiaSemana(data) {
+      const diasSemana = Array(7).fill(0);
+      const contagemDias = Array(7).fill(0);
+
+      data.forEach((uso, i) => {
+        const diaSemana = new Date(2023, 0, i + 1).getDay();
+        diasSemana[diaSemana] += uso;
+        contagemDias[diaSemana]++;
+      });
+
+      return diasSemana.map((total, i) => total / (contagemDias[i] || 1));
+    }
+
+    function atualizarKPIs(data) {
+      const recurso = document.getElementById("select-recurso").value;
+      const maxUso = Math.max(...data).toFixed(2);
+      let consumoTotal = data.reduce((a, b) => a + b, 0);
+
+      if (recurso === "ram") {
+        consumoTotal = (consumoTotal / 1024).toFixed(2) + " GB";
+      } else {
+        consumoTotal = consumoTotal.toFixed(2) + " %";
+      }
+
+      const mediaPorDiaSemana = calcularMediaPorDiaSemana(data);
+      const diaSemanaMaiorMedia = mediaPorDiaSemana.indexOf(Math.max(...mediaPorDiaSemana));
+      const diaSemanaTexto = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"][diaSemanaMaiorMedia];
+
+      document.getElementById("maxUso").textContent = `${maxUso}%`;
+      document.getElementById("consumoTotal").textContent = consumoTotal;
+      document.getElementById("diaSemanaMaiorMedia").textContent = `${diaSemanaTexto} (${Math.max(...mediaPorDiaSemana).toFixed(2)}%)`;
+      document.getElementById("diaMesMaiorMedia").textContent = `Dia ${data.indexOf(Math.max(...data)) + 1}`;
+    }
+
+    function verificarFiltros() {
+      const mes = document.getElementById("select-mes").value;
+      const maquina = document.getElementById("select-maquina").value;
+      const recurso = document.getElementById("select-recurso").value;
+      return mes && maquina && recurso;
+    }
+
+    function exibirDados() {
+      if (verificarFiltros()) {
+        kpisContainer.classList.remove("hidden");
+        chartsContainer.classList.remove("hidden");
+
+        const mes = document.getElementById("select-mes").value;
+        const maquina = document.getElementById("select-maquina").value;
+
+        const recurso = document.getElementById("select-recurso").value;
+        const data = gerarDadosSimulados(mes, maquina);
+
+        chartRecursos.updateSeries([{ name: recurso.toUpperCase(), data }]);
+        atualizarKPIs(data);
+
+        const { tempoAtivo, tempoInativo } = gerarDadosSemanais(mes, maquina);
+        chartAtivoInativoSemanal.updateSeries([
+          { name: "Tempo Ativo", data: tempoAtivo },
+          { name: "Tempo Inativo", data: tempoInativo },
+        ]);
+      } else {
+        kpisContainer.classList.add("hidden");
+        chartsContainer.classList.add("hidden");
+      }
+    }
+
+    document.querySelectorAll("select").forEach((select) => {
+      select.addEventListener("change", exibirDados);
+    });
+  </script>
+</body>
+
+</html>
