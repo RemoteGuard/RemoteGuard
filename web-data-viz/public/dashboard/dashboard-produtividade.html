@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Produtividade</title>
+    <link rel="stylesheet" href="../css/dash-murillo.css">
+    <link rel="icon" href="../assets/imgs/logo4-amarela.svg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+</head>
+
+<body onload="selecionarCargo()">
+    <header id="main-header">
+        <div class="menu-icone" id="menu-icone">
+            <img src="../assets/imgs/2.png" alt="Menu" class="menu-img">
+        </div>
+        <div class="perfil-wrapper">
+            <div class="Ativacao">
+                <button>Ajuda</button>
+            </div>
+
+            <div class="perfil-container">
+                <img src="../assets/imgs/a.png" alt="Imagem de Perfil">
+                <div class="perfil-text">
+                    <span class="nome">Gerente</span>
+                    <span class="legenda">perfil</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav id="menuhamburguer">
+        <div class="logo">
+            <img src="../assets/imgs/logo4-amarela.svg" alt="Logo">
+        </div>
+        <ul class="menu-items">
+            <li class="naoAtivo"><a href="DashGerente.html"><img src="../assets/imgs/dash.png" alt="Ícone 1">Tela
+                    inicial</a>
+            </li>
+            <li class="naoAtivo"><a href="dashboard-Isa.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Alertas</a></li>
+            <li class="naoAtivo"><a href="DashAna.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Processos</a></li>
+            <li class="ativo"><a href="dashboard-produtividade.html"><img src="../assets/imgs/relatorio.png"
+                        alt="Ícone 1">Produtividade</a></li>
+            <li class="naoAtivo"><a href="CadastroFunc.html"><img src="../assets/imgs/perfil.png"
+                        alt="Ícone 1">Funcionários</a></li>
+            <li class="naoAtivo"><a href="cadastroNote.html"><img src="../assets/imgs/Maquina.png" alt="Ícone 1">
+                    Máquinas</a>
+            </li>
+            <li class="naoAtivo"><a href="../login.html"><img src="../assets/imgs/sair.png" alt="Ícone 1">Sair</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-Container">
+        <h1 class="dash-title">Análise de Produtividade Semanal</h1>
+
+        <div class="card-filter">
+            <label for="filter-cargo">Cargo:</label>
+            <select name="filter_cargo" id="filter_cargo" onchange="selecionarCargo()">
+                <option selected="Todos">Todos</option>
+                <option value="Consultor">Consultor</option>
+                <option value="Especialista">Especialista</option>
+                <option value="Técnico">Técnico</option>
+            </select>
+
+        </div>
+        <div class="card-group">
+            <div class="card">
+                <div class="card-title">Produtividade da Semana</div>
+                <div class="card-body">
+                    <div class="produtividade">
+                        <h1 id="produtividade_cargo">0.0</h1>
+                        <h2>%</h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-title">Produtividade Média do Cargo</div>
+                <div class="card-body">
+                    <div class="produtividade">
+                        <h1 id="produtividade_crawler">0.0</h1>
+                        <h2>%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Funcionário Mais Produtivo</div>
+                <div class="card-body">
+                    <div class="produtividade">
+                        <h1 id="maior_produtividade">0.0</h1>
+                        <h2>%</h2>
+                    </div>
+                    <h2 id="funcionario_mais_produtivo"></h2>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Funcionário Menos Produtivo</div>
+                <div class="card-body">
+                    <div class="produtividade">
+                        <h1 id="menor_produtividade">0.0</h1>
+                        <h2>%</h2>
+                    </div>
+                    <h2 id="funcionario_menos_produtivo"></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div id="myChartCanvas" class="canvas"></div>
+        </div>
+    </main>
+</body>
+
+</html>
+
+
+<script>
+    var requisicaoPadrao = ''
+    var empresaGerente = ''
+    var cargo = ''
+
+    // Manipulação do menu hamburguer
+    document.getElementById('menu-icone').addEventListener('click', function () {
+        var menuhamburguer = document.getElementById('menuhamburguer');
+        var mainContainer = document.getElementById('main-Container');
+        var header = document.getElementById('main-header');
+
+        // Alterna a classe 'open' para o menu e a 'menu-open' para o conteúdo e header
+        menuhamburguer.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+    });
+
+    const menuItems = document.querySelectorAll('.menu-items li');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove a classe 'active' de todos os itens
+            menuItems.forEach(el => el.classList.remove('active'));
+            // Adiciona a classe 'active' ao item clicado
+            this.classList.add('active');
+        });
+    });
+
+
+
+    function selecionarCargo() {
+        cargo = filter_cargo.value;
+
+        buscarEmpresaDoGerenteLogado()
+        buscarProdutividadeCargoCrawler()
+    }
+
+    //funcao que traz a fkEmpresa do funcionário que estiver logado
+    function buscarEmpresaDoGerenteLogado() {
+        idUsuario = sessionStorage.ID_USUARIO
+
+        fetch("/alertas/buscarEmpresaDoGerenteLogado", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                requisicaoPadraoServer: requisicaoPadrao,
+                idUsuarioServer: idUsuario
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    json.resultado.forEach(empresa => {
+                        empresaGerente = empresa.fkEmpresa
+                        console.log(empresaGerente)
+                        console.log(cargo)
+                        buscarProdutividadeCargo()
+                        buscarProdutividadeFuncionario()
+                    });
+                });
+            } else {
+                throw "Erro ao buscar a fkEmpresa do gerente!";
+            }
+        })
+    }
+
+    function buscarProdutividadeCargo() {
+        fetch(`/produtividade/buscarProdutividadeCargo/${empresaGerente}/${cargo}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do buscarProdutividadeCargo")
+
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    produtividade_cargo.innerHTML = calcularProdutividadeNormalizada(dados[0].produtividade_cargo);
+                    produtividadeCargo = calcularProdutividadeNormalizada(dados[0].produtividade_cargo);
+                    plotPredictChart(produtividadeCargo);
+                })
+            }
+        })
+    }
+
+    function buscarProdutividadeFuncionario() {
+        fetch(`/produtividade/buscarProdutividadeFuncionario/${empresaGerente}/${cargo}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application\json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do buscarProdutividadeFuncionario")
+
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    buscarFuncionarioMaisProdutivivo(dados)
+                    buscarFuncionarioMenosProdutivivo(dados)
+                })
+            }
+        })
+    }
+
+    function buscarFuncionarioMaisProdutivivo(funcionarios) {
+        var funcionarioMaisProdutivo = '';
+        var maiorProdutividade = 0.0;
+
+        for (var i = 0; i < funcionarios.length; i++) {
+            var produtividadeAtual = calcularProdutividadeNormalizada(funcionarios[i].produtividade);
+
+            if (produtividadeAtual > maiorProdutividade) {
+                maiorProdutividade = produtividadeAtual;
+                funcionarioMaisProdutivo = funcionarios[i];
+            }
+        }
+
+        maior_produtividade.innerHTML = maiorProdutividade
+        funcionario_mais_produtivo.innerHTML = funcionarioMaisProdutivo.funcionario
+    }
+
+    function buscarFuncionarioMenosProdutivivo(funcionarios) {
+        var funcionarioMenosProdutivo = '';
+        var menorProdutividade = 100.0;
+
+        for (var i = 0; i < funcionarios.length; i++) {
+            var produtividadeAtual = calcularProdutividadeNormalizada(funcionarios[i].produtividade);
+
+            if (produtividadeAtual < menorProdutividade) {
+                menorProdutividade = produtividadeAtual;
+                funcionarioMenosProdutivo = funcionarios[i];
+            }
+        }
+        menor_produtividade.innerHTML = menorProdutividade
+        funcionario_menos_produtivo.innerHTML = funcionarioMenosProdutivo.funcionario
+    }
+
+    function calcularProdutividadeNormalizada(usoRecursos) {
+        const valorIdeal = 60.0
+        const fatorNormalizacao = Math.max(valorIdeal, 100.0 - valorIdeal);
+
+        const produtividade = 100.0 - (Math.abs(usoRecursos - valorIdeal) / fatorNormalizacao) * 100.0;
+
+        // Garante que o resultado esteja entre 0 e 100
+        return Math.max(0.0, Math.min(100.0, produtividade)).toFixed(1);
+    }
+
+    function buscarProdutividadeCargoCrawler() {
+        fetch(`/produtividade/buscarProdutividadeCargoCrawler/${cargo}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then(function (resposta) {
+
+            console.log("Estou no then do buscarProdutividadeCargoCrawler")
+
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    produtividade_crawler.innerHTML = calcularProdutividadeNormalizada(dados[0].produtividade_crawler);
+                })
+            }
+        })
+    }
+
+    function plotPredictChart(produtividadeCargo) {
+        let { produtividadePassada, previsaoPassada, previsaoAtual } = preverProdutividade();
+        let labels = ["Semana Passada", "Semana Atual"]; // Eixo X
+        let dataReal = [produtividadePassada, produtividadeCargo]; // Valores reais de produtividade (exemplo)
+        let dataPrevista = [previsaoPassada, previsaoAtual]; // Valores previstos de produtividade (exemplo)
+
+        document.querySelector("#myChartCanvas").innerHTML = "";
+
+        var options = {
+            series: [
+                {
+                    name: 'Real', // Nome da série 1
+                    data: dataReal // Dados reais
+                },
+                {
+                    name: 'Prevista', // Nome da série 2
+                    data: dataPrevista // Dados previstos
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false, // Barras verticais
+                    columnWidth: '50%', // Largura das barras
+                    endingShape: 'rounded' // Barras com bordas arredondadas
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val + "%"; // Formato dos valores exibidos
+                },
+                style: {
+                    fontSize: '16px',
+                    colors: ['#fff']
+                }
+            },
+            colors: ['#FFD700', '#F08000'], // Cores das barras
+            xaxis: {
+                categories: labels, // Categorias (Semanas)
+                labels: {
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '14px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#D3D3D3'
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#202020'
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 100, // Limite do eixo Y (0% a 100%)
+                tickAmount: 5, // Divisões no eixo Y
+                labels: {
+                    formatter: function (val) {
+                        return val + "%"; // Formato dos valores no eixo Y
+                    },
+                    style: {
+                        colors: '#D3D3D3',
+                        fontSize: '14px'
+                    }
+                },
+                title: {
+                    text: 'Produtividade (%)',
+                    style: {
+                        color: '#D3D3D3',
+                        fontSize: '16px'
+                    }
+                }
+            },
+            legend: {
+                position: 'top', // Posição da legenda (top, bottom, left, right)
+                labels: {
+                    colors: '#fff', // Cores das legendas
+                    fontSize: '20px', // Tamanho da fonte da legenda
+                },
+                itemMargin: {
+                    horizontal: 10, // Espaço horizontal entre os itens
+                    vertical: 10// Espaço vertical entre os itens
+                }
+            },
+            title: {
+                text: 'Comparação de Produtividade: Real x Prevista',
+                align: 'center',
+                margin: 10,
+                offsetY: 10,
+                style: {
+                    fontSize: '24px',
+                    color: '#D3D3D3'
+                }
+            },
+            tooltip: {
+                theme: 'dark',
+                y: {
+                    formatter: function (val) {
+                        return val + "%"; // Formato dos valores no tooltip
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChartCanvas"), options);
+        chart.render();
+    }
+
+    function preverProdutividade() {
+        // Dados históricos das semanas passadas
+        const semanas = [1, 2, 3];
+        const medias = [];
+
+        if (cargo == 'Consultor') {
+            medias.push(84.9, 83.2, 82.5)
+        }
+        else if (cargo == 'Especialista') {
+            medias.push(80.1, 80.8, 81.1)
+
+        }
+        else if (cargo == "Técnico") {
+            medias.push(82.2, 82.7, 83.5)
+        }
+        else {
+            medias.push(83.3, 83.1, 82.9)
+        }
+
+
+        // Função para calcular a regressão linear
+        function regressaoLinear(x, y) {
+            const n = x.length;
+            const somaX = x.reduce((acc, val) => acc + val, 0);
+            const somaY = y.reduce((acc, val) => acc + val, 0);
+            const somaXY = x.reduce((acc, val, i) => acc + (val * y[i]), 0);
+            const somaX2 = x.reduce((acc, val) => acc + val * val, 0);
+
+            // Cálculo do coeficiente angular (m) e coeficiente linear (b)
+            const m = (n * somaXY - somaX * somaY) / (n * somaX2 - somaX * somaX);
+            const b = (somaY - m * somaX) / n;
+
+            return { m, b };
+        }
+
+        // Realizando a regressão linear
+        var { m, b } = regressaoLinear(semanas, medias);
+
+        // Função para prever a média da próxima semana
+        const preverProximaSemana = (semana) => m * semana + b;
+        const previsaoPassada = preverProximaSemana(4).toFixed(1);
+
+
+        semanas.push(4)
+
+        if (cargo == 'Consultor') {
+            medias.push(79.5)
+        }
+        else if (cargo == 'Especialista') {
+            medias.push(82.8)
+
+        }
+        else if (cargo == "Técnico") {
+            medias.push(82.9)
+        }
+        else {
+            medias.push(82.5)
+        }
+
+        // Realizando a regressão linear
+        var { m, b } = regressaoLinear(semanas, medias);
+
+        // Função para prever a média da próxima semana
+        const previsaoAtual = preverProximaSemana(5).toFixed(1);
+
+        produtividadePassada = medias[3].toFixed(1)
+    
+        return { produtividadePassada, previsaoPassada, previsaoAtual }
+    }
+
+
+
+</script>
