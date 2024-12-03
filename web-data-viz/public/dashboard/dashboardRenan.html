@@ -315,13 +315,14 @@
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(json => {
+                    console.log(json)
                     for (var i = 0; i < json.resultado.length; i++) {
-                        if (json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90) {
-                            if (json.resultado[i].porcentagem_cpu < 95 && json.resultado[i].porcentagem_ram < 95) {
+                        if (json.resultado[i].porcentagem_cpu >= 80 || json.resultado[i].porcentagem_ram >= 80) {
+                            if (json.resultado[i].porcentagem_cpu < 90 && json.resultado[i].porcentagem_ram < 90) {
                                 vetorPerigo.push(json.resultado[i].nome)
                             }
                         }
-                        if (json.resultado[i].porcentagem_cpu >= 95 || json.resultado[i].porcentagem_ram >= 95) {
+                        if (json.resultado[i].porcentagem_cpu >= 90 || json.resultado[i].porcentagem_ram >= 90) {
                             vetorUrgencia.push(json.resultado[i].nome)
                         }
                         if (json.resultado[i].porcentagem_cpu < 30 && json.resultado[i].porcentagem_ram < 30) {

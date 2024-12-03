@@ -463,7 +463,7 @@
     
 
     function buscarDadosBarra() {
-      const fkNotebookBase = 1;
+      const fkNotebookBase = sessionStorage.ID_NOTEBOOK;
      
       fetch("/analista/listarDadosBarra", {
         method: "POST",
