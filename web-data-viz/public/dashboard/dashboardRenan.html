@@ -265,7 +265,7 @@
                     var contagemOrdenada = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map((v) => ({ nome: v[0], qtd: v[1] }))
                     var processosMaisUtilizadosNome = []
                     var processosMaisUtilizadosQtd = []
-                    for (var i = 0; i < 10; i++) {
+                    for (var i = 0; i < 8; i++) {
                         var nomeDaVez = contagemOrdenada[i].nome;
                         var qtdDaVez = contagemOrdenada[i].qtd;
                         processosMaisUtilizadosNome.push(nomeDaVez);
@@ -366,10 +366,10 @@
                                     } else {
                                         throw "Erro ao plotar grafico!";
                                     }
+                                    setTimeout(window.location.href = "DashAnalista.html", 1000)
                                 }).catch(function (erro) {
                                     console.log(`#ERRO: ${erro}`);
                                 });
-                                setTimeout(window.location.href = "DashAnalista.html", 1000)
 
                             });
 
